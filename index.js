@@ -17,9 +17,13 @@ app.use(require('morgan')('dev'));
 
 
 // API LAYERS
-app.use('api/data/', require('./controllers/data'));
+app.use('/api/data/', require('./controllers/data'));
 
 // GET ROOT - SEND INDEX.html-
 app.get('/*', function(req, res){
   res.sendFile(path.join(__dirname, 'public/index.html'));
 })
+
+var server = app.listen(process.env.PORT || 3000);
+
+module.exports = server;
