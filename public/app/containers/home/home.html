@@ -12,6 +12,7 @@
 	<div ng-show="homeComp.searchResults !== undefined">
 		<label>Starting point:</label>
 		<p>
+			({{homeComp.searchResults.locations[0].latLng.lat}},{{homeComp.searchResults.locations[0].latLng.lng}}): 
 			{{homeComp.searchResults.locations[0].street}}, 
 			{{homeComp.searchResults.locations[0].adminArea5}},
 			{{homeComp.searchResults.locations[0].adminArea3}} 
@@ -19,6 +20,7 @@
 		</p>
 		<label>Destination:</label>
 		<p>
+			({{homeComp.searchResults.locations[0].latLng.lat}},{{homeComp.searchResults.locations[0].latLng.lng}}): 
 			{{homeComp.searchResults.locations[1].street}}, 
 			{{homeComp.searchResults.locations[1].adminArea5}},
 			{{homeComp.searchResults.locations[1].adminArea3}} 
