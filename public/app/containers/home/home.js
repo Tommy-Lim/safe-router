@@ -36,11 +36,11 @@ function HomeCompCtrl($http) {
 					for (var i=1; i < maneuvers.length; i++) {
 						homeComp.legRanges.push(
 							{ latRange: {
-									begin: parseFloat(maneuvers[i-1].startPoint.lat), 
+									begin: parseFloat(maneuvers[i-1].startPoint.lat),
 									end: parseFloat(maneuvers[i].startPoint.lat)
 								},
 								lngRange: {
-									begin: parseFloat(maneuvers[i-1].startPoint.lng), 
+									begin: parseFloat(maneuvers[i-1].startPoint.lng),
 									end: parseFloat(maneuvers[i].startPoint.lng)
 								},
 							}
@@ -48,11 +48,11 @@ function HomeCompCtrl($http) {
 					}
 					homeComp.legRanges.push(
 						{ latRange: {
-								begin: parseFloat(maneuvers[maneuvers.length-1].startPoint.lat), 
+								begin: parseFloat(maneuvers[maneuvers.length-1].startPoint.lat),
 								end: parseFloat(locations[1].latLng.lat)
 							},
 							lngRange: {
-								begin: parseFloat(maneuvers[maneuvers.length-1].startPoint.lng), 
+								begin: parseFloat(maneuvers[maneuvers.length-1].startPoint.lng),
 								end: parseFloat(locations[1].latLng.lng)
 							},
 						}

@@ -11,19 +11,19 @@
 
 	<div ng-show="homeComp.searchResults !== undefined">
 		<h3>Starting point:</h3>
-		<p> 
-			{{homeComp.searchResults.locations[0].street}}, 
+		<p>
+			{{homeComp.searchResults.locations[0].street}},
 			{{homeComp.searchResults.locations[0].adminArea5}},
-			{{homeComp.searchResults.locations[0].adminArea3}} 
-			{{homeComp.searchResults.locations[0].postalCode}} 
+			{{homeComp.searchResults.locations[0].adminArea3}}
+			{{homeComp.searchResults.locations[0].postalCode}}
 			({{homeComp.searchResults.locations[0].latLng.lat}},{{homeComp.searchResults.locations[0].latLng.lng}})
 		</p>
 		<h3>Destination:</h3>
 		<p>
-			{{homeComp.searchResults.locations[1].street}}, 
+			{{homeComp.searchResults.locations[1].street}},
 			{{homeComp.searchResults.locations[1].adminArea5}},
-			{{homeComp.searchResults.locations[1].adminArea3}} 
-			{{homeComp.searchResults.locations[1].postalCode}} 
+			{{homeComp.searchResults.locations[1].adminArea3}}
+			{{homeComp.searchResults.locations[1].postalCode}}
 			({{homeComp.searchResults.locations[1].latLng.lat}},{{homeComp.searchResults.locations[1].latLng.lng}})
 		</p>
 		<h3>Legs:</h3>
@@ -31,11 +31,13 @@
 			<li ng-repeat="leg in homeComp.searchResults.legs[0].maneuvers track by $index">
 				<strong>Starting Point:</strong> ({{leg.startPoint.lat}}, {{leg.startPoint.lng}}) <br>
 				<strong>Narrative:</strong> <em>"{{leg.narrative}}"</em> <br>
-				<strong>Range:</strong> 
-					Lat: ({{homeComp.legRanges[$index].latRange.begin}} to {{homeComp.legRanges[$index].latRange.end}}), 
-					Lng: ({{homeComp.legRanges[$index].lngRange.begin}} to {{homeComp.legRanges[$index].lngRange.end}}) 
+				<strong>Range:</strong>
+					Lat: ({{homeComp.legRanges[$index].latRange.begin}} to {{homeComp.legRanges[$index].latRange.end}}),
+					Lng: ({{homeComp.legRanges[$index].lngRange.begin}} to {{homeComp.legRanges[$index].lngRange.end}})
 			</li>
 		</ol>
 	</div>
 
 </div>
+
+<map-comp></map-comp>
