@@ -10,7 +10,7 @@
 	<hr>
 
 	<div ng-show="homeComp.searchResults !== undefined">
-		<label>Starting point:</label>
+		<h3>Starting point:</h3>
 		<p> 
 			{{homeComp.searchResults.locations[0].street}}, 
 			{{homeComp.searchResults.locations[0].adminArea5}},
@@ -18,7 +18,7 @@
 			{{homeComp.searchResults.locations[0].postalCode}} 
 			({{homeComp.searchResults.locations[0].latLng.lat}},{{homeComp.searchResults.locations[0].latLng.lng}})
 		</p>
-		<label>Destination:</label>
+		<h3>Destination:</h3>
 		<p>
 			{{homeComp.searchResults.locations[1].street}}, 
 			{{homeComp.searchResults.locations[1].adminArea5}},
@@ -26,7 +26,7 @@
 			{{homeComp.searchResults.locations[1].postalCode}} 
 			({{homeComp.searchResults.locations[1].latLng.lat}},{{homeComp.searchResults.locations[1].latLng.lng}})
 		</p>
-		<label>Legs:</label>
+		<h3>Legs:</h3>
 		<ol>
 			<li ng-repeat="leg in homeComp.searchResults.legs[0].maneuvers track by $index">
 				<strong>Starting Point:</strong> ({{leg.startPoint.lat}}, {{leg.startPoint.lng}}) <br>
