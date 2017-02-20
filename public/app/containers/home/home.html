@@ -1,1 +1,35 @@
-Home container
+<div id="search-form">
+
+	<form ng-submit="homeComp.findRoutes()">
+		<label>Starting point:</label>
+		<input type="text" placeholder="Choose starting point" ng-model="homeComp.start">
+		<label>Destination:</label>
+		<input type="text" placeholder="Choose destination" ng-model="homeComp.destination">
+		<input type="submit" value="Search">
+	</form>
+	<hr>
+
+	<div ng-show="homeComp.searchResults !== undefined">
+		<label>Starting point:</label>
+		<p>
+			{{homeComp.searchResults.locations[0].street}}, 
+			{{homeComp.searchResults.locations[0].adminArea5}},
+			{{homeComp.searchResults.locations[0].adminArea3}} 
+			{{homeComp.searchResults.locations[0].postalCode}} 
+		</p>
+		<label>Destination:</label>
+		<p>
+			{{homeComp.searchResults.locations[1].street}}, 
+			{{homeComp.searchResults.locations[1].adminArea5}},
+			{{homeComp.searchResults.locations[1].adminArea3}} 
+			{{homeComp.searchResults.locations[1].postalCode}} 
+		</p>
+		<label>Legs:</label>
+		<ul>
+			<li ng-repeat="leg in homeComp.searchResults.legs[0].maneuvers track by $index">
+				({{leg.startPoint.lat}}, {{leg.startPoint.lng}}): {{leg.narrative}}
+			</li>
+		</ul>
+	</div>
+
+</div>

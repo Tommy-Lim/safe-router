@@ -1,8 +1,13 @@
-body{
-  background-color: #ddd;
+body {
+	background-color: #ddd;
+	padding: 1.5em;
 }
 
 #map {
-    height: 500px;
-    width: 500px;
+	height: 500px;
+	width: 500px;
+}
+
+li {
+	margin-left: -24px;
 }
