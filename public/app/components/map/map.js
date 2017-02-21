@@ -158,7 +158,10 @@ function MapCompCtrl($http, DirectionsServices) {
         }
     }
 
-    mapComp.getRouteBox = function(){
+    mapComp.getRouteBox = function(padding){
+      if(!padding){
+        padding = 0.001 //degree lat/lng
+      }
       var index = mapComp.directionsDisplay.getRouteIndex();
       var firstCoord = mapComp.latLngArray[index][0];
 
@@ -188,11 +191,13 @@ function MapCompCtrl($http, DirectionsServices) {
           }
       })
 
+
+
       mapComp.boxCoordinates = [
-          {lat: box.lat.north, lng: box.lng.west},
-          {lat: box.lat.north, lng: box.lng.east},
-          {lat: box.lat.south, lng: box.lng.east},
-          {lat: box.lat.south, lng: box.lng.west}
+          {lat: box.lat.north + padding, lng: box.lng.west - padding},
+          {lat: box.lat.north + padding, lng: box.lng.east + padding},
+          {lat: box.lat.south - padding, lng: box.lng.east + padding},
+          {lat: box.lat.south - padding, lng: box.lng.west - padding}
       ]
 
       console.log("BOX COORDS:", mapComp.boxCoordinates)
