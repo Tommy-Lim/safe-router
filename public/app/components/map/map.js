@@ -246,11 +246,15 @@ function MapCompCtrl($http, DirectionsServices) {
           // TODO: show or get alternate routes on redraw
           console.log(directionsDisplay.getDirections());
         });
+        directionsDisplay.addListener('projection_changed', function() {
+          // TODO: show or get alternate routes on redraw
+          console.log(directionsDisplay.getDirections());
+        });
       }
 
       function calcRoute(){
         var start = '503 1st Ave W, Seattle';
-        var end = 'Green lake, Seattle';
+        var end = '1218 3rd Ave, Seattle';
 
         // REQUEST PARAMS:
         // {
@@ -312,6 +316,17 @@ function MapCompCtrl($http, DirectionsServices) {
       initMap();
       calcRoute();
 
+    }
+
+    mapComp.addMarkers = function(){
+      console.log(mapComp.latLngArray);
+      mapComp.latLngArray.forEach(function(coordinate){
+        var latLng = new google.maps.LatLng(coordinate.lat, coordinate.lng);
+        var marker = new google.maps.Marker({
+          position: latLng,
+          map: mapid
+        })
+      })
     }
 
     // mapComp.buildMap();
