@@ -210,12 +210,20 @@ function MapCompCtrl($http, DirectionsServices) {
     }
 
     mapComp.findRoute = function() {
-        L.Routing.control({
+        L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}{r}.png', {attribution: '© OpenStreetMap contributors'}).addTo(mapid);
+
+        var route = L.Routing.control({
             waypoints: [
                 L.latLng(47.66, -122.34),
-                L.latLng(47.7, -122.249)
-            ]
+                L.latLng(47.71, -122.249)
+            ],
+            showAlternatives: true
         }).addTo(mapid);
+
+        console.log("WAYPOINTS:", route.getWaypoints());
+        console.log("PLAN:", route.getPlan());
+        console.log("ROUTER:", route.getRouter());
+        console.log("ROUTE:", route);
 
     }
 
