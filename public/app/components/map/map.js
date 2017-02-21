@@ -203,7 +203,11 @@ function MapCompCtrl($http, DirectionsServices) {
       console.log("BOX COORDS:", mapComp.boxCoordinates)
 
       mapComp.mapBox = new google.maps.Polygon({
-        paths: mapComp.boxCoordinates
+        paths: mapComp.boxCoordinates,
+        strokeColor: '#EE0000',
+        strokeOpacity: 0.3,
+        fillColor: '#EE0000',
+        fillOpacity: 0.05,
       })
       mapComp.mapBox.setMap(mapComp.mapid)
 
