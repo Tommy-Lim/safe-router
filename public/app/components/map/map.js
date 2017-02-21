@@ -227,7 +227,7 @@ function MapCompCtrl($http, DirectionsServices) {
 
     }
 
-    mapComp.gMapsRoute = function(){
+    mapComp.createGMap = function(){
       var map;
       function initMap() {
         map = new google.maps.Map(document.getElementById('mapid'), {
