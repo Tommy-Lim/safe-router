@@ -67,10 +67,14 @@ function MapCompCtrl($http, DirectionsServices) {
 
             // WHEN ROUTE OPTION IS CHANGED, RETURN DIRECTIONS
             google.maps.event.addListener(mapComp.directionsDisplay, 'routeindex_changed', function() {
+                mapScope.removeMarkers();
                 //current routeIndex
                 console.log("SELECTED ROUTE INDEX: ", this.getRouteIndex());
                 //current route
-                console.log("SELECTED ROUTE: ", this.getDirections().routes[this.getRouteIndex()]);
+                newRoutes = this.getDirections().routes
+                console.log("SELECTED ROUTE: ", newRoutes);
+                mapComp.latLngArray = mapScope.polylinesToLatLngArr(newRoutes)
+                mapScope.addMarkers();
             });
         }
 
@@ -111,7 +115,7 @@ function MapCompCtrl($http, DirectionsServices) {
                 mapComp.overviewPath = mapComp.directionsResult.routes[0].overview_path
                 mapComp.latLngArray = mapScope.polylinesToLatLngArr(mapComp.directionsResult.routes);
                 console.log("LAT/LNG DIRECTIONS RESULT: ", mapComp.latLngArray)
-                mapComp.addMarkers();
+                // mapComp.addMarkers();
             }
         });
     }
