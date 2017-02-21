@@ -232,7 +232,7 @@ function MapCompCtrl($http, DirectionsServices) {
       var directionsService = new google.maps.DirectionsService();
 
       function initMap() {
-        directionsDisplay = new google.maps.DirectionsRenderer();
+        directionsDisplay = new google.maps.DirectionsRenderer({ draggable: true});
 
         mapid = new google.maps.Map(document.getElementById('mapid'), {
           center: {lat: 47.608, lng: -122.354},
@@ -240,6 +240,11 @@ function MapCompCtrl($http, DirectionsServices) {
         });
 
         directionsDisplay.setMap(mapid);
+        directionsDisplay.setPanel(document.getElementById('directionsPanel'));
+
+        directionsDisplay.addListener('directions_changed', function() {
+          console.log(directionsDisplay.getDirections());
+        });
       }
 
       function calcRoute(){
@@ -255,18 +260,17 @@ function MapCompCtrl($http, DirectionsServices) {
         directionsService.route(request, function(result, status) {
           if (status == 'OK') {
             directionsDisplay.setDirections(result);
-            console.log(result)
-            console.log(result.routes[0].overview_polyline)
             mapComp.result = result;
-            mapComp.polylineHash = result.routes[0].overview_polyline;
-            mapComp.polylineArray = google.maps.geometry.encoding.decodePath(result.routes[0].overview_polyline)
-            console.log(mapComp.polylineArray)
-            console.log(mapComp.polylineArray[0].lat())
-            mapComp.latLngArray = mapComp.polylineArray.map(function(item){
-              coordinate =  [item.lat(), item.lng()];
-              console.log(coordinate)
+            console.log(mapComp.result)
+            mapComp.overviewPath = result.routes[0].overview_path
+            mapComp.latLngArray = mapComp.overviewPath.map(function(item){
+              coordinate = {
+                "lat":item.lat(),
+                "lng": item.lng()
+              }
               return coordinate;
             })
+            console.log(mapComp.latLngArray)
           }
         });
 
