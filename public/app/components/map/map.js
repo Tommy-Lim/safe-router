@@ -5,14 +5,16 @@ angular.module('App').component('mapComp', {
     // myRecipient: '=', // Bind the ngModel to the object given
     // onSend: '&',      // Pass a reference to the method
     // fromName: '@'     // Store the value associated by fromName
-    bindings: {
-        start: '=',
-        end: '='
-    }
+    // bindings: {
+    //     start: '=',
+    //     end: '='
+    // }
 });
 
 function MapCompCtrl($http, DirectionsServices) {
     var mapComp = this;
+    mapComp.start = '503 1st Ave W, Seattle';
+  	mapComp.end = '1218 3rd Ave, Seattle';
 
     mapComp.initMap = function() {
         mapScope = this;
@@ -68,6 +70,7 @@ function MapCompCtrl($http, DirectionsServices) {
             // WHEN ROUTE OPTION IS CHANGED, RETURN DIRECTIONS
             google.maps.event.addListener(mapComp.directionsDisplay, 'routeindex_changed', function() {
                 mapScope.removeMarkers();
+                mapScope.removeBox();
                 //current routeIndex
                 console.log("SELECTED ROUTE INDEX: ", this.getRouteIndex());
                 //current route
@@ -75,6 +78,7 @@ function MapCompCtrl($http, DirectionsServices) {
                 console.log("SELECTED ROUTE: ", newRoutes);
                 mapComp.latLngArray = mapScope.polylinesToLatLngArr(newRoutes)
                 mapScope.addMarkers();
+                mapScope.getRouteBox();
             });
         }
 
@@ -111,11 +115,9 @@ function MapCompCtrl($http, DirectionsServices) {
                 mapComp.directionsResult = result;
                 mapComp.directionsDisplay.setDirections(result);
                 console.log("DIRECTIONS RESULT: ", mapComp.directionsResult)
-                // TODO: take all routes not just [0]
                 mapComp.overviewPath = mapComp.directionsResult.routes[0].overview_path
                 mapComp.latLngArray = mapScope.polylinesToLatLngArr(mapComp.directionsResult.routes);
                 console.log("LAT/LNG DIRECTIONS RESULT: ", mapComp.latLngArray)
-                // mapComp.addMarkers();
             }
         });
     }
@@ -140,7 +142,7 @@ function MapCompCtrl($http, DirectionsServices) {
         console.log("ROUTE INDEX: ", index);
         mapComp.markers = [];
         console.log("ROUTES ARRAY: ", mapComp.latLngArray);
-        console.log("ARRAY TO ADD MARKERS TO: ", mapComp.latLngArray[index]);
+        console.log("CURRENT ROUTES ARRAY TO ADD MARKERS TO: ", mapComp.latLngArray[index]);
         mapComp.latLngArray[index].forEach(function(coordinate) {
             var latLng = new google.maps.LatLng(coordinate.lat, coordinate.lng);
             var marker = new google.maps.Marker({position: latLng, map: mapComp.mapid})
@@ -154,6 +156,63 @@ function MapCompCtrl($http, DirectionsServices) {
                 marker.setMap(null);
             })
         }
+    }
+
+    mapComp.getRouteBox = function(padding){
+      if(!padding){
+        padding = 0.001 //degree lat/lng
+      }
+      var index = mapComp.directionsDisplay.getRouteIndex();
+      var firstCoord = mapComp.latLngArray[index][0];
+
+      var box = {
+        lat:{
+          south: firstCoord.lat,
+          north: firstCoord.lat
+        },
+        lng: {
+          west: firstCoord.lng,
+          east:firstCoord.lng
+        }
+      }
+
+      mapComp.latLngArray[index].forEach(function(coordinate) {
+          if(coordinate.lat > box.lat.north){
+            box.lat.north = coordinate.lat;
+          }
+          if(coordinate.lat < box.lat.south){
+            box.lat.south = coordinate.lat;
+          }
+          if(coordinate.lng > box.lng.east){
+            box.lng.east = coordinate.lng;
+          }
+          if(coordinate.lng < box.lng.west){
+            box.lng.west = coordinate.lng;
+          }
+      })
+
+
+
+      mapComp.boxCoordinates = [
+          {lat: box.lat.north + padding, lng: box.lng.west - padding},
+          {lat: box.lat.north + padding, lng: box.lng.east + padding},
+          {lat: box.lat.south - padding, lng: box.lng.east + padding},
+          {lat: box.lat.south - padding, lng: box.lng.west - padding}
+      ]
+
+      console.log("BOX COORDS:", mapComp.boxCoordinates)
+
+      mapComp.mapBox = new google.maps.Polygon({
+        paths: mapComp.boxCoordinates
+      })
+      mapComp.mapBox.setMap(mapComp.mapid)
+
+    }
+
+    mapComp.removeBox = function(){
+      if(mapComp.mapBox){
+        mapComp.mapBox.setMap(null)
+      }
     }
 
     mapComp.initMap();
