@@ -243,6 +243,7 @@ function MapCompCtrl($http, DirectionsServices) {
         directionsDisplay.setPanel(document.getElementById('directionsPanel'));
 
         directionsDisplay.addListener('directions_changed', function() {
+          // TODO: show or get alternate routes on redraw
           console.log(directionsDisplay.getDirections());
         });
       }
@@ -275,6 +276,8 @@ function MapCompCtrl($http, DirectionsServices) {
         //   region: String
         // }
 
+        delay_time = 0 //milliseconds;
+
         var request = {
           origin: start,
           destination: end,
@@ -282,7 +285,7 @@ function MapCompCtrl($http, DirectionsServices) {
           avoidTolls: false,
           provideRouteAlternatives: true,
           drivingOptions: {
-            departureTime: new Date()
+            departureTime: new Date(new Date().getTime() + delay_time)
           }
         }
 
@@ -291,6 +294,7 @@ function MapCompCtrl($http, DirectionsServices) {
             directionsDisplay.setDirections(result);
             mapComp.result = result;
             console.log(mapComp.result)
+            // TODO: take all routes not just [0]
             mapComp.overviewPath = result.routes[0].overview_path
             mapComp.latLngArray = mapComp.overviewPath.map(function(item){
               coordinate = {
