@@ -4,6 +4,11 @@ var bodyParser = require('body-parser');
 var app = express();
 require('dotenv').config();
 
+// MONGOOSE MODELS AND CONNECTION
+var mongoose = require('mongoose');
+var Crime = require('./models/crime');
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/seattlecrimereports');
+
 // DECODERS FOR DATA
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
