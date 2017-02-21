@@ -251,10 +251,39 @@ function MapCompCtrl($http, DirectionsServices) {
         var start = '503 1st Ave W, Seattle';
         var end = 'Green lake, Seattle';
 
+        // REQUEST PARAMS:
+        // {
+        //   origin: LatLng | String | google.maps.Place,
+        //   destination: LatLng | String | google.maps.Place,
+        //   travelMode: TravelMode,
+        //   transitOptions: {
+              //   arrivalTime: Date,
+              //   departureTime: Date,
+              //   modes[]: TransitMode,
+              //   routingPreference: TransitRoutePreference
+              // },
+        //   drivingOptions: {
+              //   departureTime: Date,
+              //   trafficModel: TrafficModel
+              // },
+        //   unitSystem: UnitSystem,
+        //   waypoints[]: DirectionsWaypoint,
+        //   optimizeWaypoints: Boolean,
+        //   provideRouteAlternatives: Boolean,
+        //   avoidHighways: Boolean,
+        //   avoidTolls: Boolean,
+        //   region: String
+        // }
+
         var request = {
           origin: start,
           destination: end,
-          travelMode: 'DRIVING'
+          travelMode: 'DRIVING',
+          avoidTolls: false,
+          provideRouteAlternatives: true,
+          drivingOptions: {
+            departureTime: new Date()
+          }
         }
 
         directionsService.route(request, function(result, status) {
