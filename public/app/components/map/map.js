@@ -11,8 +11,9 @@ angular.module('App').component('mapComp', {
     // }
 });
 
-function MapCompCtrl($http, DirectionsServices) {
+function MapCompCtrl($http, DirectionsServices, CrimeService) {
     var mapComp = this;
+    mapComp.CrimeService = CrimeService;
     mapComp.start = '503 1st Ave W, Seattle';
   	mapComp.end = '1218 3rd Ave, Seattle';
 
@@ -64,9 +65,9 @@ function MapCompCtrl($http, DirectionsServices) {
             mapComp.directionsDisplay.addListener('directions_changed', function() {
                 // TODO: show or get alternate routes on redraw
                 var newDirections = mapComp.directionsDisplay.getDirections()
-                console.log("DIRECTIONS AFTER CHANGE ROUTE", newDirections);
+                // console.log("DIRECTIONS AFTER CHANGE ROUTE", newDirections);
                 mapComp.latLngArray = mapScope.polylinesToLatLngArr(newDirections.routes)
-                console.log("LAT/LNG AFTER CHANGING ROUTE: ", mapComp.latLngArray)
+                // console.log("LAT/LNG AFTER CHANGING ROUTE: ", mapComp.latLngArray)
             });
 
             // WHEN ROUTE OPTION IS CHANGED, RETURN DIRECTIONS
@@ -81,6 +82,7 @@ function MapCompCtrl($http, DirectionsServices) {
                 mapComp.latLngArray = mapScope.polylinesToLatLngArr(newRoutes)
                 mapScope.addMarkers();
                 mapScope.getRouteBox();
+                mapScope.getCrimes();
             });
         }
 
@@ -114,15 +116,13 @@ function MapCompCtrl($http, DirectionsServices) {
 
         // GET ROUTES USING DIRECTIONS SERVICE
         mapComp.directionsService.route(request, function(result, status) {
-          console.log("getting route...")
             if (status == 'OK') {
-              console.log("getting route... status OK")
                 mapComp.directionsResult = result;
                 mapComp.directionsDisplay.setDirections(result);
-                console.log("DIRECTIONS RESULT: ", mapComp.directionsResult)
+                // console.log("DIRECTIONS RESULT: ", mapComp.directionsResult)
                 mapComp.overviewPath = mapComp.directionsResult.routes[0].overview_path
                 mapComp.latLngArray = mapScope.polylinesToLatLngArr(mapComp.directionsResult.routes);
-                console.log("LAT/LNG DIRECTIONS RESULT: ", mapComp.latLngArray)
+                // console.log("LAT/LNG DIRECTIONS RESULT: ", mapComp.latLngArray)
             }
         });
     }
@@ -146,9 +146,9 @@ function MapCompCtrl($http, DirectionsServices) {
     //ADD LA/LNG MARKERS FOR THE CURRENT ROUTE
     mapComp.addMarkers = function() {
         var index = mapComp.directionsDisplay.getRouteIndex()
-        console.log("ROUTE INDEX: ", index);
+        // console.log("ROUTE INDEX: ", index);
         mapComp.markers = [];
-        console.log("ROUTES ARRAY: ", mapComp.latLngArray);
+        // console.log("ROUTES ARRAY: ", mapComp.latLngArray);
         console.log("CURRENT ROUTES ARRAY TO ADD MARKERS TO: ", mapComp.latLngArray[index]);
         mapComp.latLngArray[index].forEach(function(coordinate) {
             var latLng = new google.maps.LatLng(coordinate.lat, coordinate.lng);
@@ -213,7 +213,7 @@ function MapCompCtrl($http, DirectionsServices) {
           {lat: box.lat.south - padding, lng: box.lng.west - padding}
       ]
 
-      console.log("BOX COORDS:", mapComp.boxCoordinates)
+      // console.log("BOX COORDS:", mapComp.boxCoordinates)
 
       // BUILD BOX POLYGON
       mapComp.mapBox = new google.maps.Polygon({
@@ -236,10 +236,15 @@ function MapCompCtrl($http, DirectionsServices) {
       }
     }
 
+    mapComp.getCrimes = function(){
+      var crimes = mapComp.CrimeService.getCrimes();
+      console.log("CRIMES: ", crimes);
+    }
+
 
     // ADD MAP TO SITE
     mapComp.initMap();
 
 }
 
-MapCompCtrl.$inject = ['$http', 'DirectionsServices']
+MapCompCtrl.$inject = ['$http', 'DirectionsServices', 'CrimeService']

@@ -1,5 +1,5 @@
-console.log("main.js hit")
+// console.log("main.js hit")
 $(document).ready(function(){
-  console.log('DOM loaded');
+  // console.log('DOM loaded');
 
 })
