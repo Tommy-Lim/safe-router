@@ -1,12 +1,12 @@
 angular.module('App').component('mapComp', {
     templateUrl: 'app/components/map/map.html',
     controller: MapCompCtrl,
-    controllerAs: 'mapCompCtrl'
+    controllerAs: 'mapComp'
 });
 
 function MapCompCtrl($http, DirectionsServices) {
     var mapComp = this;
-    var map;
+    var mapid;
 
     DirectionsServices.getDirections();
 
@@ -14,7 +14,7 @@ function MapCompCtrl($http, DirectionsServices) {
       // CREATE MAP AFTER LOAD
       window.onload = function() {
           // CREATE MAP
-          map = L.map('map', {
+          mapid = L.map('mapid', {
               layers: MQ.mapLayer(),
               center: [
                   47.6062, -122.3321
@@ -35,7 +35,7 @@ function MapCompCtrl($http, DirectionsServices) {
 
     mapComp.centerOnCurrentLocation = function(){
       var popup = L.popup();
-      
+
       // ADD CURRENT LOCATION AND RE-CENTER MAP
       if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(function(position) {
@@ -50,15 +50,15 @@ function MapCompCtrl($http, DirectionsServices) {
 
               popup.setLatLng(latLng);
               popup.setContent('Current Location');
-              popup.openOn(map);
+              popup.openOn(mapid);
 
-              map.setView(latLng, 13);
+              mapid.setView(latLng, 13);
           }, function() {
-              geolocationErrorOccurred(true, popup, map.getCenter());
+              geolocationErrorOccurred(true, popup, mapid.getCenter());
           });
       } else {
           //No browser support geolocation service
-          geolocationErrorOccurred(false, popup, map.getCenter());
+          geolocationErrorOccurred(false, popup, mapid.getCenter());
       }
 
       // ERROR HANDLER FOR IF GEOLOCATION NOT AVAILABLE
@@ -67,24 +67,136 @@ function MapCompCtrl($http, DirectionsServices) {
           popup.setContent(geolocationSupported
               ? '<b>Error:</b> The Geolocation service failed.'
               : '<b>Error:</b> This browser doesn\'t support geolocation.');
-          popup.openOn(map);
+          popup.openOn(mapid);
       }
     }
 
-    mapComp.addPoints = function(){
-      console.log("adding points");
+    mapComp.addPoint = function(){
+      console.log("adding point");
 
-      var geojsonFeature = {
-        type: "Feature",
-        properties: {
-          name: "home",
-          popupContent: "Home"
-        },
-        geometry: {
-          type: "point",
-          coordinates: [47.6824101, -122.3299868]
-        }
+      // geoJSON object uses lon/lat nomenclature
+      var point = {
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [-122.3299868, 47.6924101]
+          },
+          "properties": {
+              "name": "Point",
+              "amenity": "Point type",
+              "popupContent": "Point popup text"
+          }
+      };
+
+      function onEachFeature(feature, layer) {
+          // does this feature have a property named popupContent?
+          if (feature.properties && feature.properties.popupContent) {
+              layer.bindPopup(feature.properties.popupContent);
+          }
       }
+
+      L.geoJSON(point, {
+        onEachFeature: onEachFeature
+      }).addTo(mapid);
+      // var pointsLayer = L.geoJSON().addTo(map);
+      // pointsLayer.addData(point);
+    }
+
+    mapComp.addPoints = function(){
+      var points = [
+        {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [-122.3299868, 47.6824101]
+            },
+            "properties": {
+                "name": "Point",
+                "amenity": "Point",
+                "popupContent": "Point text"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [-122.3399868, 47.6824101]
+            },
+            "properties": {
+                "name": "Point",
+                "amenity": "Point",
+                "popupContent": "Point popup text"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [-122.3499868, 47.6824101]
+            },
+            "properties": {
+                "name": "Point",
+                "amenity": "Point",
+                "popupContent": "Point popup text"
+            }
+        }
+      ]
+
+      function onEachFeature(feature, layer) {
+          // does this feature have a property named popupContent?
+          if (feature.properties && feature.properties.popupContent) {
+              layer.bindPopup(feature.properties.popupContent);
+          }
+      }
+
+      L.geoJSON(points, {
+        onEachFeature: onEachFeature
+      }).addTo(mapid);
+
+      // var layer = L.geoJSON().addTo(mapid);
+      // layer.addData(points);
+
+    }
+
+    mapComp.addMarker = function(){
+      var marker = L.marker([47.6724101, -122.3399868]).addTo(mapid);
+      marker.bindPopup("Home")
+    }
+
+    mapComp.addPopup = function(){
+      var popup = L.popup()
+        .setLatLng([47.6624101, -122.3499868])
+        .setContent("Stand alone Home.")
+        .openOn(mapid);
+    }
+
+    mapComp.addIcon = function(){
+      var greenIcon = L.icon({
+        iconUrl: 'img/leaf-green.png',
+        shadowUrl: 'img/leaf-shadow.png',
+        iconSize:     [38, 95], // size of the icon
+        shadowSize:   [50, 64], // size of the shadow
+        iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
+        shadowAnchor: [4, 62],  // the same for the shadow
+        popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+      });
+
+      L.marker([47.6524101, -122.3399868], {icon: greenIcon}).addTo(mapid);
+
+    }
+
+    mapComp.addLayerGroup = function(){
+      var one = L.marker([47.66, -122.34]).bindPopup('Point 1');
+      var two = L.marker([47.67, -122.34]).bindPopup('Point 2');
+      var three = L.marker([47.68, -122.34]).bindPopup('Point 3');
+
+      var points = L.layerGroup([one, two, three]);
+
+      var overlayMaps = {
+        "Points": points
+      }
+
+      L.control.layers(overlayMaps).addTo(mapid);
     }
 
     mapComp.buildMap();
