@@ -192,11 +192,19 @@ function MapCompCtrl($http, DirectionsServices) {
 
       var points = L.layerGroup([one, two, three]);
 
+      baseLayers = {
+        'Map': MQ.mapLayer(),
+        'Hybrid': MQ.hybridLayer(),
+        'Satellite': MQ.satelliteLayer(),
+        'Dark': MQ.darkLayer(),
+        'Light': MQ.lightLayer()
+      }
+
       var overlayMaps = {
         "Points": points
       }
 
-      L.control.layers(overlayMaps).addTo(mapid);
+      L.control.layers(baseLayers, overlayMaps).addTo(mapid);
     }
 
     mapComp.buildMap();
