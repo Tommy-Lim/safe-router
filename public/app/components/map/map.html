@@ -7,7 +7,13 @@
   <input type="submit" value="Search">
 </form>
 
-<div id="mapid"></div>
+<div id="mapid">
+  <div class="container-load">
+    <div>
+      Loading map. Please wait.
+    </div>
+  </div>
+</div>
 
 <button ng-click="mapComp.calcRoute()">Calc Route</button>
 <button ng-click="mapComp.addMarkers()">Add Markers</button>
