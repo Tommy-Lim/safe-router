@@ -1,3 +1,12 @@
+
+<form ng-submit="mapComp.calcRoute()">
+  <label>Starting point:</label>
+  <input type="text" placeholder="Choose starting point" ng-model="mapComp.start">
+  <label>Destination:</label>
+  <input type="text" placeholder="Choose destination" ng-model="mapComp.end">
+  <input type="submit" value="Search">
+</form>
+
 <div id="mapid"></div>
 
 <button ng-click="mapComp.calcRoute()">Calc Route</button>

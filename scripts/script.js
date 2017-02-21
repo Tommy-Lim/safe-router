@@ -16,9 +16,16 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/seattlecrimerep
 //   console.log("crime:", crime)
 // })
 
+// models.Crime.find({
+//   'latitude': {$gte: 47.5, $lte: 48},
+//   'event_clearance_code': 10
+// }, function(err, crime){
+//   console.log("err:", err)
+//   console.log("crime:", crime)
+// })
+
 models.Crime.find({
-  'latitude': {$gte: 47.5, $lte: 48},
-  'event_clearance_code': 10
+  '$where': 'function(){return this.latitude.toFixed(2) == 47.55}'
 }, function(err, crime){
   console.log("err:", err)
   console.log("crime:", crime)
