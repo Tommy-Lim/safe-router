@@ -5,8 +5,9 @@ angular.module('App')
 	controllerAs: 'homeComp'
 });
 
-function HomeCompCtrl($http) {
+function HomeCompCtrl($http, CrimeService) {
 	var homeComp = this;
+	homeComp.CrimeService = CrimeService;
 	homeComp.start = '503 1st Ave W, Seattle';
 	homeComp.destination = '1218 3rd Ave, Seattle';
 	homeComp.legRanges = [];
@@ -90,25 +91,27 @@ function HomeCompCtrl($http) {
 	};
 
 	homeComp.findCrimes = function() {
-			var req = {
-				url: 'https://data.seattle.gov/resource/pu5n-trf4.json?event_clearance_code=040',
-				method: 'GET'
-			};
-			$http(req).then(function success(res) {
-				homeComp.crimeResults = [];
-				for (var i=0; i<res.data.length; i++) {
-					// Only return crimes inside the route boundaries
-					if (res.data[i].incident_location.coordinates[0] >= homeComp.routeBoundaries.lngMin && res.data[i].incident_location.coordinates[0] <= homeComp.routeBoundaries.lngMax && res.data[i].incident_location.coordinates[1] >= homeComp.routeBoundaries.latMin && res.data[i].incident_location.coordinates[1] <= homeComp.routeBoundaries.latMax) {
-						homeComp.crimeResults.push(res.data[i]);
-					}
-				}
-			}, function failure(res) {
-				console.log('failed');
-			});
-			console.log(homeComp.crimeResults);
-		return homeComp.crimeResults;
+		console.log(homeComp.CrimeService.getCrimes());
+		// var req = {
+		// 	url: 'https://data.seattle.gov/resource/pu5n-trf4.json?event_clearance_code=040',
+		// 	method: 'GET'
+		// };
+		// $http(req).then(function success(res) {
+		// 	homeComp.crimeResults = [];
+		// 	for (var i=0; i<res.data.length; i++) {
+		// 		// Only return crimes inside the route boundaries
+		// 		if (res.data[i].incident_location.coordinates[0] >= homeComp.routeBoundaries.lngMin && res.data[i].incident_location.coordinates[0] <= homeComp.routeBoundaries.lngMax && res.data[i].incident_location.coordinates[1] >= homeComp.routeBoundaries.latMin && res.data[i].incident_location.coordinates[1] <= homeComp.routeBoundaries.latMax) {
+		// 			homeComp.crimeResults.push(res.data[i]);
+		// 		}
+		// 	}
+		// }, function failure(res) {
+		// 	console.log('failed');
+		// });
+		// console.log(homeComp.crimeResults);
+
+		// return homeComp.crimeResults;
 	};
 
 }
 
-HomeCompCtrl.$inject = ['$http'];
+HomeCompCtrl.$inject = ['$http', 'CrimeService'];

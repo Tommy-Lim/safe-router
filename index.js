@@ -5,9 +5,9 @@ var app = express();
 require('dotenv').config();
 
 // MONGOOSE MODELS AND CONNECTION
-var mongoose = require('mongoose');
-var Crime = require('./models/crime');
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/seattlecrimereports');
+// var mongoose = require('mongoose');
+// var Crime = require('./models/crime');
+// mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/seattlecrimereports');
 
 // DECODERS FOR DATA
 app.use(bodyParser.json());
@@ -16,10 +16,8 @@ app.use(bodyParser.urlencoded({extended: false}));
 // PUBLIC DIRECTORY FOLDER
 app.use(express.static(path.join(__dirname, 'public')));
 
-
 // MORGAN DEV LINTER
 app.use(require('morgan')('dev'));
-
 
 // API LAYERS
 app.use('/api/data/', require('./controllers/data'));

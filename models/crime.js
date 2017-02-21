@@ -1,9 +1,9 @@
 var mongoose = require('mongoose')
 
 var CrimeSchema = new mongoose.Schema({
-    cad_cdw_id: Number,
-    cad_event_number: Number,
-    general_offense_number: Number,
+	cad_cdw_id: Number,
+	cad_event_number: Number,
+	general_offense_number: Number,
 	event_clearance_code: Number,
 	event_clearance_description: String,
 	event_clearance_subgroup: String,
@@ -20,7 +20,7 @@ var CrimeSchema = new mongoose.Schema({
 	initial_type_group: String,
 	at_scene_time: String
 }, {
-    collection: 'seattlecrimedata'
+  collection: 'seattlecrimedata'
 });
 
 var Crime = mongoose.model('Crime', CrimeSchema);
