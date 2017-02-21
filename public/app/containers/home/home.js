@@ -10,6 +10,7 @@ function HomeCompCtrl($http) {
 	homeComp.start = '503 1st Ave W, Seattle';
 	homeComp.destination = '1218 3rd Ave, Seattle';
 	homeComp.legRanges = [];
+	homeComp.routeBoundaries = {};
 
 
 	homeComp.findRoutes = function() {
@@ -29,6 +30,25 @@ function HomeCompCtrl($http) {
 				} else {
 					homeComp.searchResults = res.data.route;
 					console.log("Search results:", homeComp.searchResults);
+
+					// Create route boundary rectangle
+					homeComp.routeBoundaries = {
+						latMin: parseFloat(homeComp.searchResults.locations[0].latLng.lat),
+						latMax: parseFloat(homeComp.searchResults.locations[1].latLng.lat),
+						lngMin: parseFloat(homeComp.searchResults.locations[0].latLng.lng),
+						lngMax: parseFloat(homeComp.searchResults.locations[1].latLng.lng)
+					};
+					if (homeComp.routeBoundaries.latMin > homeComp.routeBoundaries.latMax) {
+						var temp = homeComp.routeBoundaries.latMin;
+						homeComp.routeBoundaries.latMin = homeComp.routeBoundaries.latMax;
+						homeComp.routeBoundaries.latMax = temp;
+					}
+					if (homeComp.routeBoundaries.lngMin > homeComp.routeBoundaries.lngMax) {
+						var temp = homeComp.routeBoundaries.lngMin;
+						homeComp.routeBoundaries.lngMin = homeComp.routeBoundaries.lngMax;
+						homeComp.routeBoundaries.lngMax = temp;
+					}
+					console.log("Route boundaries:",homeComp.routeBoundaries);
 
 					// Iterate through legs and find range between each one
 					var locations = homeComp.searchResults.locations;
@@ -67,6 +87,26 @@ function HomeCompCtrl($http) {
 			homeComp.searchResults = undefined;
 		}
 		return homeComp.searchResults;
+	};
+
+	homeComp.findCrimes = function() {
+			var req = {
+				url: 'https://data.seattle.gov/resource/pu5n-trf4.json?event_clearance_code=040',
+				method: 'GET'
+			};
+			$http(req).then(function success(res) {
+				homeComp.crimeResults = [];
+				for (var i=0; i<res.data.length; i++) {
+					// Only return crimes inside the route boundaries
+					if (res.data[i].incident_location.coordinates[0] >= homeComp.routeBoundaries.lngMin && res.data[i].incident_location.coordinates[0] <= homeComp.routeBoundaries.lngMax && res.data[i].incident_location.coordinates[1] >= homeComp.routeBoundaries.latMin && res.data[i].incident_location.coordinates[1] <= homeComp.routeBoundaries.latMax) {
+						homeComp.crimeResults.push(res.data[i]);
+					}
+				}
+			}, function failure(res) {
+				console.log('failed');
+			});
+			console.log(homeComp.crimeResults);
+		return homeComp.crimeResults;
 	};
 
 }

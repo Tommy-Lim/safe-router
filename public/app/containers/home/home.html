@@ -7,6 +7,7 @@
 		<input type="text" placeholder="Choose destination" ng-model="homeComp.destination">
 		<input type="submit" value="Search">
 	</form>
+	<button ng-click="homeComp.findCrimes()">Find Crimes</button>
 	<hr>
 
 	<div ng-show="homeComp.searchResults !== undefined">
