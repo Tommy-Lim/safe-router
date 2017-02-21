@@ -1,6 +1,6 @@
-var mongoose = require('mongoose'), Schema = mongoose.Schema;
+var mongoose = require('mongoose')
 
-var crimeSchema = Schema({
+var CrimeSchema = new mongoose.Schema({
     cad_cdw_id: Number,
     cad_event_number: Number,
     general_offense_number: Number,
@@ -23,6 +23,6 @@ var crimeSchema = Schema({
     collection: 'seattlecrimedata'
 });
 
-var Crime = mongoose.model('Crime', crimeSchema);
+var Crime = mongoose.model('Crime', CrimeSchema);
 
 module.exports = {Crime: Crime};
