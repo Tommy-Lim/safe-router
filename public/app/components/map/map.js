@@ -228,15 +228,52 @@ function MapCompCtrl($http, DirectionsServices) {
     }
 
     mapComp.createGMap = function(){
-      var map;
+      var directionsDisplay;
+      var directionsService = new google.maps.DirectionsService();
+
       function initMap() {
-        map = new google.maps.Map(document.getElementById('mapid'), {
-          center: {lat: -34.397, lng: 150.644},
-          zoom: 8
+        directionsDisplay = new google.maps.DirectionsRenderer();
+
+        mapid = new google.maps.Map(document.getElementById('mapid'), {
+          center: {lat: 47.608, lng: -122.354},
+          zoom: 12
         });
+
+        directionsDisplay.setMap(mapid);
+      }
+
+      function calcRoute(){
+        var start = '503 1st Ave W, Seattle';
+        var end = 'Green lake, Seattle';
+
+        var request = {
+          origin: start,
+          destination: end,
+          travelMode: 'DRIVING'
+        }
+
+        directionsService.route(request, function(result, status) {
+          if (status == 'OK') {
+            directionsDisplay.setDirections(result);
+            console.log(result)
+            console.log(result.routes[0].overview_polyline)
+            mapComp.result = result;
+            mapComp.polylineHash = result.routes[0].overview_polyline;
+            mapComp.polylineArray = google.maps.geometry.encoding.decodePath(result.routes[0].overview_polyline)
+            console.log(mapComp.polylineArray)
+            console.log(mapComp.polylineArray[0].lat())
+            mapComp.latLngArray = mapComp.polylineArray.map(function(item){
+              coordinate =  [item.lat(), item.lng()];
+              console.log(coordinate)
+              return coordinate;
+            })
+          }
+        });
+
       }
 
       initMap();
+      calcRoute();
 
     }
 
