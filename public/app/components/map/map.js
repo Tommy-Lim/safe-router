@@ -54,8 +54,11 @@ function MapCompCtrl($http, DirectionsServices, CrimeService) {
             // CREATE GOOGLE MAP WITH LAT/LNG
             mapComp.mapid = new google.maps.Map(document.getElementById('mapid'), {
                 center: latLng,
-                zoom: 12
+                zoom: 14
             });
+
+            var trafficLayer = new google.maps.TrafficLayer();
+            trafficLayer.setMap(mapComp.mapid);
 
             // SET THE DIRECTIONS DISPLAY TO BE ON THE MAP AND ASSIGN THE DIRECTIONS TEXT TO DIRECTIONS PANEL
             mapComp.directionsDisplay.setMap(mapComp.mapid);
@@ -72,7 +75,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService) {
 
             // WHEN ROUTE OPTION IS CHANGED, RETURN DIRECTIONS
             google.maps.event.addListener(mapComp.directionsDisplay, 'routeindex_changed', function() {
-                mapScope.removeMarkers();
+                // mapScope.removeMarkers();
                 mapScope.removeBox();
                 // CURRENT ROUTE INDEX
                 console.log("SELECTED ROUTE INDEX: ", this.getRouteIndex());
@@ -80,7 +83,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService) {
                 newRoutes = this.getDirections().routes
                 console.log("SELECTED ROUTE: ", newRoutes);
                 mapComp.latLngArray = mapScope.polylinesToLatLngArr(newRoutes)
-                mapScope.addMarkers();
+                // mapScope.addMarkers();
                 mapScope.getRouteBox();
                 mapScope.getCrimes();
             });
@@ -213,7 +216,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService) {
           {lat: box.lat.south - padding, lng: box.lng.west - padding}
       ]
 
-      // console.log("BOX COORDS:", mapComp.boxCoordinates)
+      console.log("BOX COORDS:", mapComp.boxCoordinates)
 
       // BUILD BOX POLYGON
       mapComp.mapBox = new google.maps.Polygon({
@@ -237,9 +240,75 @@ function MapCompCtrl($http, DirectionsServices, CrimeService) {
     }
 
     mapComp.getCrimes = function(){
+      mapScope = this;
       var crimes = mapComp.CrimeService.getCrimes().then(function(data){
         console.log("CRIMES: ", data.result);
+        mapComp.crimes = data.result;
+        mapScope.plotCrimes();
+        mapScope.findMatches();
       });
+    }
+
+    mapComp.plotCrimes = function(){
+      mapComp.heatMapData = [];
+      mapComp.crimes.forEach(function(crime){
+        mapComp.heatMapData.push(new google.maps.LatLng(crime.latitude, crime.longitude));
+      })
+      console.log("DATA for heatmap:", mapComp.heatMapData)
+      console.log("DATA for heatmap:", mapComp.heatMapData[0].lat(),  mapComp.heatMapData[0].lng())
+      var heatMap = new google.maps.visualization.HeatmapLayer({
+        data: mapComp.heatMapData,
+        radius: 15,
+        // gradient: [
+        //   'rgba(0, 255, 255, 0)',
+        //   'rgba(0, 255, 255, 1)',
+        //   'rgba(0, 191, 255, 1)',
+        //   'rgba(0, 127, 255, 1)',
+        //   'rgba(0, 63, 255, 1)',
+        //   'rgba(0, 0, 255, 1)',
+        //   'rgba(0, 0, 223, 1)',
+        //   'rgba(0, 0, 191, 1)',
+        //   'rgba(0, 0, 159, 1)',
+        //   'rgba(0, 0, 127, 1)',
+        //   'rgba(63, 0, 91, 1)',
+        //   'rgba(127, 0, 63, 1)',
+        //   'rgba(191, 0, 31, 1)',
+        //   'rgba(255, 0, 0, 1)'
+        // ]
+      })
+
+      heatMap.setMap(mapComp.mapid);
+    }
+
+    mapComp.findMatches = function(){
+      routes = mapComp.latLngArray;
+      crimes = mapComp.crimes;
+
+      crimes = crimes.map(function(crime){
+        return {lat: crime.latitude.toFixed(3), lng: crime.longitude.toFixed(3)}
+      })
+
+      routes = routes.map(function(route){
+        return route.map(function(coordinate){
+          return {lat: coordinate.lat.toFixed(3), lng: coordinate.lng.toFixed(3)}
+        })
+      })
+
+      console.log("EDITED CRIMES: ", crimes)
+      console.log("EDITED ROUTES: ", routes)
+      var crimeCount = [0,0,0,0]
+      routes.forEach(function(route, index){
+        route.forEach(function(coordinate){
+          crimes.forEach(function(crime){
+            if(crime.lat == coordinate.lat && crime.lng == coordinate.lng){
+              crimeCount[index]++;
+              console.log(crimeCount);
+            }
+          })
+        })
+      })
+      console.log("FINAL COUNT: ", crimeCount);
+
     }
 
 

@@ -6,12 +6,12 @@ function CrimeService($http) {
 
 		var routeBoundaries = {
 			lat: {
-				south: 47.630,
-				north: 47.635
+				south: 47.6063,
+				north: 47.62446
 			},
 			lng: {
-				west: -122.330,
-				east: -122.321
+				west: -122.359,
+				east: -122.3348
 			}
 		}
 
