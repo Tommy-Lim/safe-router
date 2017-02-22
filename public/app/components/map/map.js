@@ -284,30 +284,33 @@ function MapCompCtrl($http, DirectionsServices, CrimeService) {
       routes = mapComp.latLngArray;
       crimes = mapComp.crimes;
 
-      crimes = crimes.map(function(crime){
-        return {lat: crime.latitude.toFixed(3), lng: crime.longitude.toFixed(3)}
+      // ROUND CRIMES TO THOUSANDTHS < 500FT
+      crimes.forEach(function(crime){
+        crime.lat = parseFloat(crime.latitude.toFixed(3),10);
+        crime.lng = parseFloat(crime.longitude.toFixed(3),10);
       })
 
-      routes = routes.map(function(route){
-        return route.map(function(coordinate){
-          return {lat: coordinate.lat.toFixed(3), lng: coordinate.lng.toFixed(3)}
-        })
-      })
+      // DECLARE COUNTED CRIMES
+      mapComp.countedCrimes = [[],[],[],[]];
 
-      console.log("EDITED CRIMES: ", crimes)
-      console.log("EDITED ROUTES: ", routes)
-      var crimeCount = [0,0,0,0]
+      // ITERATE THROUGH EACH ROUTE AND COORDINATE
       routes.forEach(function(route, index){
         route.forEach(function(coordinate){
+          // ROUND COORDINATES TO THOUSANDTHS < 500 FT
+          coordinate.lat = parseFloat(coordinate.lat.toFixed(3),10);
+          coordinate.lng = parseFloat(coordinate.lng.toFixed(3),10);
+          // CHECK IF MATCHING CRIMES
           crimes.forEach(function(crime){
+            // ADD TO COUNTED CRIMES IF MATCHING
             if(crime.lat == coordinate.lat && crime.lng == coordinate.lng){
-              crimeCount[index]++;
-              console.log(crimeCount);
+              mapComp.countedCrimes[index].push(crime);
             }
           })
         })
       })
-      console.log("FINAL COUNT: ", crimeCount);
+      console.log("COUNTED CRIMES: ", mapComp.countedCrimes);
+      console.log("ROUTES: ", routes);
+      console.log("CRIMES: ", crimes);
 
     }
 
