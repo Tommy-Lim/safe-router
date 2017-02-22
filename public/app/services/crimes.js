@@ -2,18 +2,19 @@ angular.module('App')
 .service('CrimeService', CrimeService);
 
 function CrimeService($http) {
-	this.getCrimes = function() {
+	this.getCrimes = function(routeBoundaries) {
 
-		var routeBoundaries = {
-			lat: {
-				south: 47.6063,
-				north: 47.62446
-			},
-			lng: {
-				west: -122.359,
-				east: -122.3348
-			}
-		}
+		// var routeBoundaries = {
+		// 	lat: {
+		// 		south: 47.6063,
+		// 		north: 47.62446
+		// 	},
+		// 	lng: {
+		// 		west: -122.359,
+		// 		east: -122.3348
+		// 	}
+		// }
+		console.log("CRIME BOX SERVICE:", routeBoundaries);
 
 		var query = encodeURIComponent(JSON.stringify(routeBoundaries));
 		// console.log("query:", query)

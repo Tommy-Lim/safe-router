@@ -173,7 +173,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService) {
     mapComp.getRouteBox = function(padding){
       // SET PADDING FOR BOX
       if(!padding){
-        padding = 0.001 //degree lat/lng
+        padding = 0.005 //degree lat/lng
       }
 
       //GET ROUTE DETAILS
@@ -181,39 +181,45 @@ function MapCompCtrl($http, DirectionsServices, CrimeService) {
       var firstCoord = mapComp.latLngArray[index][0];
 
       // SET DEFAULTS FOR BOX
-      var box = {
+      mapComp.box = {
         lat:{
           south: firstCoord.lat,
           north: firstCoord.lat
         },
         lng: {
           west: firstCoord.lng,
-          east:firstCoord.lng
+          east: firstCoord.lng
         }
       }
 
       // FIND MIN/MAX FOR LAT/LNG
       mapComp.latLngArray[index].forEach(function(coordinate) {
-          if(coordinate.lat > box.lat.north){
-            box.lat.north = coordinate.lat;
+          if(coordinate.lat > mapComp.box.lat.north){
+            mapComp.box.lat.north = coordinate.lat;
           }
-          if(coordinate.lat < box.lat.south){
-            box.lat.south = coordinate.lat;
+          if(coordinate.lat < mapComp.box.lat.south){
+            mapComp.box.lat.south = coordinate.lat;
           }
-          if(coordinate.lng > box.lng.east){
-            box.lng.east = coordinate.lng;
+          if(coordinate.lng > mapComp.box.lng.east){
+            mapComp.box.lng.east = coordinate.lng;
           }
-          if(coordinate.lng < box.lng.west){
-            box.lng.west = coordinate.lng;
+          if(coordinate.lng < mapComp.box.lng.west){
+            mapComp.box.lng.west = coordinate.lng;
           }
       })
 
+      // ADD PADDING TO ZONE
+      mapComp.box.lat.south -= padding;
+      mapComp.box.lat.north += padding;
+      mapComp.box.lng.east += padding;
+      mapComp.box.lng.west -= padding;
+
       // BUILD LAT/LNG COORDINATE OBJECT FOR POLYGON
       mapComp.boxCoordinates = [
-          {lat: box.lat.north + padding, lng: box.lng.west - padding},
-          {lat: box.lat.north + padding, lng: box.lng.east + padding},
-          {lat: box.lat.south - padding, lng: box.lng.east + padding},
-          {lat: box.lat.south - padding, lng: box.lng.west - padding}
+          {lat: mapComp.box.lat.north, lng: mapComp.box.lng.west},
+          {lat: mapComp.box.lat.north, lng: mapComp.box.lng.east},
+          {lat: mapComp.box.lat.south, lng: mapComp.box.lng.east},
+          {lat: mapComp.box.lat.south, lng: mapComp.box.lng.west}
       ]
 
       console.log("BOX COORDS:", mapComp.boxCoordinates)
@@ -241,7 +247,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService) {
 
     mapComp.getCrimes = function(){
       mapScope = this;
-      var crimes = mapComp.CrimeService.getCrimes().then(function(data){
+      var crimes = mapComp.CrimeService.getCrimes(mapComp.box).then(function(data){
         console.log("CRIMES: ", data.result);
         mapComp.crimes = data.result;
         mapScope.plotCrimes();
@@ -251,33 +257,47 @@ function MapCompCtrl($http, DirectionsServices, CrimeService) {
 
     mapComp.plotCrimes = function(){
       mapComp.heatMapData = [];
+      // ADD HEAT MAP DATA
       mapComp.crimes.forEach(function(crime){
         mapComp.heatMapData.push(new google.maps.LatLng(crime.latitude, crime.longitude));
       })
-      console.log("DATA for heatmap:", mapComp.heatMapData)
-      console.log("DATA for heatmap:", mapComp.heatMapData[0].lat(),  mapComp.heatMapData[0].lng())
-      var heatMap = new google.maps.visualization.HeatmapLayer({
-        data: mapComp.heatMapData,
-        radius: 15,
-        // gradient: [
-        //   'rgba(0, 255, 255, 0)',
-        //   'rgba(0, 255, 255, 1)',
-        //   'rgba(0, 191, 255, 1)',
-        //   'rgba(0, 127, 255, 1)',
-        //   'rgba(0, 63, 255, 1)',
-        //   'rgba(0, 0, 255, 1)',
-        //   'rgba(0, 0, 223, 1)',
-        //   'rgba(0, 0, 191, 1)',
-        //   'rgba(0, 0, 159, 1)',
-        //   'rgba(0, 0, 127, 1)',
-        //   'rgba(63, 0, 91, 1)',
-        //   'rgba(127, 0, 63, 1)',
-        //   'rgba(191, 0, 31, 1)',
-        //   'rgba(255, 0, 0, 1)'
-        // ]
-      })
+      console.log(mapComp.heatMapData);
+      // CREATE NEW HEAT MAP IF DOES NOT EXIST
+      if(mapComp.heatMap){
+        mapComp.heatMap.set('data', mapComp.heatMapData);
+      } else{
+        mapComp.heatMap = new google.maps.visualization.HeatmapLayer({
+          data: mapComp.heatMapData,
+          radius: 15,
+          // gradient: [
+          //   'rgba(0, 255, 255, 0)',
+          //   'rgba(0, 255, 255, 1)',
+          //   'rgba(0, 191, 255, 1)',
+          //   'rgba(0, 127, 255, 1)',
+          //   'rgba(0, 63, 255, 1)',
+          //   'rgba(0, 0, 255, 1)',
+          //   'rgba(0, 0, 223, 1)',
+          //   'rgba(0, 0, 191, 1)',
+          //   'rgba(0, 0, 159, 1)',
+          //   'rgba(0, 0, 127, 1)',
+          //   'rgba(63, 0, 91, 1)',
+          //   'rgba(127, 0, 63, 1)',
+          //   'rgba(191, 0, 31, 1)',
+          //   'rgba(255, 0, 0, 1)'
+          // ]
+        })
+        mapComp.heatMap.setMap(mapComp.mapid);
+      }
 
-      heatMap.setMap(mapComp.mapid);
+    }
+
+    mapComp.toggleCrime = function(){
+      debugger
+      if(mapComp.heatMap.getMap()){
+        mapComp.heatMap.setMap(null);
+      } else{
+        mapComp.heatMap.set('map', mapComp.mapid);
+      }
     }
 
     mapComp.findMatches = function(){
