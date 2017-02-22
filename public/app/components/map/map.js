@@ -211,8 +211,8 @@ function MapCompCtrl($http, DirectionsServices, CrimeService) {
       // ADD PADDING TO ZONE
       mapComp.box.lat.south -= padding;
       mapComp.box.lat.north += padding;
-      mapComp.box.lng.east += padding;
-      mapComp.box.lng.west -= padding;
+      mapComp.box.lng.east += 1.75*padding;
+      mapComp.box.lng.west -= 1.75*padding;
 
       // BUILD LAT/LNG COORDINATE OBJECT FOR POLYGON
       mapComp.boxCoordinates = [
@@ -230,7 +230,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService) {
         strokeColor: '#EE0000',
         strokeOpacity: 0.3,
         fillColor: '#EE0000',
-        fillOpacity: 0.05,
+        fillOpacity: 0.00,
       })
 
       // SET POLYGON TO MAP
@@ -273,6 +273,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService) {
 					}
 				})
 				mapComp.crimes = filteredCrimes;
+				console.log("FILTERED CRIMES: ", mapComp.crimes);
 
         mapScope.plotCrimes();
         mapScope.findMatches();
@@ -280,48 +281,54 @@ function MapCompCtrl($http, DirectionsServices, CrimeService) {
     }
 
     mapComp.plotCrimes = function(){
-      mapComp.heatMapData = [];
+      var heatMapData = [];
+
       // ADD HEAT MAP DATA
       mapComp.crimes.forEach(function(crime){
-        mapComp.heatMapData.push(new google.maps.LatLng(crime.latitude, crime.longitude));
+        heatMapData.push(new google.maps.LatLng(parseFloat(crime.latitude), parseFloat(crime.longitude)));
       })
-      console.log(mapComp.heatMapData);
+
       // CREATE NEW HEAT MAP IF DOES NOT EXIST
-      if(mapComp.heatMap){
-        mapComp.heatMap.set('data', mapComp.heatMapData);
+			if (true) {
+				// DISASSOCIATE CURRENT HEATMAP
+				if(mapComp.heatMap && mapComp.heatMap.getMap()){
+					mapComp.heatMap.setMap(null);
+				}
+				// REWRITE HEATMAP LAYER
+				mapComp.heatMap = new google.maps.visualization.HeatmapLayer({
+					data: heatMapData,
+					radius: 15
+				})
+				// SET HEATMAP TO MAP
+				mapComp.heatMap.setMap(mapComp.mapid);
+			} else if(!mapComp.heatMapCreated){
+				// CREATE FIRST HEATMAP
+				mapComp.heatMap = new google.maps.visualization.HeatmapLayer({
+					data: heatMapData,
+					radius: 15
+				})
+				// SET FIRST HEATMAP TO MAP
+				mapComp.heatMap.setMap(mapComp.mapid);
+				// FLIP BOOLEAN OF HEATMAP EVER CREATED
+				mapComp.heatMapCreated = true;
       } else{
-        mapComp.heatMap = new google.maps.visualization.HeatmapLayer({
-          data: mapComp.heatMapData,
-          radius: 15,
-          // gradient: [
-          //   'rgba(0, 255, 255, 0)',
-          //   'rgba(0, 255, 255, 1)',
-          //   'rgba(0, 191, 255, 1)',
-          //   'rgba(0, 127, 255, 1)',
-          //   'rgba(0, 63, 255, 1)',
-          //   'rgba(0, 0, 255, 1)',
-          //   'rgba(0, 0, 223, 1)',
-          //   'rgba(0, 0, 191, 1)',
-          //   'rgba(0, 0, 159, 1)',
-          //   'rgba(0, 0, 127, 1)',
-          //   'rgba(63, 0, 91, 1)',
-          //   'rgba(127, 0, 63, 1)',
-          //   'rgba(191, 0, 31, 1)',
-          //   'rgba(255, 0, 0, 1)'
-          // ]
-        })
-        mapComp.heatMap.setMap(mapComp.mapid);
+				// console.log("RESET MAP DATA with: ", heatMapData)
+				// mapComp.heatMap.set('data', heatMapData);
       }
 
     }
 
     mapComp.toggleCrime = function(){
-      debugger
-      if(mapComp.heatMap.getMap()){
-        mapComp.heatMap.setMap(null);
-      } else{
-        mapComp.heatMap.set('map', mapComp.mapid);
-      }
+			if(mapComp.heatMap){
+				console.log(mapComp.heatMap)
+				console.log(mapComp.heatMap.getMap())
+				if(mapComp.heatMap.getMap()){
+					mapComp.heatMap.setMap(null);
+					// mapComp.heatMapCreated = false;
+				} else{
+					mapComp.heatMap.setMap(mapComp.mapid);
+				}
+			}
     }
 
     mapComp.findMatches = function(){
@@ -330,8 +337,8 @@ function MapCompCtrl($http, DirectionsServices, CrimeService) {
 
       // ROUND CRIMES TO THOUSANDTHS < 500FT
       crimes.forEach(function(crime){
-        crime.lat = parseFloat(crime.latitude.toFixed(3),10);
-        crime.lng = parseFloat(crime.longitude.toFixed(3),10);
+        crime.lat = parseFloat(crime.latitude.toFixed(3));
+        crime.lng = parseFloat(crime.longitude.toFixed(3));
       })
 
       // DECLARE COUNTED CRIMES
@@ -341,8 +348,8 @@ function MapCompCtrl($http, DirectionsServices, CrimeService) {
       routes.forEach(function(route, index){
         route.forEach(function(coordinate){
           // ROUND COORDINATES TO THOUSANDTHS < 500 FT
-          coordinate.lat = parseFloat(coordinate.lat.toFixed(3),10);
-          coordinate.lng = parseFloat(coordinate.lng.toFixed(3),10);
+          coordinate.lat = parseFloat(coordinate.lat.toFixed(3));
+          coordinate.lng = parseFloat(coordinate.lng.toFixed(3));
           // CHECK IF MATCHING CRIMES
           crimes.forEach(function(crime){
             // ADD TO COUNTED CRIMES IF MATCHING
@@ -358,8 +365,10 @@ function MapCompCtrl($http, DirectionsServices, CrimeService) {
 
     }
 
+		console.log("init start")
 		// ADD MAP TO SITE
 		mapComp.initMap();
+		console.log("init end")
 
 }
 
