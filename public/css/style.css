@@ -8,8 +8,22 @@ body {
 	width: 100%;
 }
 
+h3 {
+	line-height: 1;
+	margin: 0;
+}
+
 li {
 	margin-left: -24px; margin-bottom: 9px;
+}
+
+hr {
+	margin: 8px 0 15px 0;
+}
+
+label {
+	display: block;
+	margin-bottom: 0;
 }
 
 .container-load{
@@ -21,4 +35,25 @@ li {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+}
+
+#search-filters {
+	margin: 15px 0;
+	padding: 15px 15px 7px 15px;
+	background-color: white;
+}
+
+.column-left {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+}
+
+.align-center {
+	display: flex;
+	align-items: center;
+}
+
+.filter-section {
+	margin: 12px 0;
 }
