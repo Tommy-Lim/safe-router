@@ -74,3 +74,25 @@
 </div>
 
 <div id="filter-test"></div>
+
+<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" ng-if="route.length>0" ng-repeat="route in mapComp.countedCrimes track by $index">
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="headingOne">
+      <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{$index}}" aria-expanded="true" aria-controls="collapse{{$index}}">
+        <h4 class="panel-title">
+            Route #{{$index+1}} Crime Data
+        </h4>
+      </a>
+    </div>
+    <div id="collapse{{$index}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{{$index}}" aria-expanded="false" style="height: 0px;">
+      <div class="panel-body">
+        <div ng-repeat="crime in route track by $index">
+          <p><strong>{{crime.at_scene_time}}</strong></p>
+          <p>{{crime.event_clearance_description}} &mdash; {{crime.initial_type_group}}</p>
+          <p>{{crime.hundred_block_location}}</p>
+          <hr />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

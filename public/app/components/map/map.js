@@ -115,9 +115,9 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
             travelMode: 'DRIVING',
             avoidTolls: false,
             provideRouteAlternatives: true,
-            drivingOptions: {
-                departureTime: new Date(new Date().getTime() + delay)
-            }
+            // drivingOptions: {
+            //     departureTime: new Date(new Date().getTime() + delay)
+            // }
         }
 
         // GET ROUTES USING DIRECTIONS SERVICE
