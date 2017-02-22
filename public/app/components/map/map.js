@@ -261,6 +261,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService) {
 						crime.event_clearance_code === 43 ||
 						crime.event_clearance_code === 49 ) {}
 					else if (document.getElementById('filter-crime-vehicle').checked === false &&
+						crime.event_clearance_code === 30 ||
 						crime.event_clearance_code === 63 ||
 						crime.event_clearance_code === 71 ) {}
 					else if (document.getElementById('filter-crime-weapon').checked === false &&
