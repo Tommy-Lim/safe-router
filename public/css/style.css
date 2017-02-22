@@ -4,8 +4,8 @@ body {
 }
 
 #mapid {
-	height: 500px;
-	width: 500px;
+	height: 60vh;
+	width: 100%;
 }
 
 li {
