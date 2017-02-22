@@ -261,6 +261,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService) {
 						crime.event_clearance_code === 43 ||
 						crime.event_clearance_code === 49 ) {}
 					else if (document.getElementById('filter-crime-vehicle').checked === false &&
+						crime.event_clearance_code === 30 ||
 						crime.event_clearance_code === 63 ||
 						crime.event_clearance_code === 71 ) {}
 					else if (document.getElementById('filter-crime-weapon').checked === false &&
@@ -374,6 +375,16 @@ function MapCompCtrl($http, DirectionsServices, CrimeService) {
 
 		// ADD MAP TO SITE
 		mapComp.initMap();
+
+		mapComp.checkBox = function() {
+			console.log(this);
+			if ($(event.currentTarget).attr("checked")) {
+				$(event.currentTarget).removeAttr("checked");
+			} else {
+				console.log(event.currentTarget)
+				$(event.currentTarget).attr("checked", true);
+			}
+		}
 
 }
 
