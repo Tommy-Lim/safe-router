@@ -11,13 +11,14 @@ angular.module('App').component('mapComp', {
 	// }
 });
 
-function MapCompCtrl($http, DirectionsServices, CrimeService) {
+function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
     var mapComp = this;
     mapComp.CrimeService = CrimeService;
     mapComp.start = '503 1st Ave W, Seattle';
   	mapComp.end = '1218 3rd Ave, Seattle';
 		mapComp.sensitivity = 3;
 		mapComp.padding = 0.003;
+  	mapComp.crimeWindow = 12;
 
     // INITILAIZE MAP
     mapComp.initMap = function() {
@@ -59,8 +60,8 @@ function MapCompCtrl($http, DirectionsServices, CrimeService) {
                 zoom: 14
             });
 
-            var trafficLayer = new google.maps.TrafficLayer();
-            trafficLayer.setMap(mapComp.mapid);
+            mapComp.trafficLayer = new google.maps.TrafficLayer();
+            mapComp.trafficLayer.setMap(mapComp.mapid);
 
             // SET THE DIRECTIONS DISPLAY TO BE ON THE MAP AND ASSIGN THE DIRECTIONS TEXT TO DIRECTIONS PANEL
             mapComp.directionsDisplay.setMap(mapComp.mapid);
@@ -257,6 +258,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService) {
 
 				// FILTER RESULTS BASED ON USER SETTINGS
 				var filteredCrimes = [];
+				// By Crime Type
 				mapComp.crimes.forEach(function(crime){
 					if (document.getElementById('filter-crime-physical').checked === false &&
 						crime.event_clearance_code === 10 ||
@@ -277,6 +279,11 @@ function MapCompCtrl($http, DirectionsServices, CrimeService) {
 						filteredCrimes.push(crime);
 					}
 				})
+				// Occured Around Now
+				filteredCrimes.forEach(function(crime) {
+
+				});
+
 				mapComp.crimes = filteredCrimes;
 				console.log("FILTERED CRIMES: ", mapComp.crimes);
 
@@ -345,6 +352,17 @@ function MapCompCtrl($http, DirectionsServices, CrimeService) {
 			}
 		}
 
+		mapComp.toggleTraffic = function(){
+			if(mapComp.trafficLayer){
+				if(mapComp.trafficLayer.getMap()){
+					mapComp.trafficLayer.setMap(null);
+					// mapComp.heatMapCreated = false;
+				} else{
+					mapComp.trafficLayer.setMap(mapComp.mapid);
+				}
+			}
+		}
+
     mapComp.findMatches = function(){
 			var sensitivity;
 			if(!mapComp.sensitivity){
@@ -387,6 +405,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService) {
 		// ADD MAP TO SITE
 		mapComp.initMap();
 
+		// TOGGLE CHECKBOXES
 		mapComp.checkBox = function() {
 			console.log(this);
 			if ($(event.currentTarget).attr("checked")) {
@@ -397,6 +416,23 @@ function MapCompCtrl($http, DirectionsServices, CrimeService) {
 			}
 		}
 
+		// MAKE SURE CRIME WINDOW IS VALID
+		var interval = 1000;
+		mapComp.delayBeforeSearch = function() {
+		    $interval.cancel(interval);
+		    interval = $interval(function() {
+		        mapComp.checkCrimeWindow();
+		        $interval.cancel(interval);
+		    }, 1000);
+		};
+
+		mapComp.checkCrimeWindow = function() {
+			if (mapComp.crimeWindow > 12) {
+				mapComp.crimeWindow = 12
+				console.log(mapComp.crimeWindow)
+			}
+		}
+
 }
 
-MapCompCtrl.$inject = ['$http', 'DirectionsServices', 'CrimeService']
+MapCompCtrl.$inject = ['$http', 'DirectionsServices', 'CrimeService', '$interval']

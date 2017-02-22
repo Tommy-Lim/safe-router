@@ -57,3 +57,34 @@ label {
 .filter-section {
 	margin: 12px 0;
 }
+
+#crime-window {
+	width: 320px;
+	max-width: 100%;
+	margin-top: -10px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+#crime-window-text {
+	margin: 6px 5px 0 0;
+	width: 3em;
+}
+
+#ticks {
+	width: 104%;
+}
+
+.tick {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 8.333%;
+}
+
+.tick-mark {
+	transform: scale(1,.6);
+	margin-bottom: -12px;
+	color: #ccc;
+}
