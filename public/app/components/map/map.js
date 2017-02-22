@@ -1,14 +1,14 @@
 angular.module('App').component('mapComp', {
-    templateUrl: 'app/components/map/map.html',
-    controller: MapCompCtrl,
-    controllerAs: 'mapComp',
-    // myRecipient: '=', // Bind the ngModel to the object given
-    // onSend: '&',      // Pass a reference to the method
-    // fromName: '@'     // Store the value associated by fromName
-    // bindings: {
-    //     start: '=',
-    //     end: '='
-    // }
+	templateUrl: 'app/components/map/map.html',
+	controller: MapCompCtrl,
+	controllerAs: 'mapComp',
+	// myRecipient: '=', // Bind the ngModel to the object given
+	// onSend: '&',      // Pass a reference to the method
+	// fromName: '@'     // Store the value associated by fromName
+	// bindings: {
+	//     start: '=',
+	//     end: '='
+	// }
 });
 
 function MapCompCtrl($http, DirectionsServices, CrimeService) {
@@ -250,6 +250,30 @@ function MapCompCtrl($http, DirectionsServices, CrimeService) {
       var crimes = mapComp.CrimeService.getCrimes(mapComp.box).then(function(data){
         console.log("CRIMES: ", data.result);
         mapComp.crimes = data.result;
+
+				// FILTER RESULTS BASED ON USER SETTINGS
+				var filteredCrimes = [];
+				mapComp.crimes.forEach(function(crime){
+					if (document.getElementById('filter-crime-physical').checked === false &&
+						crime.event_clearance_code === 10 ||
+						crime.event_clearance_code === 31 ||
+						crime.event_clearance_code === 40 ||
+						crime.event_clearance_code === 43 ||
+						crime.event_clearance_code === 49 ) {}
+					else if (document.getElementById('filter-crime-vehicle').checked === false &&
+						crime.event_clearance_code === 63 ||
+						crime.event_clearance_code === 71 ) {}
+					else if (document.getElementById('filter-crime-weapon').checked === false &&
+						crime.event_clearance_code === 291 ||
+						crime.event_clearance_code === 292 ) {}
+					else if (document.getElementById('filter-crime-jerk').checked === false &&
+						crime.event_clearance_code === 41 ) {}
+					else {
+						filteredCrimes.push(crime);
+					}
+				})
+				mapComp.crimes = filteredCrimes;
+
         mapScope.plotCrimes();
         mapScope.findMatches();
       });
@@ -334,9 +358,8 @@ function MapCompCtrl($http, DirectionsServices, CrimeService) {
 
     }
 
-
-    // ADD MAP TO SITE
-    mapComp.initMap();
+		// ADD MAP TO SITE
+		mapComp.initMap();
 
 }
 

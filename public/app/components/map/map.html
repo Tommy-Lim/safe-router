@@ -22,16 +22,34 @@
   </div>
 </div>
 
-
 <div id="mapid">
-  <div class="container-load">
-    <div>
-      Loading map. Please wait.
-    </div>
-  </div>
+	<div class="container-load">
+		<div>
+			Loading map. Please wait.
+		</div>
+	</div>
 </div>
 
+
+<!-- Search Filters -->
+<form class="list" id="search-filters">
+	<h3>Search Filters</h3>
+	<hr>
+	<div class="filter-section">
+		<label>Crimes</label>
+		<input type="checkbox" name="Physical" value="Physical" id="filter-crime-physical" checked> Physical Harm (Homicide / Assault / Mugging)<br>
+		<input type="checkbox" name="Weapons" value="Weapons" id="filter-crime-weapon" checked> Weapons (Armed Robbery / Person With a Gun / Carrying Weapon)<br>
+		<input type="checkbox" name="Vehicle" value="Vehicle" id="filter-crime-vehicle"> Vehicle (Auto Theft / Car Prowl)<br>
+		<input type="checkbox" name="Jerk" value="Jerk" id="filter-crime-jerk" checked> Just Being a Jerk (Harassment / Threats)<br>
+	</div>
+
+	<div class="filter-section">
+		<input type="checkbox" name="Crime-Window" value="Crime-Window" checked> <strong>Only Show Crimes Within 6 Hour Window</strong><br>
+	</div>
+</form>
 
 <div id="directionsPanel">
 
 </div>
+
+<div id="filter-test"></div>
