@@ -44,7 +44,17 @@
 	</div>
 
 	<div class="filter-section">
-		<input type="checkbox" name="Crime-Window" value="Crime-Window" checked> <strong>Only Show Crimes Within 6 Hour Window</strong><br>
+		<label>Crime Window</label><br>
+		<div id="crime-window">
+			<input type="range" min="1" max="12" step="1" ng-model="mapComp.crimeWindow" id="crime-window-range">
+			<div style="display: flex; justify-content: space-between;" id="ticks">
+				<div ng-repeat="i in [1,2,3,4,5,6,7,8,9,10,11,12] track by $index" class="tick">
+					<p class="tick-mark">|</p>
+					<h6>{{$index+1}}</h6>
+				</div>
+			</div>
+		</div>
+		<input type="text" ng-model="mapComp.crimeWindow" id="crime-window-text" ng-keydown="mapComp.delayBeforeSearch()"> hours
 	</div>
 </form>
 

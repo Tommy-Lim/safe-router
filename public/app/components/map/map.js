@@ -11,11 +11,12 @@ angular.module('App').component('mapComp', {
 	// }
 });
 
-function MapCompCtrl($http, DirectionsServices, CrimeService) {
+function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
     var mapComp = this;
     mapComp.CrimeService = CrimeService;
     mapComp.start = '503 1st Ave W, Seattle';
   	mapComp.end = '1218 3rd Ave, Seattle';
+  	mapComp.crimeWindow = 12;
 
     // INITILAIZE MAP
     mapComp.initMap = function() {
@@ -253,6 +254,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService) {
 
 				// FILTER RESULTS BASED ON USER SETTINGS
 				var filteredCrimes = [];
+				// By Crime Type
 				mapComp.crimes.forEach(function(crime){
 					if (document.getElementById('filter-crime-physical').checked === false &&
 						crime.event_clearance_code === 10 ||
@@ -273,6 +275,11 @@ function MapCompCtrl($http, DirectionsServices, CrimeService) {
 						filteredCrimes.push(crime);
 					}
 				})
+				// Occured Around Now
+				filteredCrimes.forEach(function(crime) {
+
+				});
+
 				mapComp.crimes = filteredCrimes;
 
         mapScope.plotCrimes();
@@ -362,6 +369,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService) {
 		// ADD MAP TO SITE
 		mapComp.initMap();
 
+		// TOGGLE CHECKBOXES
 		mapComp.checkBox = function() {
 			console.log(this);
 			if ($(event.currentTarget).attr("checked")) {
@@ -372,6 +380,23 @@ function MapCompCtrl($http, DirectionsServices, CrimeService) {
 			}
 		}
 
+		// MAKE SURE CRIME WINDOW IS VALID
+		var interval = 1000;
+		mapComp.delayBeforeSearch = function() {
+		    $interval.cancel(interval);
+		    interval = $interval(function() {
+		        mapComp.checkCrimeWindow();
+		        $interval.cancel(interval);
+		    }, 1000);
+		};
+
+		mapComp.checkCrimeWindow = function() {
+			if (mapComp.crimeWindow > 12) {
+				mapComp.crimeWindow = 12
+				console.log(mapComp.crimeWindow)
+			}
+		}
+
 }
 
-MapCompCtrl.$inject = ['$http', 'DirectionsServices', 'CrimeService']
+MapCompCtrl.$inject = ['$http', 'DirectionsServices', 'CrimeService', '$interval']
