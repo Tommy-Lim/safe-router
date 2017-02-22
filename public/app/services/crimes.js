@@ -3,27 +3,26 @@ angular.module('App')
 
 function CrimeService($http) {
 	this.getCrimes = function() {
-		console.log('crime service hooked up')
 
 		var routeBoundaries = {
 			lat: {
-				south: 47.606,
+				south: 47.630,
 				north: 47.635
 			},
 			lng: {
-				west: -122.359,
+				west: -122.330,
 				east: -122.321
 			}
 		}
 
 		var query = encodeURIComponent(JSON.stringify(routeBoundaries));
-		console.log("query:", query)
+		// console.log("query:", query)
 
 		var req = {
 			url: '/api/data/' + query,
 			method: 'GET'
 		};
-		$http(req).then(function success(res) {
+		return $http(req).then(function success(res) {
 			// homeComp.crimeResults = [];
 			// for (var i=0; i<res.data.length; i++) {
 			// 	// Only return crimes inside the route boundaries
@@ -31,11 +30,11 @@ function CrimeService($http) {
 			// 		homeComp.crimeResults.push(res.data[i]);
 			// 	}
 			// }
-			console.log(res)
-			console.log("route boundaries:", routeBoundaries)
-			return res
+			// console.log("RES.data.rsult:", res.data)
+			// console.log("route boundaries:", routeBoundaries)
+			return res.data
 		}, function failure(res) {
-			console.log('failed', res);
+			// console.log('failed', res);
 		});
 	}
 }

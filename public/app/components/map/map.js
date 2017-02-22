@@ -237,8 +237,9 @@ function MapCompCtrl($http, DirectionsServices, CrimeService) {
     }
 
     mapComp.getCrimes = function(){
-      var crimes = mapComp.CrimeService.getCrimes();
-      console.log("CRIMES: ", crimes);
+      var crimes = mapComp.CrimeService.getCrimes().then(function(data){
+        console.log("CRIMES: ", data.result);
+      });
     }
 
 
