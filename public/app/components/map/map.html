@@ -4,10 +4,16 @@
       <form ng-submit="mapComp.calcRoute()">
         <label>Starting point:</label>
         <input type="text" placeholder="Choose starting point" ng-model="mapComp.start">
+
         <label>Destination:</label>
         <input type="text" placeholder="Choose destination" ng-model="mapComp.end">
-        <label for="padding">Padding</label>
-        <input name="padding" type="number" step="any" ng-model="mapComp.padding" placeholder="0-0.01"/>
+
+        <label for="padding">Padding (0 - 0.01)</label>
+        <input name="padding" type="number" step=".001" ng-model="mapComp.padding"/>
+
+        <label for="sensitivity">Sensitivity (1 - 5)</label>
+        <input name="sensitivity" type="number" ng-model="mapComp.sensitivity"/>
+
         <input type="submit" value="Search">
       </form>
     </div>

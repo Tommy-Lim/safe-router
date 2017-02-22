@@ -16,6 +16,8 @@ function MapCompCtrl($http, DirectionsServices, CrimeService) {
     mapComp.CrimeService = CrimeService;
     mapComp.start = '503 1st Ave W, Seattle';
   	mapComp.end = '1218 3rd Ave, Seattle';
+		mapComp.sensitivity = 3;
+		mapComp.padding = 0.003;
 
     // INITILAIZE MAP
     mapComp.initMap = function() {
@@ -172,8 +174,10 @@ function MapCompCtrl($http, DirectionsServices, CrimeService) {
     // ADD BOX ZONE FOR CURRENT ROUTE
     mapComp.getRouteBox = function(padding){
       // SET PADDING FOR BOX
-      if(!mapComp.padding){
-        padding = 0.005 //degree lat/lng
+      if(mapComp.padding == 0){
+        padding = 0.000; //degree lat/lng
+			} else if(!mapComp.padding){
+				padding = 0.005;
       } else{
 				padding = mapComp.padding;
 			}
@@ -342,13 +346,20 @@ function MapCompCtrl($http, DirectionsServices, CrimeService) {
 		}
 
     mapComp.findMatches = function(){
+			var sensitivity;
+			if(!mapComp.sensitivity){
+				sensitivity = 3;
+			} else{
+				sensitivity = mapComp.sensitivity;
+			}
+
       routes = mapComp.latLngArray;
       crimes = mapComp.crimes;
 
       // ROUND CRIMES TO THOUSANDTHS < 500FT
       crimes.forEach(function(crime){
-        crime.lat = parseFloat(crime.latitude.toFixed(3));
-        crime.lng = parseFloat(crime.longitude.toFixed(3));
+        crime.lat = parseFloat(crime.latitude.toFixed(sensitivity));
+        crime.lng = parseFloat(crime.longitude.toFixed(sensitivity));
       })
 
       // DECLARE COUNTED CRIMES
@@ -358,8 +369,8 @@ function MapCompCtrl($http, DirectionsServices, CrimeService) {
       routes.forEach(function(route, index){
         route.forEach(function(coordinate){
           // ROUND COORDINATES TO THOUSANDTHS < 500 FT
-          coordinate.lat = parseFloat(coordinate.lat.toFixed(3));
-          coordinate.lng = parseFloat(coordinate.lng.toFixed(3));
+          coordinate.lat = parseFloat(coordinate.lat.toFixed(sensitivity));
+          coordinate.lng = parseFloat(coordinate.lng.toFixed(sensitivity));
           // CHECK IF MATCHING CRIMES
           crimes.forEach(function(crime){
             // ADD TO COUNTED CRIMES IF MATCHING
