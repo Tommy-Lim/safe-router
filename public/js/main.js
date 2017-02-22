@@ -1,6 +1,6 @@
 $(document).ready(function(){
   $("input[type='checkbox']").on("click", function() {
-  	alert("holla");
+  	console.log("holla");
   	if ($(this).checked === false) {
   		$(this).attr("checked", "checked");
   		$(this).checked === true;

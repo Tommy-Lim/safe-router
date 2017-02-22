@@ -37,10 +37,10 @@
 	<hr>
 	<div class="filter-section">
 		<label>Crimes</label>
-		<input type="checkbox" name="Physical" value="Physical" id="filter-crime-physical" checked> Physical Harm (Homicide / Assault / Mugging)<br>
-		<input type="checkbox" name="Weapons" value="Weapons" id="filter-crime-weapon" checked> Weapons (Armed Robbery / Person With a Gun / Carrying Weapon)<br>
-		<input type="checkbox" name="Vehicle" value="Vehicle" id="filter-crime-vehicle"> Vehicle (Auto Theft / Car Prowl)<br>
-		<input type="checkbox" name="Jerk" value="Jerk" id="filter-crime-jerk" checked> Just Being a Jerk (Harassment / Threats)<br>
+		<input type="checkbox" name="Physical" value="Physical" id="filter-crime-physical" ng-click="mapComp.getCrimes(mapComp.box)" checked> Physical Harm (Homicide / Assault / Mugging)<br>
+		<input type="checkbox" name="Weapons" value="Weapons" id="filter-crime-weapon" ng-click="mapComp.getCrimes(mapComp.box)" checked> Weapons (Armed Robbery / Person With a Gun / Carrying Weapon)<br>
+		<input type="checkbox" name="Vehicle" value="Vehicle" id="filter-crime-vehicle" ng-click="mapComp.getCrimes(mapComp.box)" checked> Vehicle (Auto Theft / Car Prowl)<br>
+		<input type="checkbox" name="Jerk" value="Jerk" id="filter-crime-jerk" ng-click="mapComp.getCrimes(mapComp.box); mapComp.checkBox()" checked> Just Being a Jerk (Harassment / Threats)<br>
 	</div>
 
 	<div class="filter-section">

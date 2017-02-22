@@ -361,6 +361,16 @@ function MapCompCtrl($http, DirectionsServices, CrimeService) {
 		// ADD MAP TO SITE
 		mapComp.initMap();
 
+		mapComp.checkBox = function() {
+			console.log(this);
+			if ($(event.currentTarget).attr("checked")) {
+				$(event.currentTarget).removeAttr("checked");
+			} else {
+				console.log(event.currentTarget)
+				$(event.currentTarget).attr("checked", true);
+			}
+		}
+
 }
 
 MapCompCtrl.$inject = ['$http', 'DirectionsServices', 'CrimeService']
