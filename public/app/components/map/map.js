@@ -213,7 +213,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService) {
           {lat: box.lat.south - padding, lng: box.lng.west - padding}
       ]
 
-      // console.log("BOX COORDS:", mapComp.boxCoordinates)
+      console.log("BOX COORDS:", mapComp.boxCoordinates)
 
       // BUILD BOX POLYGON
       mapComp.mapBox = new google.maps.Polygon({
@@ -237,9 +237,26 @@ function MapCompCtrl($http, DirectionsServices, CrimeService) {
     }
 
     mapComp.getCrimes = function(){
+      mapScope = this;
       var crimes = mapComp.CrimeService.getCrimes().then(function(data){
         console.log("CRIMES: ", data.result);
+        mapComp.crimes = data.result;
+        mapScope.plotCrimes();
       });
+    }
+
+    mapComp.plotCrimes = function(){
+      mapComp.heatMapData = [];
+      mapComp.crimes.forEach(function(crime){
+        mapComp.heatMapData.push(new google.maps.LatLng(crime.latitude, crime.longitude));
+      })
+      console.log("DATA for heatmap:", mapComp.heatMapData)
+      console.log("DATA for heatmap:", mapComp.heatMapData[0].lat(),  mapComp.heatMapData[0].lng())
+      var heatMap = new google.maps.visualization.HeatmapLayer({
+        data: mapComp.heatMapData
+      })
+
+      heatMap.setMap(mapComp.mapid);
     }
 
 
