@@ -78,10 +78,10 @@ function MapCompCtrl($http, DirectionsServices, CrimeService) {
                 // mapScope.removeMarkers();
                 mapScope.removeBox();
                 // CURRENT ROUTE INDEX
-                console.log("SELECTED ROUTE INDEX: ", this.getRouteIndex());
+                // console.log("SELECTED ROUTE INDEX: ", this.getRouteIndex());
                 //CURRENT ROUTE
                 newRoutes = this.getDirections().routes
-                console.log("SELECTED ROUTE: ", newRoutes);
+                // console.log("SELECTED ROUTE: ", newRoutes);
                 mapComp.latLngArray = mapScope.polylinesToLatLngArr(newRoutes)
                 // mapScope.addMarkers();
                 mapScope.getRouteBox();
@@ -172,9 +172,11 @@ function MapCompCtrl($http, DirectionsServices, CrimeService) {
     // ADD BOX ZONE FOR CURRENT ROUTE
     mapComp.getRouteBox = function(padding){
       // SET PADDING FOR BOX
-      if(!padding){
+      if(!mapComp.padding){
         padding = 0.005 //degree lat/lng
-      }
+      } else{
+				padding = mapComp.padding;
+			}
 
       //GET ROUTE DETAILS
       var index = mapComp.directionsDisplay.getRouteIndex();
@@ -221,8 +223,6 @@ function MapCompCtrl($http, DirectionsServices, CrimeService) {
           {lat: mapComp.box.lat.south, lng: mapComp.box.lng.east},
           {lat: mapComp.box.lat.south, lng: mapComp.box.lng.west}
       ]
-
-      console.log("BOX COORDS:", mapComp.boxCoordinates)
 
       // BUILD BOX POLYGON
       mapComp.mapBox = new google.maps.Polygon({
@@ -318,10 +318,8 @@ function MapCompCtrl($http, DirectionsServices, CrimeService) {
 
     }
 
-    mapComp.toggleCrime = function(){
+    mapComp.toggleHeatmap = function(){
 			if(mapComp.heatMap){
-				console.log(mapComp.heatMap)
-				console.log(mapComp.heatMap.getMap())
 				if(mapComp.heatMap.getMap()){
 					mapComp.heatMap.setMap(null);
 					// mapComp.heatMapCreated = false;
@@ -330,6 +328,17 @@ function MapCompCtrl($http, DirectionsServices, CrimeService) {
 				}
 			}
     }
+
+		mapComp.toggleBorder = function(){
+			if(mapComp.mapBox){
+				if(mapComp.mapBox.getMap()){
+					mapComp.mapBox.setMap(null);
+					// mapComp.heatMapCreated = false;
+				} else{
+					mapComp.mapBox.setMap(mapComp.mapid);
+				}
+			}
+		}
 
     mapComp.findMatches = function(){
       routes = mapComp.latLngArray;
@@ -360,15 +369,11 @@ function MapCompCtrl($http, DirectionsServices, CrimeService) {
         })
       })
       console.log("COUNTED CRIMES: ", mapComp.countedCrimes);
-      console.log("ROUTES: ", routes);
-      console.log("CRIMES: ", crimes);
 
     }
 
-		console.log("init start")
 		// ADD MAP TO SITE
 		mapComp.initMap();
-		console.log("init end")
 
 }
 
