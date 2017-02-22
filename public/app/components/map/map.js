@@ -296,6 +296,18 @@ function MapCompCtrl($http, DirectionsServices, CrimeService) {
 
       console.log("EDITED CRIMES: ", crimes)
       console.log("EDITED ROUTES: ", routes)
+      var crimeCount = [0,0,0,0]
+      routes.forEach(function(route, index){
+        route.forEach(function(coordinate){
+          crimes.forEach(function(crime){
+            if(crime.lat == coordinate.lat && crime.lng == coordinate.lng){
+              crimeCount[index]++;
+              console.log(crimeCount);
+            }
+          })
+        })
+      })
+      console.log("FINAL COUNT: ", crimeCount);
 
     }
 
