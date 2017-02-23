@@ -253,34 +253,103 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
         mapComp.crimes = data.result;
 
 				// FILTER RESULTS BASED ON USER SETTINGS
-				var filteredCrimes = [];
-				// By Crime Type
-				mapComp.crimes.forEach(function(crime){
-					if (document.getElementById('filter-crime-physical').checked === false &&
-						crime.event_clearance_code === 10 ||
-						crime.event_clearance_code === 31 ||
-						crime.event_clearance_code === 40 ||
-						crime.event_clearance_code === 43 ||
-						crime.event_clearance_code === 49 ) {}
-					else if (document.getElementById('filter-crime-vehicle').checked === false &&
-						crime.event_clearance_code === 30 ||
-						crime.event_clearance_code === 63 ||
-						crime.event_clearance_code === 71 ) {}
-					else if (document.getElementById('filter-crime-weapon').checked === false &&
-						crime.event_clearance_code === 291 ||
-						crime.event_clearance_code === 292 ) {}
-					else if (document.getElementById('filter-crime-jerk').checked === false &&
-						crime.event_clearance_code === 41 ) {}
-					else {
-						filteredCrimes.push(crime);
+				var currentTime = new Date();
+				var currentHour = currentTime.getHours();
+
+				for (var i=mapComp.crimes.length-1; i>=0; i--) {
+
+					// By Crime Window
+					var crimeTime = mapComp.crimes[i].event_clearance_date;
+
+					if (crimeTime === undefined) {
+						mapComp.crimes.splice(i, 1);
 					}
-				})
-				// Occured Around Now
-				filteredCrimes.forEach(function(crime) {
+					else if (crimeTime) {
+						var crimeHour = parseInt(crimeTime.split(' ')[1].split(':')[0],10);
+						var checkedTime = checkTime(currentHour, parseInt(mapComp.crimeWindow,10), crimeHour);
 
-				});
+						if (checkedTime === false) {
+							mapComp.crimes.splice(i, 1);
+						}
+						else {
+							checkCrimeFilter(i);
+						}
+						
+						function checkTime(hour, spread, query ){
+						  if(hour + spread > 24){
+						    min1 = hour - spread;
+						    max1 = 24;
+						    min2 = 0;
+						    max2 = hour + spread - 24;
+						    // console.log("range is", min2, "to", max2, "and", min1, "to", max1)
+						    if (checkHour(query, min1, max1) || checkHour(query, min2, max2)){
+						      return true
+						    } else{
+						      return false
+						    }
+						    
+						  } else if(hour - spread < 0){
+						    min1 = 0;
+						    max1 = hour + spread;
+						    min2 = 24 - (spread - hour);
+						    max2 = 24;
+						    // console.log("range is", min2, "to", max2, "and", min1, "to", max1)
+						    if(checkHour(query, min1, max1) || checkHour(query, min2, max2)) {
+						      return true
+						    } else{
+						      return false
+						    }
+						  } else{
+						    min = hour - spread;
+						    max = hour + spread;
+						    // console.log("spread is", min, "to", max)
+						    if(checkHour(query, min, max)){
+						      return true
+						    } else {
+						      return false
+						    }
+						  }
+						}
 
-				mapComp.crimes = filteredCrimes;
+						function checkHour(crimeHour, min, max) {
+						  if(crimeHour >= min && crimeHour <= max) {
+						    return true
+						  } else {
+						    return false;
+						  }
+						}
+
+						function checkCrimeFilter(i) {
+							if (document.getElementById('filter-crime-physical').checked === false &&
+								mapComp.crimes[i].event_clearance_code === 10 ||
+								mapComp.crimes[i].event_clearance_code === 31 ||
+								mapComp.crimes[i].event_clearance_code === 40 ||
+								mapComp.crimes[i].event_clearance_code === 43 ||
+								mapComp.crimes[i].event_clearance_code === 49 ) {
+								mapComp.crimes.splice(i, 1);
+							}
+							else if (document.getElementById('filter-crime-vehicle').checked === false &&
+								mapComp.crimes[i].event_clearance_code === 30 ||
+								mapComp.crimes[i].event_clearance_code === 63 ||
+								mapComp.crimes[i].event_clearance_code === 71 ) {
+								mapComp.crimes.splice(i, 1);
+							}
+							else if (document.getElementById('filter-crime-weapon').checked === false &&
+								mapComp.crimes[i].event_clearance_code === 291 ||
+								mapComp.crimes[i].event_clearance_code === 292 ) {
+								mapComp.crimes.splice(i, 1);
+							}
+							else if (document.getElementById('filter-crime-jerk').checked === false &&
+								mapComp.crimes[i].event_clearance_code === 41 ) {
+								mapComp.crimes.splice(i, 1);
+							}
+						}
+
+
+					}
+					
+				}
+
 				console.log("FILTERED CRIMES: ", mapComp.crimes);
 
         mapScope.plotCrimes();
@@ -395,20 +464,20 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
 		}
 
 		// MAKE SURE CRIME WINDOW IS VALID
-		var interval = 1000;
+		var interval = 0;
 		mapComp.delayBeforeSearch = function() {
 		    $interval.cancel(interval);
 		    interval = $interval(function() {
 		        mapComp.checkCrimeWindow();
 		        $interval.cancel(interval);
-		    }, 1000);
+		    }, 0);
 		};
-
 		mapComp.checkCrimeWindow = function() {
 			if (mapComp.crimeWindow > 12) {
-				mapComp.crimeWindow = 12
-				console.log(mapComp.crimeWindow)
-			}
+				mapComp.crimeWindow = 12;
+			} else if (mapComp.crimeWindow < 1) {
+				mapComp.crimeWindow = 1;
+			} 
 		}
 
 }
