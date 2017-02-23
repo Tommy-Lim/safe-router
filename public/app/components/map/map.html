@@ -87,8 +87,8 @@
     <div id="collapse{{$index}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{{$index}}" aria-expanded="false" style="height: 0px;">
       <div class="panel-body">
         <div ng-repeat="crime in route track by $index">
-          <p><strong>{{crime.at_scene_time}}</strong></p>
-          <p>{{crime.event_clearance_description}} &mdash; {{crime.initial_type_group}}</p>
+          <p><strong>{{crime.event_clearance_date}}</strong></p>
+          <p>{{crime.event_clearance_description}} &mdash; {{crime.initial_type_description}}</p>
           <p>{{crime.hundred_block_location}}</p>
           <hr />
         </div>
