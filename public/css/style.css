@@ -1,11 +1,12 @@
+/* GLOBAL STYLES */
+
 body {
 	background-color: #ddd;
 	padding: 1.5em;
-}
+	color: #ebeaf0;
+	font-family: 'Muli', sans-serif;
 
-#mapid {
-	height: 60vh;
-	width: 100%;
+/*	overflow: hidden;*/
 }
 
 h3 {
@@ -13,17 +14,111 @@ h3 {
 	margin: 0;
 }
 
+h5 {
+	font-size: 12px;
+	font-weight: 600;
+}
+
 li {
 	margin-left: -24px; margin-bottom: 9px;
 }
 
+i {
+	color: #2FDABD;
+}
+
 hr {
 	margin: 8px 0 15px 0;
+	border: 0;
+	clear: both;
+	display: block;
+	width: 100%;               
+	background-color: #423875;
+	height: 1px;
 }
 
 label {
 	display: block;
 	margin-bottom: 0;
+}
+
+input[type="text"], input[type="number"] {
+	background: none;
+	border: none;
+	border-bottom: 1px solid #3C93F8;
+	outline: none;
+	padding: 6px 0;
+}
+
+input[type="submit"] {
+	background: -moz-linear-gradient(#20c4a3 0%, #3dedd4 100%);
+	background: -webkit-linear-gradient(#20c4a3 0%, #3dedd4 100%); 
+	background: linear-gradient(to top, #20c4a3 0%, #3dedd4 100%); 
+	color: #2F2152;
+	border-radius: 2px;
+	font-weight: 800;
+	font-size: 12px;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	border: none;
+	outline: none;
+	padding: 8px 13px 9px 14px;
+	cursor: pointer;
+}
+
+#bootstrap-overrides .btn {
+	background: none;
+	border-radius: 2px;
+	font-size: 12px;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	border: none;
+	outline: none;
+	padding: 8px 13px 9px 14px;
+	cursor: pointer;
+	transition-property: color;
+	transition-duration: 150ms;
+}
+
+#bootstrap-overrides .btn-primary {
+	background: -moz-linear-gradient(#20c4a3 0%, #3dedd4 100%);
+	background: -webkit-linear-gradient(#20c4a3 0%, #3dedd4 100%); 
+	background: linear-gradient(to top, #20c4a3 0%, #3dedd4 100%); 
+	color: #2F2152;
+	font-weight: 800;
+}
+
+#bootstrap-overrides .btn-secondary {
+	background-color: #160d31;
+	color: #bbb9c5;
+	font-weight: 600;
+}
+
+#bootstrap-overrides .btn-secondary:hover {
+	color: white;
+}
+
+
+/* Text Styles */
+
+.txt-uppercase {
+	text-transform: uppercase;
+	letter-spacing: 2px;
+}
+
+
+
+/* LAYOUT AND CONTAINERS */
+
+#bootstrap-overrides .container {
+	width: 800px;
+	max-width: 90%;
+}
+
+.main-panel {
+	padding: 30px;
+	border-radius: 6px;
+	background-color: #160d31;
 }
 
 .container-load{
@@ -37,12 +132,6 @@ label {
 	align-items: center;
 }
 
-#search-filters {
-	margin: 15px 0;
-	padding: 15px 15px 7px 15px;
-	background-color: white;
-}
-
 .column-left {
 	display: flex;
 	flex-direction: column;
@@ -52,6 +141,94 @@ label {
 .align-center {
 	display: flex;
 	align-items: center;
+}
+
+
+.align-center-space {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+}
+
+
+/* 1. ENTER DIRECTIONS PANEL */
+
+#enter-directions {
+	z-index: 5;
+}
+
+#enter-directions input[type="text"] {
+	width: 100%;
+	font-size: 18px;
+}
+
+#directions-container {
+	display: flex;
+	justify-content: flex-start;
+	align-items: flex-start;
+	width: 100%;
+}
+
+#directions-container form {
+	width: 96%;
+	margin-left: 4%;
+}
+
+#img-directions {
+	width: 13px;
+	margin-top: 12px;
+}
+
+#directions-controls {
+	margin-top: 26px;
+}
+
+#directions-controls span {
+	margin-bottom: 17px;
+}
+
+#enter-directions i {
+	transform: scale(1.5);
+	margin-right: 14px;
+	color: #3C93F8;
+	cursor: pointer;
+}
+
+
+/* 2. ROUTE INFORMATION PANEL */
+
+#route-information {
+	z-index: 4;
+	background-color: #e1dfeb;
+	border-radius: 0 0 6px 6px;
+	margin-top: -6px;
+}
+
+table, .adp, .adp-summary, .adp-directions, .adp-placemark, tbody, tr, td {
+	font-family: 'Muli', sans-serif;
+}
+
+table {
+	width: 100%
+	background-color: #E1DFEB;
+}
+
+tr {
+	width: 100%;
+	background-color: #E1DFEB;
+}
+
+.adp-placemark {
+	border: none;
+}
+
+
+/* 3. SEARCH FILTERS */
+
+#search-filters {
+	z-index: 3;
+	margin: 15px 0;
 }
 
 .filter-section {
@@ -68,8 +245,10 @@ label {
 }
 
 #crime-window-text {
-	margin: 0 5px 24px 0;
-	width: 3.5em;
+	margin: 0 10px 24px 0;
+	width: 1.12em;
+	font-size: 22px;
+	font-weight: 400;
 }
 
 #ticks {
@@ -96,6 +275,29 @@ label {
 .route-score-box{
 	display: flex;
 	justify-content: space-around;
-	background-color: lightcoral;
 	padding: 10px;
+}
+
+
+/* 4. MAP UI */
+
+#mapid {
+	height: 100%;
+	width: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: -1;
+}
+
+#map-controls {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+}
+
+#map-controls button {
+	margin-right: 2px;
 }

@@ -1,118 +1,118 @@
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-sm-8">
-      <div id="mapid">
-      	<div class="container-load">
-      		<div>
-      			Loading map. Please wait.
-      		</div>
-      	</div>
-      </div>
+<div class="container">
+
+  <div class="main-panel" id="enter-directions">
+  	<div id="directions-container">
+	  	<img src="../../img/directions.svg" alt="enter directions" id="img-directions">
+	  	<form ng-submit="mapComp.calcRoute()">
+	  	  <div class="form-group">
+	  	    <input type="text" placeholder="Choose starting point" ng-model="mapComp.start">
+	  	  </div>
+	  	  <div class="form-group">
+	  	    <input type="text" placeholder="Choose destination" ng-model="mapComp.end">
+	  	  </div>
+	  	  <div class="align-center-space" id="directions-controls">
+		  	  <div class="form-group">
+		  	    <input type="submit" value="Search">
+		  	  </div>
+		  	  <span class="align-center">
+		  	  	<i class="fa fa-sliders" aria-hidden="true"></i> 
+		  	  	<h5 class="txt-uppercase">Search Settings</h5>
+		  	  </span>
+		  	</div>
+	  	</form>
+	  </div>
+  </div>
+
+	<div class="main-panel" id="route-information">
+    <div class="route-score-box">
+      <div ng-if="mapComp.countedCrimes[0].length > 1">Route 1 <span class="badge">{{mapComp.countedCrimes[0].length}}</span></div>
+      <div ng-if="mapComp.countedCrimes[1].length > 1">Route 2 <span class="badge">{{mapComp.countedCrimes[1].length}}</span></div>
+      <div ng-if="mapComp.countedCrimes[2].length > 1">Route 3 <span class="badge">{{mapComp.countedCrimes[2].length}}</span></div>
     </div>
-    <div class="col-sm-4 score-and-directions">
-      <div class="route-score-box">
-        <div ng-if="mapComp.countedCrimes[0].length > 1">Route 1 <span class="badge">{{mapComp.countedCrimes[0].length}}</span></div>
-        <div ng-if="mapComp.countedCrimes[1].length > 1">Route 2 <span class="badge">{{mapComp.countedCrimes[1].length}}</span></div>
-        <div ng-if="mapComp.countedCrimes[2].length > 1">Route 3 <span class="badge">{{mapComp.countedCrimes[2].length}}</span></div>
+    <div id="directionsPanel">
+    </div>
+  </div>
+
+
+  <!-- Search Filters -->
+  <form class="list main-panel" id="search-filters">
+  	<h3>Search Filters</h3>
+  	<hr>
+  	<div class="filter-section">
+  		<label>Crimes</label>
+  		<input type="checkbox" name="Physical" value="Physical" id="filter-crime-physical" ng-click="mapComp.checkBox(); mapComp.getCrimes(mapComp.box)" checked> Physical Harm (Homicide / Assault / Mugging)<br>
+  		<input type="checkbox" name="Weapons" value="Weapons" id="filter-crime-weapon" ng-click="mapComp.checkBox(); mapComp.getCrimes(mapComp.box)" checked> Weapons (Armed Robbery / Person With a Gun / Carrying Weapon)<br>
+  		<input type="checkbox" name="Vehicle" value="Vehicle" id="filter-crime-vehicle" ng-click="mapComp.checkBox(); mapComp.getCrimes(mapComp.box)" checked> Vehicle (Auto Theft / Car Prowl)<br>
+  		<input type="checkbox" name="Jerk" value="Jerk" id="filter-crime-jerk" ng-click="mapComp.checkBox(); mapComp.getCrimes(mapComp.box)" checked> Just Being a Jerk (Harassment / Threats)<br>
+  	</div>
+
+  	<div class="filter-section">
+  		<label>Crime Window</label><br>
+  		<input type="text" ng-model="mapComp.crimeWindow" id="crime-window-text" ng-keydown="mapComp.delayBeforeSearch()"> hours before/after now
+  		<div id="crime-window">
+  			<input type="range" min="1" max="12" step="1" ng-model="mapComp.crimeWindow" id="crime-window-range">
+  			<div style="display: flex; justify-content: space-between;" id="ticks">
+  				<div ng-repeat="i in [1,2,3,4,5,6,7,8,9,10,11,12] track by $index" class="tick">
+  					<p class="tick-mark">|</p>
+  					<h6>{{$index+1}}</h6>
+  				</div>
+  			</div>
+  		</div>
+  	</div>
+
+  	<div class="filter-section">
+	  	<div class="form-group">
+	  	  <label for="padding">Padding (0 - 0.01)</label>
+	  	  <input name="padding" type="number" step=".001" ng-model="mapComp.padding"/>
+	  	</div>
+	  	<div class="form-group">
+	  	  <label for="sensitivity">Sensitivity (1 - 5)</label>
+	  	  <input name="sensitivity" type="number" ng-model="mapComp.sensitivity"/>
+	  	</div>
+	  </div>
+  </form>
+
+
+
+  <div id="filter-test"></div>
+
+  <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" ng-if="route.length>0" ng-repeat="route in mapComp.countedCrimes track by $index">
+    <div class="panel panel-default">
+      <div class="panel-heading" role="tab" id="headingOne">
+        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{$index}}" aria-expanded="true" aria-controls="collapse{{$index}}">
+          <h4 class="panel-title">
+              Route #{{$index+1}} Crime Data
+          </h4>
+        </a>
       </div>
-      <hr />
-      <div id="directionsPanel">
+      <div id="collapse{{$index}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{{$index}}" aria-expanded="false" style="height: 0px;">
+        <div class="panel-body">
+          <div ng-repeat="crime in route track by $index">
+            <p><strong>{{crime.event_clearance_date}}</strong></p>
+            <p>{{crime.event_clearance_description}} &mdash; {{crime.initial_type_description}}</p>
+            <p>{{crime.hundred_block_location}}</p>
+            <hr />
+          </div>
+        </div>
       </div>
     </div>
   </div>
 
 
-
-  <div class="row">
-    <div class="col-sm-6">
-      <form ng-submit="mapComp.calcRoute()" class="form-inline">
-        <div class="form-group">
-          <label>Starting point:</label>
-          <input type="text" placeholder="Choose starting point" ng-model="mapComp.start">
-        </div>
-        <div class="form-group">
-          <label>Destination:</label>
-          <input type="text" placeholder="Choose destination" ng-model="mapComp.end">
-        </div>
-        <div class="form-group">
-          <label for="padding">Padding (0 - 0.01)</label>
-          <input name="padding" type="number" step=".001" ng-model="mapComp.padding"/>
-        </div>
-        <div class="form-group">
-          <label for="sensitivity">Sensitivity (1 - 5)</label>
-          <input name="sensitivity" type="number" ng-model="mapComp.sensitivity"/>
-        </div>
-        <div class="form-group">
-          <input type="submit" value="Search">
-        </div>
-      </form>
-    </div>
-    <div class="col-sm-6">
-      <button ng-click="mapComp.toggleHeatmap()">Toggle Heatmap</button>
-      <button ng-click="mapComp.toggleBorder()">Toggle Border</button>
-      <button ng-click="mapComp.toggleTraffic()">Toggle Traffic</button>
-
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-sm-12">
-
-    </div>
-  </div>
 </div>
 
 
-
-
-<!-- Search Filters -->
-<form class="list" id="search-filters">
-	<h3>Search Filters</h3>
-	<hr>
-	<div class="filter-section">
-		<label>Crimes</label>
-		<input type="checkbox" name="Physical" value="Physical" id="filter-crime-physical" ng-click="mapComp.checkBox(); mapComp.getCrimes(mapComp.box)" checked> Physical Harm (Homicide / Assault / Mugging)<br>
-		<input type="checkbox" name="Weapons" value="Weapons" id="filter-crime-weapon" ng-click="mapComp.checkBox(); mapComp.getCrimes(mapComp.box)" checked> Weapons (Armed Robbery / Person With a Gun / Carrying Weapon)<br>
-		<input type="checkbox" name="Vehicle" value="Vehicle" id="filter-crime-vehicle" ng-click="mapComp.checkBox(); mapComp.getCrimes(mapComp.box)" checked> Vehicle (Auto Theft / Car Prowl)<br>
-		<input type="checkbox" name="Jerk" value="Jerk" id="filter-crime-jerk" ng-click="mapComp.checkBox(); mapComp.getCrimes(mapComp.box)" checked> Just Being a Jerk (Harassment / Threats)<br>
+<div id="map">
+	<div id="map-controls">
+	<button class="btn btn-secondary" ng-click="mapComp.toggleHeatmap()">Toggle Heatmap</button>
+		<button class="btn btn-secondary" ng-click="mapComp.toggleBorder()">Toggle Border</button>
+		<button class="btn btn-secondary" ng-click="mapComp.toggleTraffic()">Toggle Traffic</button>
 	</div>
-
-	<div class="filter-section">
-		<label>Crime Window</label><br>
-		<input type="text" ng-model="mapComp.crimeWindow" id="crime-window-text" ng-keydown="mapComp.delayBeforeSearch()"> hours before/after now
-		<div id="crime-window">
-			<input type="range" min="1" max="12" step="1" ng-model="mapComp.crimeWindow" id="crime-window-range">
-			<div style="display: flex; justify-content: space-between;" id="ticks">
-				<div ng-repeat="i in [1,2,3,4,5,6,7,8,9,10,11,12] track by $index" class="tick">
-					<p class="tick-mark">|</p>
-					<h6>{{$index+1}}</h6>
-				</div>
+	<div id="mapid">
+		<div class="container-load">
+			<div>
+				Loading map. Please wait.
 			</div>
 		</div>
 	</div>
-</form>
-
-
-
-<div id="filter-test"></div>
-
-<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" ng-if="route.length>0" ng-repeat="route in mapComp.countedCrimes track by $index">
-  <div class="panel panel-default">
-    <div class="panel-heading" role="tab" id="headingOne">
-      <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{$index}}" aria-expanded="true" aria-controls="collapse{{$index}}">
-        <h4 class="panel-title">
-            Route #{{$index+1}} Crime Data
-        </h4>
-      </a>
-    </div>
-    <div id="collapse{{$index}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{{$index}}" aria-expanded="false" style="height: 0px;">
-      <div class="panel-body">
-        <div ng-repeat="crime in route track by $index">
-          <p><strong>{{crime.event_clearance_date}}</strong></p>
-          <p>{{crime.event_clearance_description}} &mdash; {{crime.initial_type_description}}</p>
-          <p>{{crime.hundred_block_location}}</p>
-          <hr />
-        </div>
-      </div>
-    </div>
-  </div>
 </div>
