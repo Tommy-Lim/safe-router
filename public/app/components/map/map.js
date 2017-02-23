@@ -20,6 +20,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
 		mapComp.padding = 0.003;
   	mapComp.crimeWindow = 12;
 
+
     // INITILAIZE MAP
     mapComp.initMap = function() {
         mapScope = this;
@@ -31,6 +32,17 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
             lat: 47.608013,
             lng: -122.335167
         };
+				// PADDING DEGREES FROM CENTER OF MAP
+				var autocompleteBoundsPadding = 0.05; // degrees from center
+				// SET AUTOCOMPLETE BOUNDS
+				mapComp.defaultBounds = new google.maps.LatLngBounds(
+					new google.maps.LatLng(latLng.lat + autocompleteBoundsPadding, latLng.lng - autocompleteBoundsPadding),
+					new google.maps.LatLng(latLng.lat - autocompleteBoundsPadding, latLng.lng + autocompleteBoundsPadding)
+				)
+				mapComp.options = {
+					bounds: mapComp.defaultBounds
+				}
+				console.log("boundary default: ", mapComp.defaultBounds)
         // FIND CURRENT LAT/LNG IF NAVIGATOR ENABLED
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function(position) {
@@ -38,6 +50,12 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
                     lat: position.coords.latitude,
                     lng: position.coords.longitude
                 };
+								mapComp.defaultBounds = new google.maps.LatLngBounds(
+									new google.maps.LatLng(latLng.lat + autocompleteBoundsPadding, latLng.lng - autocompleteBoundsPadding),
+									new google.maps.LatLng(latLng.lat - autocompleteBoundsPadding, latLng.lng + autocompleteBoundsPadding)
+								)
+								mapComp.options.bounds = mapComp.defaultBounds
+								console.log("boundary new: ", mapComp.defaultBounds)
                 makeMap(latLng);
                 var infoWindow = new google.maps.InfoWindow({map: mapComp.mapid});
                 infoWindow.setPosition(latLng);
@@ -60,9 +78,18 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
                 zoom: 14
             });
 
+						// ADD LAYERS TO MAP
             mapComp.trafficLayer = new google.maps.TrafficLayer();
             mapComp.trafficLayer.setMap(mapComp.mapid);
 						mapComp.toggleTraffic();
+
+						// ADD INPUTS TO MAP
+						var startInput = document.getElementById('start-input');
+						// mapComp.mapid.controls[google.maps.ControlPosition.TOP_LEFT].push(startInput);
+						var autocomplete = new google.maps.places.Autocomplete(startInput, mapComp.options);
+						var endInput = document.getElementById('end-input');
+						// mapComp.mapid.controls[google.maps.ControlPosition.TOP_LEFT].push(endInput);
+						var autocomplete = new google.maps.places.Autocomplete(endInput, mapComp.options);
 
             // SET THE DIRECTIONS DISPLAY TO BE ON THE MAP AND ASSIGN THE DIRECTIONS TEXT TO DIRECTIONS PANEL
             mapComp.directionsDisplay.setMap(mapComp.mapid);
