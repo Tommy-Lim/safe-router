@@ -1,20 +1,50 @@
-<div class="container">
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-8">
+      <div id="mapid">
+      	<div class="container-load">
+      		<div>
+      			Loading map. Please wait.
+      		</div>
+      	</div>
+      </div>
+    </div>
+    <div class="col-sm-4 score-and-directions">
+      <div class="route-score-box">
+        <div ng-if="mapComp.countedCrimes[0].length > 1">Route 1 <span class="badge">{{mapComp.countedCrimes[0].length}}</span></div>
+        <div ng-if="mapComp.countedCrimes[1].length > 1">Route 2 <span class="badge">{{mapComp.countedCrimes[1].length}}</span></div>
+        <div ng-if="mapComp.countedCrimes[2].length > 1">Route 3 <span class="badge">{{mapComp.countedCrimes[2].length}}</span></div>
+      </div>
+      <hr />
+      <div id="directionsPanel">
+      </div>
+    </div>
+  </div>
+
+
+
   <div class="row">
     <div class="col-sm-6">
-      <form ng-submit="mapComp.calcRoute()">
-        <label>Starting point:</label>
-        <input type="text" placeholder="Choose starting point" ng-model="mapComp.start">
-
-        <label>Destination:</label>
-        <input type="text" placeholder="Choose destination" ng-model="mapComp.end">
-
-        <label for="padding">Padding (0 - 0.01)</label>
-        <input name="padding" type="number" step=".001" ng-model="mapComp.padding"/>
-
-        <label for="sensitivity">Sensitivity (1 - 5)</label>
-        <input name="sensitivity" type="number" ng-model="mapComp.sensitivity"/>
-
-        <input type="submit" value="Search">
+      <form ng-submit="mapComp.calcRoute()" class="form-inline">
+        <div class="form-group">
+          <label>Starting point:</label>
+          <input type="text" placeholder="Choose starting point" ng-model="mapComp.start">
+        </div>
+        <div class="form-group">
+          <label>Destination:</label>
+          <input type="text" placeholder="Choose destination" ng-model="mapComp.end">
+        </div>
+        <div class="form-group">
+          <label for="padding">Padding (0 - 0.01)</label>
+          <input name="padding" type="number" step=".001" ng-model="mapComp.padding"/>
+        </div>
+        <div class="form-group">
+          <label for="sensitivity">Sensitivity (1 - 5)</label>
+          <input name="sensitivity" type="number" ng-model="mapComp.sensitivity"/>
+        </div>
+        <div class="form-group">
+          <input type="submit" value="Search">
+        </div>
       </form>
     </div>
     <div class="col-sm-6">
@@ -26,20 +56,12 @@
   </div>
   <div class="row">
     <div class="col-sm-12">
-      <p ng-if="mapComp.countedCrimes[0].length > 1">Path 1 crimes: {{mapComp.countedCrimes[0].length}}</p>
-      <p ng-if="mapComp.countedCrimes[1].length > 1">Path 2 crimes: {{mapComp.countedCrimes[1].length}}</p>
-      <p ng-if="mapComp.countedCrimes[2].length > 1">Path 3 crimes: {{mapComp.countedCrimes[2].length}}</p>
+
     </div>
   </div>
 </div>
 
-<div id="mapid">
-	<div class="container-load">
-		<div>
-			Loading map. Please wait.
-		</div>
-	</div>
-</div>
+
 
 
 <!-- Search Filters -->
@@ -69,9 +91,7 @@
 	</div>
 </form>
 
-<div id="directionsPanel">
 
-</div>
 
 <div id="filter-test"></div>
 
