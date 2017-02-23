@@ -464,6 +464,36 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
 			}
 		}
 
+		mapComp.findMatchesGMaps = function(){
+			var path = new google.maps.Polyline({
+				path: mapComp.latLngArray[mapComp.directionsDisplay.getRouteIndex()],
+				strokeColor: '#00FF00',
+				geodesic: true
+			})
+			path.setMap(mapComp.mapid);
+			google.maps.event.addListener(mapComp.mapid, 'click', function(e) {
+				var resultColor;
+				if(google.maps.geometry.poly.isLocationOnEdge(e.latLng, path, 10e-3)){
+					resultColor = 'green';
+				} else{
+					resultColor = 'red';
+				}
+
+				new google.maps.Marker({
+          position: e.latLng,
+          map: mapComp.mapid,
+          icon: {
+            path: google.maps.SymbolPath.CIRCLE,
+            fillColor: resultColor,
+            fillOpacity: .2,
+            strokeColor: 'white',
+            strokeWeight: .5,
+            scale: 10
+          }
+	       });
+				});
+			}
+
     mapComp.findMatches = function(){
 			var sensitivity;
 			if(!mapComp.sensitivity){
