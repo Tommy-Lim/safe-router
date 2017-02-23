@@ -229,6 +229,7 @@ tr {
 #search-filters {
 	z-index: 3;
 	margin: 15px 0;
+	display:none;
 }
 
 .filter-section {

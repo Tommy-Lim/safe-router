@@ -5,10 +5,10 @@
 	  	<img src="../../img/directions.svg" alt="enter directions" id="img-directions">
 	  	<form ng-submit="mapComp.calcRoute()">
 	  	  <div class="form-group">
-	  	    <input type="text" placeholder="Choose starting point" ng-model="mapComp.start">
+	  	    <input type="text" id="start-input" placeholder="Choose starting point" ng-model="mapComp.start">
 	  	  </div>
 	  	  <div class="form-group">
-	  	    <input type="text" placeholder="Choose destination" ng-model="mapComp.end">
+	  	    <input type="text" id="end-input" placeholder="Choose destination" ng-model="mapComp.end">
 	  	  </div>
 	  	  <div class="align-center-space" id="directions-controls">
 		  	  <div class="form-group">
@@ -107,6 +107,8 @@
 	<button class="btn btn-secondary" ng-click="mapComp.toggleHeatmap()">Toggle Heatmap</button>
 		<button class="btn btn-secondary" ng-click="mapComp.toggleBorder()">Toggle Border</button>
 		<button class="btn btn-secondary" ng-click="mapComp.toggleTraffic()">Toggle Traffic</button>
+		<button ng-click="mapComp.addCrimeMarkers()">add crimes</button>
+		<button ng-click="mapComp.removeCrimeMarkers()">remove crimes</button>
 	</div>
 	<div id="mapid">
 		<div class="container-load">
