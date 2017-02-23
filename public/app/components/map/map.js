@@ -19,6 +19,8 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
 		mapComp.sensitivity = 3;
 		mapComp.padding = 0.003;
   	mapComp.crimeWindow = 12;
+		mapComp.markers = [];
+		mapComp.infoWindows = [];
 
 
     // INITILAIZE MAP
@@ -50,6 +52,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
                     lat: position.coords.latitude,
                     lng: position.coords.longitude
                 };
+								// SET BOUNDS FOR
 								mapComp.defaultBounds = new google.maps.LatLngBounds(
 									new google.maps.LatLng(latLng.lat + autocompleteBoundsPadding, latLng.lng - autocompleteBoundsPadding),
 									new google.maps.LatLng(latLng.lat - autocompleteBoundsPadding, latLng.lng + autocompleteBoundsPadding)
@@ -57,9 +60,20 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
 								mapComp.options.bounds = mapComp.defaultBounds
 								console.log("boundary new: ", mapComp.defaultBounds)
                 makeMap(latLng);
-                var infoWindow = new google.maps.InfoWindow({map: mapComp.mapid});
-                infoWindow.setPosition(latLng);
-                infoWindow.setContent('Location found.');
+                var infoWindow = new google.maps.InfoWindow({
+									map: mapComp.mapid,
+									content: 'Current location.'
+								});
+								var marker = new google.maps.Marker({
+									position: latLng,
+									map: mapComp.mapid,
+									icon: './img/marker_current.png'
+								})
+								marker.addListener('click', function(){
+									infoWindow.open(mapComp.mapid, marker);
+									mapComp.infoWindows.push(infoWindow);
+								})
+								mapComp.infoWindows.push(infoWindow);
                 mapComp.mapid.setCenter(latLng);
             }, function() {
                 // USE DEFAULT LAT/LNG BECAUSE ERROR OCCURRED GETTING LAT/LNG
@@ -121,6 +135,13 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
                 mapScope.getRouteBox();
                 mapScope.getCrimes();
             });
+
+						// CLOSE ALL INFOWINDOWS ON CLICK;
+						mapComp.mapid.addListener('click', function(){
+							mapComp.infoWindows.forEach(function(infoWindow){
+								infoWindow.close();
+							})
+						})
         }
 
     }
@@ -184,13 +205,22 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
     mapComp.addCrimeMarkers = function() {
 			mapComp.removeCrimeMarkers();
         var index = mapComp.directionsDisplay.getRouteIndex()
-        // console.log("ROUTE INDEX: ", index);
-        mapComp.markers = [];
-        // console.log("ROUTES ARRAY: ", mapComp.countedCrimes);
         console.log("CURRENT ROUTES ARRAY TO ADD MARKERS TO: ", mapComp.countedCrimes[index]);
         mapComp.countedCrimes[index].forEach(function(coordinate) {
+						var contentString =
+										'<p>' + coordinate.event_clearance_description + '</p>'
+						var infoWindow = new google.maps.InfoWindow({
+							content: contentString
+						})
             var latLng = new google.maps.LatLng(coordinate.latitude, coordinate.longitude);
-            var marker = new google.maps.Marker({position: latLng, map: mapComp.mapid})
+            var marker = new google.maps.Marker({
+							position: latLng,
+							map: mapComp.mapid,
+						})
+						marker.addListener('click', function(){
+							infoWindow.open(mapComp.mapid, marker);
+							mapComp.infoWindows.push(infoWindow);
+						})
             mapComp.markers.push(marker);
         })
     }
