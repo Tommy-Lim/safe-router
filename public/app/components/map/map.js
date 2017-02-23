@@ -62,6 +62,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
 
             mapComp.trafficLayer = new google.maps.TrafficLayer();
             mapComp.trafficLayer.setMap(mapComp.mapid);
+						mapComp.toggleTraffic();
 
             // SET THE DIRECTIONS DISPLAY TO BE ON THE MAP AND ASSIGN THE DIRECTIONS TEXT TO DIRECTIONS PANEL
             mapComp.directionsDisplay.setMap(mapComp.mapid);
@@ -240,6 +241,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
 
       // SET POLYGON TO MAP
       mapComp.mapBox.setMap(mapComp.mapid)
+			mapComp.toggleBorder();
 
     }
 
@@ -278,7 +280,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
 						else {
 							checkCrimeFilter(i);
 						}
-						
+
 						function checkTime(hour, spread, query ){
 						  if(hour + spread > 24){
 						    min1 = hour - spread;
@@ -291,7 +293,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
 						    } else{
 						      return false
 						    }
-						    
+
 						  } else if(hour - spread < 0){
 						    min1 = 0;
 						    max1 = hour + spread;
@@ -351,7 +353,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
 
 
 					}
-					
+
 				}
 
 				console.log("FILTERED CRIMES: ", mapComp.crimes);
@@ -473,6 +475,8 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
 
 		// ADD MAP TO SITE
 		mapComp.initMap();
+		mapComp.toggleBorder();
+
 
 		// TOGGLE CHECKBOXES
 		mapComp.checkBox = function() {
@@ -499,7 +503,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
 				mapComp.crimeWindow = 12;
 			} else if (mapComp.crimeWindow < 1) {
 				mapComp.crimeWindow = 1;
-			} 
+			}
 		}
 
 }
