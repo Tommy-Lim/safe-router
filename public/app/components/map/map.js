@@ -473,11 +473,6 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
 
     }
 
-		// ADD MAP TO SITE
-		mapComp.initMap();
-		mapComp.toggleBorder();
-
-
 		// TOGGLE CHECKBOXES
 		mapComp.checkBox = function() {
 			console.log(this);
@@ -505,6 +500,10 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
 				mapComp.crimeWindow = 1;
 			}
 		}
+
+
+				// ADD MAP TO SITE
+				google.maps.event.addDomListener(window, 'load', mapComp.initMap);
 
 }
 
