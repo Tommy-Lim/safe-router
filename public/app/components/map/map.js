@@ -75,14 +75,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
 								// })
 								// mapComp.infoWindows.push(infoWindow);
                 // mapComp.mapid.setCenter(latLng);
-								var customIcon = {
-									url: './img/marker_current.png',
-									size: new google.maps.Size(20, 20),
-									origin: new google.maps.Point(0, 0),
-									anchor: new google.maps.Point(10, 10)
-								}
-								var GeoMarker = new GeolocationMarker(mapComp.mapid);
-								GeoMarker.setMarkerOptions({ 'icon': customIcon})
+
             }, function() {
                 // USE DEFAULT LAT/LNG BECAUSE ERROR OCCURRED GETTING LAT/LNG
                 makeMap(latLng);
@@ -91,6 +84,21 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
             // NO BROSWER SUPPORT FOR LAT/LNG, USE DEFAULT LAT/LNG
             makeMap(latLng);
         }
+
+				// ADD CENTER ICON TO MAP
+				function addCenter(latLng){
+					var customIcon = {
+						url: './img/marker_current.png',
+						size: new google.maps.Size(20, 20),
+						origin: new google.maps.Point(0, 0),
+						anchor: new google.maps.Point(10, 10)
+					}
+					var GeoMarker = new GeolocationMarker(mapComp.mapid);
+					GeoMarker.setMarkerOptions({
+						'icon': customIcon,
+						'position': latLng
+					})
+				}
 
         // MAKE MAP FUNCTION TO BE USED ABOVE
         function makeMap(latLng) {
@@ -150,7 +158,12 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
 								infoWindow.close();
 							})
 						})
+
+						// ADD CURRENT LOCATION TO MAP
+						addCenter(latLng);
         }
+
+
 
     }
 
