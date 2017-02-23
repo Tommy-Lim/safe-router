@@ -60,21 +60,29 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
 								mapComp.options.bounds = mapComp.defaultBounds
 								console.log("boundary new: ", mapComp.defaultBounds)
                 makeMap(latLng);
-                var infoWindow = new google.maps.InfoWindow({
-									map: mapComp.mapid,
-									content: 'Current location.'
-								});
-								var marker = new google.maps.Marker({
-									position: latLng,
-									map: mapComp.mapid,
-									icon: './img/marker_current.png'
-								})
-								marker.addListener('click', function(){
-									infoWindow.open(mapComp.mapid, marker);
-									mapComp.infoWindows.push(infoWindow);
-								})
-								mapComp.infoWindows.push(infoWindow);
-                mapComp.mapid.setCenter(latLng);
+                // var infoWindow = new google.maps.InfoWindow({
+								// 	map: mapComp.mapid,
+								// 	content: 'Current location.'
+								// });
+								// var marker = new google.maps.Marker({
+								// 	position: latLng,
+								// 	map: mapComp.mapid,
+								// 	icon: './img/marker_current.png'
+								// })
+								// marker.addListener('click', function(){
+								// 	infoWindow.open(mapComp.mapid, marker);
+								// 	mapComp.infoWindows.push(infoWindow);
+								// })
+								// mapComp.infoWindows.push(infoWindow);
+                // mapComp.mapid.setCenter(latLng);
+								var customIcon = {
+									url: './img/marker_current.png',
+									size: new google.maps.Size(20, 20),
+									origin: new google.maps.Point(0, 0),
+									anchor: new google.maps.Point(10, 10)
+								}
+								var GeoMarker = new GeolocationMarker(mapComp.mapid);
+								GeoMarker.setMarkerOptions({ 'icon': customIcon})
             }, function() {
                 // USE DEFAULT LAT/LNG BECAUSE ERROR OCCURRED GETTING LAT/LNG
                 makeMap(latLng);
