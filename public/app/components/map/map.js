@@ -106,7 +106,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
             mapComp.mapid = new google.maps.Map(document.getElementById('mapid'), {
                 center: latLng,
                 zoom: 14,
-                styles: 
+                styles:
                 	[
                 			{
                 					"featureType": "all",
@@ -484,9 +484,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
 
 						// CLOSE ALL INFOWINDOWS ON CLICK;
 						mapComp.mapid.addListener('click', function(){
-							mapComp.infoWindows.forEach(function(infoWindow){
-								infoWindow.close();
-							})
+							mapComp.closeInfoWindows();
 						})
 
 						// ADD CURRENT LOCATION TO MAP
@@ -496,6 +494,12 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
 
 
     }
+
+		mapComp.closeInfoWindows = function(){
+			mapComp.infoWindows.forEach(function(infoWindow){
+				infoWindow.close();
+			})
+		}
 
     // CALCULATE ROUTE
     mapComp.calcRoute = function(start, end, delay) {
@@ -569,6 +573,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
 							map: mapComp.mapid,
 						})
 						marker.addListener('click', function(){
+							mapComp.closeInfoWindows();
 							infoWindow.open(mapComp.mapid, marker);
 							mapComp.infoWindows.push(infoWindow);
 						})
