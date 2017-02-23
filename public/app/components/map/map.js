@@ -181,21 +181,22 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
     }
 
     //ADD LA/LNG MARKERS FOR THE CURRENT ROUTE
-    mapComp.addMarkers = function() {
+    mapComp.addCrimeMarkers = function() {
+			mapComp.removeCrimeMarkers();
         var index = mapComp.directionsDisplay.getRouteIndex()
         // console.log("ROUTE INDEX: ", index);
         mapComp.markers = [];
-        // console.log("ROUTES ARRAY: ", mapComp.latLngArray);
-        console.log("CURRENT ROUTES ARRAY TO ADD MARKERS TO: ", mapComp.latLngArray[index]);
-        mapComp.latLngArray[index].forEach(function(coordinate) {
-            var latLng = new google.maps.LatLng(coordinate.lat, coordinate.lng);
+        // console.log("ROUTES ARRAY: ", mapComp.countedCrimes);
+        console.log("CURRENT ROUTES ARRAY TO ADD MARKERS TO: ", mapComp.countedCrimes[index]);
+        mapComp.countedCrimes[index].forEach(function(coordinate) {
+            var latLng = new google.maps.LatLng(coordinate.latitude, coordinate.longitude);
             var marker = new google.maps.Marker({position: latLng, map: mapComp.mapid})
             mapComp.markers.push(marker);
         })
     }
 
     // REMOVE LAT/LNG MARKERS FOR CURRENT ROUTE
-    mapComp.removeMarkers = function() {
+    mapComp.removeCrimeMarkers = function() {
         if (mapComp.markers && mapComp.markers.length > 0) {
             mapComp.markers.forEach(function(marker) {
                 marker.setMap(null);
