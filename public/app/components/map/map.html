@@ -16,7 +16,7 @@
             <input type="submit" value="GO &rarr;">
           </div>
 		  	  <span class="align-center" ng-click="mapComp.showSettings = !mapComp.showSettings">
-		  	  	<i class="fa fa-sliders" aria-hidden="true"></i> 
+		  	  	<i class="fa fa-sliders" aria-hidden="true"></i>
 		  	  	<h5 class="txt-uppercase">Filters</h5>
 		  	  </span>
 		  	</div>
@@ -35,18 +35,18 @@
     <div id="directionsPanel">
     </div>
 
-    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" ng-if="route.length>0" ng-repeat="route in mapComp.countedCrimes track by $index">
+    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" ng-if="mapComp.countedCrimes[mapComp.routeIndex].length>0">
       <div class="panel panel-default">
-        <div class="panel-heading" role="tab" id="headingOne">
-          <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{$index}}" aria-expanded="true" aria-controls="collapse{{$index}}">
+        <div class="panel-heading" role="tab" id="headingRoute">
+          <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseRoute" aria-expanded="true" aria-controls="collapseRoute">
             <h4 class="panel-title">
-                Route #{{$index+1}} Crime Data
+                Route #{{mapComp.routeIndex+1}} Crime Data
             </h4>
           </a>
         </div>
-        <div id="collapse{{$index}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{{$index}}" aria-expanded="false" style="height: 0px;">
+        <div id="collapseRoute" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingRoute" aria-expanded="false" style="height: 0px;">
           <div class="panel-body">
-            <div ng-repeat="crime in route track by $index">
+            <div ng-repeat="crime in mapComp.countedCrimes[mapComp.routeIndex] track by $index">
               <p><strong>{{crime.event_clearance_date}}</strong></p>
               <p>{{crime.event_clearance_description}} &mdash; {{crime.initial_type_description}}</p>
               <p>{{crime.hundred_block_location}}</p>
@@ -73,13 +73,13 @@
     	<hr>
     	<div class="filter-section">
     		<label class="txt-uppercase">Crimes</label>
-    		<input type="checkbox" name="Physical" value="Physical" id="filter-crime-physical" ng-click="mapComp.checkBox(); mapComp.getCrimes(mapComp.box)" checked> 
+    		<input type="checkbox" name="Physical" value="Physical" id="filter-crime-physical" ng-click="mapComp.checkBox(); mapComp.getCrimes(mapComp.box)" checked>
     			Physical Harm <span class="txt-gray">(Homicide / Assault / Mugging)</span><br>
-    		<input type="checkbox" name="Weapons" value="Weapons" id="filter-crime-weapon" ng-click="mapComp.checkBox(); mapComp.getCrimes(mapComp.box)" checked> 
+    		<input type="checkbox" name="Weapons" value="Weapons" id="filter-crime-weapon" ng-click="mapComp.checkBox(); mapComp.getCrimes(mapComp.box)" checked>
     			Weapons <span class="txt-gray">(Armed Robbery / Person With a Gun / Carrying Weapon)</span><br>
-    		<input type="checkbox" name="Vehicle" value="Vehicle" id="filter-crime-vehicle" ng-click="mapComp.checkBox(); mapComp.getCrimes(mapComp.box)" checked> 
+    		<input type="checkbox" name="Vehicle" value="Vehicle" id="filter-crime-vehicle" ng-click="mapComp.checkBox(); mapComp.getCrimes(mapComp.box)" checked>
     			Vehicle <span class="txt-gray">(Auto Theft / Car Prowl)</span><br>
-    		<input type="checkbox" name="Jerk" value="Jerk" id="filter-crime-jerk" ng-click="mapComp.checkBox(); mapComp.getCrimes(mapComp.box)" checked> 
+    		<input type="checkbox" name="Jerk" value="Jerk" id="filter-crime-jerk" ng-click="mapComp.checkBox(); mapComp.getCrimes(mapComp.box)" checked>
     			Just Being a Jerk <span class="txt-gray">(Harassment / Threats)</span><br>
     	</div>
 
@@ -125,23 +125,23 @@
   <img src="../../img/beacon_logo.svg" alt="enter directions" id="beacon-logo">
 	<div id="map-controls" ng-show="mapComp.countedCrimes.length !== undefined">
     <button class="btn btn-controls" ng-click="mapComp.toggleHeatmap()">
-      <img src="../../img/control-icon_heatmap-inactive.svg" alt="hide border" class="control-icon"> 
+      <img src="../../img/control-icon_heatmap-inactive.svg" alt="hide border" class="control-icon">
       Heatmap
     </button>
 		<button class="btn btn-controls" ng-click="mapComp.toggleBorder()">
-      <img src="../../img/control-icon_border-inactive.svg" alt="hide border" class="control-icon"> 
+      <img src="../../img/control-icon_border-inactive.svg" alt="hide border" class="control-icon">
       Border
     </button>
 		<button class="btn btn-controls" ng-click="mapComp.toggleTraffic()">
-      <img src="../../img/control-icon_traffic-inactive.svg" alt="hide border" class="control-icon"> 
+      <img src="../../img/control-icon_traffic-inactive.svg" alt="hide border" class="control-icon">
       Traffic
     </button>
 		<button class="btn btn-controls" ng-click="mapComp.addCrimeMarkers()">
-      <img src="../../img/control-icon_crimes-inactive.svg" alt="hide border" class="control-icon"> 
+      <img src="../../img/control-icon_crimes-inactive.svg" alt="hide border" class="control-icon">
       add crimes
     </button>
 		<button class="btn btn-controls" ng-click="mapComp.removeCrimeMarkers()">
-      <img src="../../img/control-icon_crimes-inactive.svg" alt="hide border" class="control-icon"> 
+      <img src="../../img/control-icon_crimes-inactive.svg" alt="hide border" class="control-icon">
       remove crimes
     </button>
 	</div>

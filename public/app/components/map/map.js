@@ -23,7 +23,8 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
   	mapComp.crimeWindow = 12;
   	mapComp.markers = [];
   	mapComp.infoWindows = [];
-    
+		mapComp.routeIndex;
+
 
     // INITILAIZE MAP
     mapComp.initMap = function() {
@@ -486,6 +487,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
 
             // WHEN ROUTE OPTION IS CHANGED, RETURN DIRECTIONS
             google.maps.event.addListener(mapComp.directionsDisplay, 'routeindex_changed', function() {
+								mapComp.routeIndex = this.getRouteIndex();
                 // mapScope.removeMarkers();
                 mapScope.removeBox();
                 // CURRENT ROUTE INDEX
