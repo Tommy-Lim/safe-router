@@ -172,6 +172,10 @@ input[type="submit"]:hover, input[type="submit"]:active {
 	color: #6A6AC6;
 }
 
+.txt-dark {
+	color: #160D31;
+}
+
 .txt-blue {
 	color: #3C93F8;
 }
@@ -196,6 +200,10 @@ input[type="submit"]:hover, input[type="submit"]:active {
 .main-panel {
 	padding: 20px 30px;
 	background-color: #160d31;
+}
+
+.panel-body {
+	color: #160D31;
 }
 
 .container-load {
@@ -554,6 +562,25 @@ input[type=range]:focus::-ms-fill-upper {
 	display: flex;
 	justify-content: space-around;
 	padding: 10px;
+	color: #160D31;
+}
+
+.row-flex {
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+}
+
+.route-score-box h4{
+	font-weight: 700;
+}
+
+#bootstrap-overrides .badge {
+	background-color: #160D31;
+	width: 28px;
+	height: 28px;
+	border-radius: 50%;
+	padding: 8px 5px 5px 5px;
 }
 
 #banner-settings {

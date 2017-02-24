@@ -36,11 +36,12 @@
   <!-- Route(s) Information -->
 	<div class="main-panel" id="route-information" ng-show="mapComp.countedCrimes.length !== undefined">
     <div class="route-score-box">
-      <div ng-if="mapComp.countedCrimes[0].length > 1">Route 1 <span class="badge">{{mapComp.countedCrimes[0].length}}</span></div>
-      <div ng-if="mapComp.countedCrimes[1].length > 1">Route 2 <span class="badge">{{mapComp.countedCrimes[1].length}}</span></div>
-      <div ng-if="mapComp.countedCrimes[2].length > 1">Route 3 <span class="badge">{{mapComp.countedCrimes[2].length}}</span></div>
-    </div>
-    <div id="directionsPanel">
+      <div class="row-flex" ng-if="mapComp.countedCrimes[0].length > 1">
+        <h4 class="txt-dark">Route 1</h4> 
+        <span class="badge">{{mapComp.countedCrimes[0].length}}</span>
+      </div>
+      <div class="row-flex" ng-if="mapComp.countedCrimes[1].length > 1"><h4 class="txt-dark">Route 2</h4> <span class="badge">{{mapComp.countedCrimes[1].length}}</span></div>
+      <div class="row-flex" ng-if="mapComp.countedCrimes[2].length > 1"><h4 class="txt-dark">Route 3</h4> <span class="badge">{{mapComp.countedCrimes[2].length}}</span></div>
     </div>
 
     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" ng-if="mapComp.countedCrimes[mapComp.routeIndex].length>0">
@@ -48,7 +49,7 @@
         <div class="panel-heading" role="tab" id="headingRoute">
           <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseRoute" aria-expanded="true" aria-controls="collapseRoute">
             <h4 class="panel-title">
-                Route #{{mapComp.routeIndex+1}} Crime Data
+                View Crime Data
             </h4>
           </a>
         </div>
@@ -64,6 +65,10 @@
         </div>
       </div>
     </div>
+
+    <div id="directionsPanel">
+    </div>
+
 
   </div>
 
