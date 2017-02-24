@@ -109,7 +109,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
                 zoom: 14,
                 mapTypeControl: false,
                 streetViewControl: false,
-                styles: 
+                styles:
                 	[
                 			{
                 					"featureType": "all",
@@ -444,12 +444,28 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
 			mapComp.toggleTraffic();
 
 			// ADD INPUTS TO MAP
-			var startInput = document.getElementById('start-input');
 			// mapComp.mapid.controls[google.maps.ControlPosition.TOP_LEFT].push(startInput);
-			var autocomplete = new google.maps.places.Autocomplete(startInput); // second param can be mapComp.options
-			var endInput = document.getElementById('end-input');
+			var startInput = document.getElementById('start-input');
+			var autocompleteStart = new google.maps.places.Autocomplete(startInput); // second param can be mapComp.options
+			autocompleteStart.addListener('place_changed', function(){
+				var place = autocompleteStart.getPlace();
+				if(!place.geometry){
+					console.log("place not found");
+				} else{
+					mapComp.start = place.formatted_address;
+				}
+			})
 			// mapComp.mapid.controls[google.maps.ControlPosition.TOP_LEFT].push(endInput);
-			var autocomplete = new google.maps.places.Autocomplete(endInput); // second param can be mapComp.options
+			var endInput = document.getElementById('end-input');
+			var autocompleteEnd = new google.maps.places.Autocomplete(endInput); // second param can be mapComp.options
+			autocompleteEnd.addListener('place_changed', function(){
+				var place = autocompleteEnd.getPlace();
+				if(!place.geometry){
+					console.log("place not found");
+				} else{
+					mapComp.end = place.formatted_address;
+				}
+			})
 			// PUSH FORM TO MAP
 			// var formInput = document.getElementById('form-input');
 			// mapComp.mapid.controls[google.maps.ControlPosition.TOP_CENTER].push(formInput);
@@ -527,9 +543,12 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
             // }
         }
 
+				console.log("REQUEST IS: ", request);
+
         // GET ROUTES USING DIRECTIONS SERVICE
         mapComp.directionsService.route(request, function(result, status) {
             if (status == 'OK') {
+							console.log("RESULT IS: ", result);
                 mapComp.directionsResult = result;
                 mapComp.directionsDisplay.setDirections(result);
                 // console.log("DIRECTIONS RESULT: ", mapComp.directionsResult)
