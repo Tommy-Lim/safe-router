@@ -164,7 +164,7 @@ input[type="submit"] {
 	top: 0;
 	left: 0;
 	height: 100vh;
-	background-color: #E1DFEB;
+	background-color: #160D31;
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-start;
@@ -243,7 +243,7 @@ input[type="submit"] {
 
 #img-directions {
 	width: 13px;
-	margin-top: 11px;
+	margin-top: 10px;
 }
 
 #directions-controls {
@@ -334,8 +334,10 @@ td.adp-listsel {
 /* 3. SEARCH FILTERS */
 
 #search-filters {
-	z-index: 3;
+	z-index: 12;
+	position: absolute;
 	top: 0;
+	left: 0;
 	width: 100%;
 	height: 100vh;
 	display: flex;
@@ -362,7 +364,7 @@ td.adp-listsel {
 
 .filter-section input[type="number"] {
 	margin-top: 6px;
-	width: 6.2em;
+	width: 4em;
 }
 
 input[type=range] {
@@ -540,7 +542,7 @@ input[type=range]:focus::-ms-fill-upper {
 	position: absolute;
 	top: 14px;
 	left: 10px;
-	width: 130px;
+	width: 138px;
 }
 
 #bootstrap-overrides .btn-controls {
