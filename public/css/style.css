@@ -32,7 +32,7 @@ hr {
 	border: 0;
 	clear: both;
 	display: block;
-	width: 100%;               
+	width: 100%;
 	background-color: #423875;
 	height: 1px;
 }
@@ -52,8 +52,8 @@ input[type="text"], input[type="number"] {
 
 input[type="submit"] {
 	background: -moz-linear-gradient(#20c4a3 0%, #3dedd4 100%);
-	background: -webkit-linear-gradient(#20c4a3 0%, #3dedd4 100%); 
-	background: linear-gradient(to top, #20c4a3 0%, #3dedd4 100%); 
+	background: -webkit-linear-gradient(#20c4a3 0%, #3dedd4 100%);
+	background: linear-gradient(to top, #20c4a3 0%, #3dedd4 100%);
 	color: #2F2152;
 	border-radius: 2px;
 	font-weight: 800;
@@ -82,8 +82,8 @@ input[type="submit"] {
 
 #bootstrap-overrides .btn-primary {
 	background: -moz-linear-gradient(#20c4a3 0%, #3dedd4 100%);
-	background: -webkit-linear-gradient(#20c4a3 0%, #3dedd4 100%); 
-	background: linear-gradient(to top, #20c4a3 0%, #3dedd4 100%); 
+	background: -webkit-linear-gradient(#20c4a3 0%, #3dedd4 100%);
+	background: linear-gradient(to top, #20c4a3 0%, #3dedd4 100%);
 	color: #2F2152;
 	font-weight: 800;
 }
@@ -301,4 +301,12 @@ tr {
 
 #map-controls button {
 	margin-right: 2px;
+}
+
+
+#bodyContent{
+	color: black;
+}
+.info-date{
+	font-weight: bold;
 }

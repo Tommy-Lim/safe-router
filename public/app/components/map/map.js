@@ -563,7 +563,23 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
         console.log("CURRENT ROUTES ARRAY TO ADD MARKERS TO: ", mapComp.countedCrimes[index]);
         mapComp.countedCrimes[index].forEach(function(coordinate) {
 						var contentString =
-										'<p>' + coordinate.event_clearance_description + '</p>'
+						'<div id="content">'+
+							'<div id="bodyContent">'+
+								'<div class="info-date">'+
+									coordinate.event_clearance_date+
+								'</div>'+
+								'<div class="info-location">'+
+									coordinate.hundred_block_location+
+								'</div>'+
+								'<div class="clearance-desc">'+
+									coordinate.event_clearance_description+
+								'</div>'+
+								'<div class="initial-desc">'+
+									coordinate.initial_type_description+
+								'</div>'+
+							'</div>'+
+						'</div>';
+										// '< div class="info-subgroup">' + coordinate.initial_type_description + '</div>';
 						var infoWindow = new google.maps.InfoWindow({
 							content: contentString
 						})
