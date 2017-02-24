@@ -27,7 +27,6 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval, $scope)
     mapComp.routeIndex;
     mapComp.showCrimes = false;
 		mapComp.mapLoading = false;
-		mapComp.directionsLoading = false;
 		mapComp.crimesLoading = false;
 
 
@@ -897,6 +896,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval, $scope)
     }
 
     mapComp.findMatches = function() {
+				mapComp.crimesLoading = true;
         var sensitivity;
         if (!mapComp.sensitivity) {
             sensitivity = 3;
