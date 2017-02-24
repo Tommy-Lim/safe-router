@@ -18,6 +18,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
     mapComp.showControls = true;
     mapComp.start = '503 1st Ave W, Seattle';
   	mapComp.end = 'General Assembly Seattle';
+    mapComp.controlHeatmap = true;
   	mapComp.sensitivity = 3;
   	mapComp.padding = 0.003;
   	mapComp.crimeWindow = 12;
@@ -35,7 +36,9 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
         mapComp.directionsDisplay = new google.maps.DirectionsRenderer({
 					draggable: true,
 					polylineOptions: {
-						strokeColor: "red" TODO RYNE
+						strokeColor: "#3db0ff",
+            strokeOpacity: .8,
+            strokeWeight: 8
 					}
 				});
         // SET DEFAULT LAT/LNG IN SEATTLE
@@ -151,7 +154,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
                 					"elementType": "geometry.fill",
                 					"stylers": [
                 							{
-                									"color": "#3e356e"
+                									"visibility": "off"
                 							}
                 					]
                 			},
@@ -181,7 +184,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
                 					"elementType": "all",
                 					"stylers": [
                 							{
-                									"visibility": "simplified"
+                									"visibility": "off"
                 							}
                 					]
                 			},
@@ -190,7 +193,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
                 					"elementType": "geometry",
                 					"stylers": [
                 							{
-                									"visibility": "simplified"
+                									"visibility": "off"
                 							}
                 					]
                 			},
@@ -199,7 +202,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
                 					"elementType": "labels.text",
                 					"stylers": [
                 							{
-                									"visibility": "simplified"
+                									"visibility": "off"
                 							}
                 					]
                 			},
@@ -217,7 +220,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
                 					"elementType": "all",
                 					"stylers": [
                 							{
-                									"visibility": "simplified"
+                									"visibility": "off"
                 							},
                 					]
                 			},
@@ -275,12 +278,19 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
                 							}
                 					]
                 			},
+                      {
+                              "featureType": "poi",
+                              "elementType": "labels",
+                              "stylers": [
+                                    { "visibility": "off" }
+                              ]
+                      },
                 			{
                 					"featureType": "poi",
                 					"elementType": "geometry",
                 					"stylers": [
                 							{
-                									"color": "#2f2152"
+                									"visibility": "off"
                 							}
                 					]
                 			},
@@ -885,6 +895,8 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
     }
 
     mapComp.toggleHeatmap = function(){
+      mapComp.controlHeatmap = !mapComp.controlHeatmap;
+      console.log(mapComp.controlHeatmap);
 			if(mapComp.heatMap){
 				if(mapComp.heatMap.getMap()){
 					mapComp.heatMap.setMap(null);

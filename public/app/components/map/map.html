@@ -77,9 +77,9 @@
     			Physical Harm <span class="txt-gray">(Homicide / Assault / Mugging)</span><br>
     		<input type="checkbox" name="Weapons" value="Weapons" id="filter-crime-weapon" ng-click="mapComp.checkBox(); mapComp.getCrimes(mapComp.box)" checked>
     			Weapons <span class="txt-gray">(Armed Robbery / Person With a Gun / Carrying Weapon)</span><br>
-    		<input type="checkbox" name="Vehicle" value="Vehicle" id="filter-crime-vehicle" ng-click="mapComp.checkBox(); mapComp.getCrimes(mapComp.box)" checked>
+    		<input type="checkbox" name="Vehicle" value="Vehicle" id="filter-crime-vehicle" ng-click="mapComp.checkBox(); mapComp.getCrimes(mapComp.box)">
     			Vehicle <span class="txt-gray">(Auto Theft / Car Prowl)</span><br>
-    		<input type="checkbox" name="Jerk" value="Jerk" id="filter-crime-jerk" ng-click="mapComp.checkBox(); mapComp.getCrimes(mapComp.box)" checked>
+    		<input type="checkbox" name="Jerk" value="Jerk" id="filter-crime-jerk" ng-click="mapComp.checkBox(); mapComp.getCrimes(mapComp.box)">
     			Just Being a Jerk <span class="txt-gray">(Harassment / Threats)</span><br>
     	</div>
 
@@ -125,20 +125,21 @@
   <img src="../../img/beacon_logo.svg" alt="enter directions" id="beacon-logo">
 	<div id="map-controls" ng-show="mapComp.countedCrimes.length !== undefined">
     <button class="btn btn-controls" ng-click="mapComp.toggleHeatmap()">
-      <img src="../../img/control-icon_heatmap-inactive.svg" alt="hide border" class="control-icon">
-      Heatmap
+      <img src="../../img/control-icon_heatmap-active.svg" alt="hide border" class="control-icon" ng-show="mapComp.controlHeatmap === true">
+      <img src="../../img/control-icon_heatmap-inactive.svg" alt="hide border" class="control-icon" ng-show="mapComp.controlHeatmap === false">
+      <span ng-class="{'txt-white': mapComp.controlHeatmap}">Heatmap</span>
     </button>
 		<button class="btn btn-controls" ng-click="mapComp.toggleBorder()">
       <img src="../../img/control-icon_border-inactive.svg" alt="hide border" class="control-icon">
-      Border
+      <span>Border</span>
     </button>
 		<button class="btn btn-controls" ng-click="mapComp.toggleTraffic()">
       <img src="../../img/control-icon_traffic-inactive.svg" alt="hide border" class="control-icon">
-      Traffic
+      <span>Traffic</span>
     </button>
 		<button class="btn btn-controls" ng-click="mapComp.toggleCrimeMarkers()">
       <img src="../../img/control-icon_crimes-inactive.svg" alt="hide border" class="control-icon">
-      Crimes
+      <span>Crimes</span>
     </button>
 	</div>
 	<div id="mapid">

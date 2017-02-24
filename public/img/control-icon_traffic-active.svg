@@ -1,1 +1,15 @@
-<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 20 20"><defs><style>.cls-1{fill:url(#linear-gradient);}</style><linearGradient id="linear-gradient" y1="10" x2="20" y2="10" gradientUnits="userSpaceOnUse"><stop offset="0.15" stop-color="#ffa73e"/><stop offset="1" stop-color="#e88c39"/></linearGradient></defs><title>control_icons</title><path class="cls-1" d="M10,0A10,10,0,1,0,20,10,10,10,0,0,0,10,0ZM2.58,7.37a7.85,7.85,0,0,1,14.83,0l.11.3H2.47Zm6.09,10.4A7.88,7.88,0,0,1,2.1,10V9.77h.23c3.58,0,6.55,3.48,6.61,7.77v.27ZM8.49,10A1.51,1.51,0,1,1,10,11.5,1.51,1.51,0,0,1,8.49,10Zm2.84,7.77-.27,0v-.27c.06-4.28,3-7.77,6.61-7.77h.23V10A7.87,7.87,0,0,1,11.33,17.77Z"/></svg>
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!-- Generator: Adobe Illustrator 20.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 20 20" style="enable-background:new 0 0 20 20;" xml:space="preserve">
+<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="1.652248e-04" y1="10.0003" x2="20.0003" y2="10.0003">
+	<stop  offset="0.1452" style="stop-color:#FFA73E"/>
+	<stop  offset="1" style="stop-color:#E88C39"/>
+</linearGradient>
+<path style="fill:url(#SVGID_1_);" d="M10,0C4.486,0,0,4.486,0,10s4.486,10,10,10s10-4.486,10-10S15.514,0,10,0z M2.413,7.306
+	C3.565,4.083,6.614,1.918,10,1.918c3.387,0,6.435,2.166,7.586,5.39l0.158,0.442H2.253L2.413,7.306z M8.642,17.944
+	C4.746,17.276,1.918,13.935,1.918,10V9.669H2.25c3.675,0,6.717,3.563,6.78,7.944l0.005,0.399L8.642,17.944z M8.374,10
+	c0-0.896,0.729-1.625,1.626-1.625c0.894,0,1.622,0.729,1.622,1.625c0,0.894-0.727,1.62-1.622,1.62
+	C9.104,11.62,8.374,10.894,8.374,10z M11.358,17.944l-0.394,0.068l0.005-0.399c0.062-4.381,3.102-7.944,6.777-7.944h0.331V10
+	C18.078,13.935,15.252,17.276,11.358,17.944z"/>
+</svg>
