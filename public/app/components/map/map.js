@@ -11,7 +11,7 @@ angular.module('App').component('mapComp', {
     // }
 });
 
-function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
+function MapCompCtrl($http, DirectionsServices, CrimeService, $interval, $scope) {
     var mapComp = this;
     mapComp.CrimeService = CrimeService;
     mapComp.showSettings = false;
@@ -26,10 +26,19 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
     mapComp.infoWindows = [];
     mapComp.routeIndex;
     mapComp.showCrimes = false;
+		mapComp.mapLoading = false;
+		mapComp.crimesLoading = false;
 
+
+		function setMapLoading(val) {
+			mapComp.mapLoading = val;
+			$scope.$apply();
+		}
 
     // INITILAIZE MAP
     mapComp.initMap = function() {
+			console.log("map loading to true")
+				setMapLoading(true);
         mapScope = this;
         // INIT DIRECTIONS SERVICE AND RENDERER
         mapComp.directionsService = new google.maps.DirectionsService();
@@ -419,7 +428,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
                         ]
                     }
                 ]
-            });
+						})
 
             // ADD LAYERS TO MAP
             mapComp.trafficLayer = new google.maps.TrafficLayer();
@@ -489,8 +498,10 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
 
             // ADD CURRENT LOCATION TO MAP
             addCenter(latLng);
-        }
+						console.log("map loading to false")
+						setMapLoading(false);
 
+        }
     }
 
     mapComp.closeInfoWindows = function() {
@@ -678,6 +689,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
     }
 
     mapComp.getCrimes = function() {
+			mapComp.crimesLoading = true;
         mapScope = this;
         var crimes = mapComp.CrimeService.getCrimes(mapComp.box).then(function(data) {
             console.log("CRIMES: ", data.result);
@@ -880,9 +892,11 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
                 }
             });
         });
+
     }
 
     mapComp.findMatches = function() {
+				mapComp.crimesLoading = true;
         var sensitivity;
         if (!mapComp.sensitivity) {
             sensitivity = 3;
@@ -920,6 +934,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
             })
         })
         console.log("COUNTED CRIMES: ", mapComp.countedCrimes);
+				mapComp.crimesLoading = false;
 
     }
 
@@ -963,4 +978,4 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
 
 }
 
-MapCompCtrl.$inject = ['$http', 'DirectionsServices', 'CrimeService', '$interval']
+MapCompCtrl.$inject = ['$http', 'DirectionsServices', 'CrimeService', '$interval', '$scope']
