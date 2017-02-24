@@ -482,12 +482,10 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
                 mapScope.getCrimes();
             });
 
-			// CLOSE ALL INFOWINDOWS ON CLICK;
-			mapComp.mapid.addListener('click', function(){
-				mapComp.infoWindows.forEach(function(infoWindow){
-					infoWindow.close();
-				})
-			})
+      // CLOSE ALL INFOWINDOWS ON CLICK;
+      mapComp.mapid.addListener('click', function(){
+        mapComp.closeInfoWindows();
+      })
 
 			// ADD CURRENT LOCATION TO MAP
 			addCenter(latLng);
