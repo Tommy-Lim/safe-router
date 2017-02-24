@@ -628,6 +628,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
     // REMOVE LAT/LNG MARKERS FOR CURRENT ROUTE
     mapComp.toggleCrimeMarkers = function() {
 			if(mapComp.showCrimes){
+				mapComp.showCrimes = false;
 				if (mapComp.markers && mapComp.markers.length > 0) {
             mapComp.markers.forEach(function(marker) {
                 marker.setMap(null);
