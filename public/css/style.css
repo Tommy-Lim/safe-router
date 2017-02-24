@@ -168,6 +168,14 @@ input[type="submit"]:hover, input[type="submit"]:active {
 	color: white;
 }
 
+.txt-purple {
+	color: #6A6AC6;
+}
+
+.txt-blue {
+	color: #3C93F8;
+}
+
 
 
 /* LAYOUT AND CONTAINERS */
@@ -228,6 +236,43 @@ input[type="submit"]:hover, input[type="submit"]:active {
 	padding: 10px 30px;
 	text-align: center;
 }
+
+
+/* LOADING SCREENS */
+
+#map-loading-overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	background-color: #160D31;
+	z-index: 100;
+}
+
+#map-loading-overlay img {
+	width: 300px;
+	margin-bottom: 40px;
+}
+
+.crimes-loading-overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	background-color: rgba(22,13,49,.75);
+	z-index: 99;
+}
+
 
 
 /* 1. ENTER DIRECTIONS PANEL */

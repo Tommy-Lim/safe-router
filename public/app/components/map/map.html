@@ -1,6 +1,13 @@
+<div ng-if="mapComp.mapLoading" id="map-loading-overlay">
+  <img src="../../img/beacon_logo.svg" alt="enter directions">
+  <h3 class="txt-blue">Loading&hellip;</h3>
+</div>
+
+<div class="crimes-loading-overlay" ng-if="mapComp.crimesLoading">
+  <h3 class="txt-white">Loading crimes&hellip;</h3>
+</div>
+
 <div class="main-container">
-  <p ng-if="mapComp.mapLoading">Map Loading</p>
-  <p ng-if="mapComp.crimesLoading">Crimes Loading</p>
   <!-- Enter Directions -->
   <div class="main-panel" id="enter-directions" ng-show="mapComp.showSettings === false">
   	<div id="directions-container">
@@ -13,13 +20,13 @@
 	  	    <input type="text" id="end-input" placeholder="Choose destination&hellip;" ng-model="mapComp.end">
 	  	  </div>
 	  	  <div class="align-center-space" id="directions-controls">
-          <div class="form-group">
-            <input type="submit" value="GO &rarr;">
-          </div>
 		  	  <span class="align-center" ng-click="mapComp.showSettings = !mapComp.showSettings">
 		  	  	<i class="fa fa-sliders" aria-hidden="true"></i>
 		  	  	<h5 class="txt-uppercase">Filters</h5>
 		  	  </span>
+          <div class="form-group" ng-show="mapComp.start && mapComp.end">
+            <input type="submit" value="GO &rarr;">
+          </div>
 		  	</div>
 	  	</form>
 	  </div>
@@ -147,10 +154,5 @@
     </button>
 	</div>
 	<div id="mapid">
-		<div class="container-load">
-			<div>
-				Loading map. Please wait.
-			</div>
-		</div>
 	</div>
 </div>

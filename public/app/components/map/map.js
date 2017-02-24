@@ -570,6 +570,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval, $scope)
 
     //ADD LA/LNG MARKERS FOR THE CURRENT ROUTE
     mapComp.addCrimeMarkers = function() {
+      mapComp.crimesLoading = true;
         var index = mapComp.routeIndex;
         console.log("CURRENT ROUTES ARRAY TO ADD MARKERS TO: ", mapComp.countedCrimes[index]);
         mapComp.countedCrimes[index].forEach(function(coordinate) {
@@ -587,6 +588,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval, $scope)
             })
             mapComp.markers.push(marker);
         })
+      mapComp.crimesLoading = false;
     }
 
     // REMOVE LAT/LNG MARKERS FOR CURRENT ROUTE
@@ -674,6 +676,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval, $scope)
 
         // BUILD BOX POLYGON
         mapComp.mapBox = new google.maps.Polygon({paths: mapComp.boxCoordinates, strokeColor: '#FF4D64', strokeOpacity: 0.8, fillColor: '#FF4D64', fillOpacity: 0.2})
+        mapComp.controls.border = true;
 
         // SET POLYGON TO MAP
         mapComp.mapBox.setMap(mapComp.mapid)
@@ -683,6 +686,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval, $scope)
 
     // REMOVE POLYGON FROM MAP
     mapComp.removeBox = function() {
+      mapComp.controls.border = false;
         if (mapComp.mapBox) {
             mapComp.mapBox.setMap(null)
         }
@@ -690,6 +694,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval, $scope)
 
     mapComp.getCrimes = function() {
 			mapComp.crimesLoading = true;
+      console.log(mapComp.controls.border)
         mapScope = this;
         var crimes = mapComp.CrimeService.getCrimes(mapComp.box).then(function(data) {
             console.log("CRIMES: ", data.result);
