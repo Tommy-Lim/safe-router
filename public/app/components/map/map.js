@@ -482,12 +482,10 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
                 mapScope.getCrimes();
             });
 
-			// CLOSE ALL INFOWINDOWS ON CLICK;
-			mapComp.mapid.addListener('click', function(){
-				mapComp.infoWindows.forEach(function(infoWindow){
-					infoWindow.close();
-				})
-			})
+						// CLOSE ALL INFOWINDOWS ON CLICK;
+						mapComp.mapid.addListener('click', function(){
+							mapComp.closeInfoWindows();
+						})
 
 			// ADD CURRENT LOCATION TO MAP
 			addCenter(latLng);
@@ -496,6 +494,12 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
 
 
     }
+
+		mapComp.closeInfoWindows = function(){
+			mapComp.infoWindows.forEach(function(infoWindow){
+				infoWindow.close();
+			})
+		}
 
     // CALCULATE ROUTE
     mapComp.calcRoute = function(start, end, delay) {
@@ -559,7 +563,23 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
         console.log("CURRENT ROUTES ARRAY TO ADD MARKERS TO: ", mapComp.countedCrimes[index]);
         mapComp.countedCrimes[index].forEach(function(coordinate) {
 						var contentString =
-										'<p>' + coordinate.event_clearance_description + '</p>'
+						'<div id="content">'+
+							'<div id="bodyContent">'+
+								'<div class="info-date">'+
+									coordinate.event_clearance_date+
+								'</div>'+
+								'<div class="info-location">'+
+									coordinate.hundred_block_location+
+								'</div>'+
+								'<div class="clearance-desc">'+
+									coordinate.event_clearance_description+
+								'</div>'+
+								'<div class="initial-desc">'+
+									coordinate.initial_type_description+
+								'</div>'+
+							'</div>'+
+						'</div>';
+										// '< div class="info-subgroup">' + coordinate.initial_type_description + '</div>';
 						var infoWindow = new google.maps.InfoWindow({
 							content: contentString
 						})
@@ -569,6 +589,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
 							map: mapComp.mapid,
 						})
 						marker.addListener('click', function(){
+							mapComp.closeInfoWindows();
 							infoWindow.open(mapComp.mapid, marker);
 							mapComp.infoWindows.push(infoWindow);
 						})
