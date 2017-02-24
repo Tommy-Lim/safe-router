@@ -6,10 +6,10 @@
 	  	<img src="../../img/directions.svg" alt="enter directions" id="img-directions">
 	  	<form ng-submit="mapComp.calcRoute()">
 	  	  <div class="form-group">
-	  	    <input type="text" id="start-input" placeholder="Choose starting point" ng-model="mapComp.start">
+	  	    <input type="text" id="start-input" placeholder="Choose starting point&hellip;" ng-model="mapComp.start">
 	  	  </div>
 	  	  <div class="form-group">
-	  	    <input type="text" id="end-input" placeholder="Choose destination" ng-model="mapComp.end">
+	  	    <input type="text" id="end-input" placeholder="Choose destination&hellip;" ng-model="mapComp.end">
 	  	  </div>
 	  	  <div class="align-center-space" id="directions-controls">
           <div class="form-group">
@@ -124,17 +124,26 @@
 <div id="map">
   <img src="../../img/beacon_logo.svg" alt="enter directions" id="beacon-logo">
 	<div id="map-controls" ng-show="mapComp.countedCrimes.length !== undefined">
-    <button class="btn btn-controls" ng-click="mapComp.toggleHeatmap()">Heatmap</button>
+    <button class="btn btn-controls" ng-click="mapComp.toggleHeatmap()">
+      <img src="../../img/control-icon_heatmap-inactive.svg" alt="hide border" class="control-icon"> 
+      Heatmap
+    </button>
 		<button class="btn btn-controls" ng-click="mapComp.toggleBorder()">
-      <img src="../../img/control-icon_border-active.svg" alt="hide border" class="control-icon"> 
+      <img src="../../img/control-icon_border-inactive.svg" alt="hide border" class="control-icon"> 
       Border
     </button>
-		<button class="btn btn-controls" ng-click="mapComp.toggleTraffic()">Traffic</button>
+		<button class="btn btn-controls" ng-click="mapComp.toggleTraffic()">
+      <img src="../../img/control-icon_traffic-inactive.svg" alt="hide border" class="control-icon"> 
+      Traffic
+    </button>
 		<button class="btn btn-controls" ng-click="mapComp.addCrimeMarkers()">
-      <img src="../../img/control-icon_crimes-active.svg" alt="hide border" class="control-icon"> 
+      <img src="../../img/control-icon_crimes-inactive.svg" alt="hide border" class="control-icon"> 
       add crimes
     </button>
-		<button class="btn btn-controls" ng-click="mapComp.removeCrimeMarkers()">remove crimes</button>
+		<button class="btn btn-controls" ng-click="mapComp.removeCrimeMarkers()">
+      <img src="../../img/control-icon_crimes-inactive.svg" alt="hide border" class="control-icon"> 
+      remove crimes
+    </button>
 	</div>
 	<div id="mapid">
 		<div class="container-load">

@@ -1,12 +1,1 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<!-- Generator: Adobe Illustrator 20.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 20 20" style="enable-background:new 0 0 20 20;" xml:space="preserve">
-<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="0.6528" y1="19.3472" x2="19.3472" y2="0.6528">
-	<stop  offset="0" style="stop-color:#FF6457"/>
-	<stop  offset="1" style="stop-color:#FF3074"/>
-</linearGradient>
-<path style="fill:url(#SVGID_1_);" d="M0,2.222v6.444h2.222V2.222h6.444V0H2.222C1,0,0,1,0,2.222z M2.222,11.333H0v6.444
-	C0,19,1,20,2.222,20h6.444v-2.222H2.222V11.333z M17.778,17.778h-6.444V20h6.444C19,20,20,19,20,17.778v-6.444h-2.222V17.778z
-	 M17.778,0h-6.444v2.222h6.444v6.444H20V2.222C20,1,19,0,17.778,0z"/>
-</svg>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 20 20"><defs><style>.cls-1{fill:url(#linear-gradient);}</style><linearGradient id="linear-gradient" x1="0.65" y1="19.35" x2="19.35" y2="0.65" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ff6457"/><stop offset="1" stop-color="#ff3074"/></linearGradient></defs><title>control_icons</title><path class="cls-1" d="M0,2.22V8.67H2.22V2.22H8.67V0H2.22A2.23,2.23,0,0,0,0,2.22Zm2.22,9.11H0v6.44A2.23,2.23,0,0,0,2.22,20H8.67V17.78H2.22Zm15.56,6.44H11.33V20h6.44A2.23,2.23,0,0,0,20,17.78V11.33H17.78ZM17.78,0H11.33V2.22h6.44V8.67H20V2.22A2.23,2.23,0,0,0,17.78,0Z"/></svg>

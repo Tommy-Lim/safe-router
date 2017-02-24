@@ -53,6 +53,7 @@ input[type="text"], input[type="number"] {
 	border-bottom: 1px solid #3C93F8;
 	outline: none;
 	padding: 6px 0;
+	font-weight: 300;
 }
 
 input[type="checkbox"] {
@@ -75,6 +76,19 @@ input[type="submit"] {
 	cursor: pointer;
 }
 
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  color: #6E6ECF;
+}
+::-moz-placeholder { /* Firefox 19+ */
+  color: #6E6ECF;
+}
+:-ms-input-placeholder { /* IE 10+ */
+  color: #6E6ECF;
+}
+:-moz-placeholder { /* Firefox 18- */
+  color: #6E6ECF;
+}
+
 ::-webkit-scrollbar {
     width: 12px;
     padding: 0 4px;
@@ -92,6 +106,7 @@ input[type="submit"] {
     border: 2px solid transparent;
     background-clip: content-box;
 }
+
 
 /* Button Styles */
 
