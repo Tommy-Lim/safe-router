@@ -9,6 +9,7 @@ body {
 }
 
 h3 {
+	font-size: 26px;
 	line-height: 1;
 	margin: 0;
 	font-weight: 700;
@@ -75,7 +76,7 @@ input[type="submit"] {
 }
 
 ::-webkit-scrollbar {
-    width: 14px;
+    width: 12px;
     padding: 0 4px;
     background-color: white;
 }
@@ -122,7 +123,7 @@ input[type="submit"] {
 	font-weight: 600;
 }
 
-#bootstrap-overrides .btn-secondary:hover {
+#bootstrap-overrides .btn-secondary:hover, #bootstrap-overrides .btn-controls:hover {
 	color: white;
 }
 
@@ -142,23 +143,20 @@ input[type="submit"] {
 
 /* LAYOUT AND CONTAINERS */
 
-.page-content {
+.main-container {
+	width: 450px;
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100vh;
+	background-color: #E1DFEB;
 	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: 100%;
-	height: 95vh;
-}
-
-#bootstrap-overrides .container {
-	width: 800px;
-	max-width: 96%;
-	position: relative;
+	flex-direction: column;
+	justify-content: flex-start;
 }
 
 .main-panel {
 	padding: 20px 30px;
-	border-radius: 6px;
 	background-color: #160d31;
 }
 
@@ -197,8 +195,6 @@ input[type="submit"] {
 
 .tools-banner {
 	background-color: #0a0223;
-	width: calc(100% + 60px);
-	margin-left: -30px;
 	padding: 10px 30px;
 	text-align: center;
 }
@@ -208,13 +204,14 @@ input[type="submit"] {
 
 #enter-directions {
 	z-index: 4;
-	top: 0;
 	width: 100%;
+	height: 27vh;
+	position: relative;
 }
 
 #enter-directions input[type="text"] {
 	width: 100%;
-	font-size: 18px;
+	font-size: 16px;
 }
 
 #directions-container {
@@ -225,13 +222,13 @@ input[type="submit"] {
 }
 
 #directions-container form {
-	width: 96%;
+	width: 100%;
 	margin-left: 4%;
 }
 
 #img-directions {
 	width: 13px;
-	margin-top: 12px;
+	margin-top: 11px;
 }
 
 #directions-controls {
@@ -250,20 +247,45 @@ input[type="submit"] {
 	cursor: pointer;
 }
 
+#toggle-controls {
+	width: 64px;
+	height: 50px;
+	border-radius: 4px;
+	border: none;
+	outline: none;
+	position: absolute;
+	right: -30px;
+	top: 54px;
+	z-index: 0;
+	background-color: #E1DFEB;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding-top: 6px;
+}
+
+#toggle-controls i {
+	color: #160D31;
+	margin-right: -33px; margin-top: 3px;
+}
+
+#toggle-controls .fa-arrow-left, #toggle-controls .fa-arrow-right {
+  -webkit-text-stroke: 1px #E1DFEB;
+}
+
 
 /* 2. ROUTE INFORMATION PANEL */
 
 #route-information {
-	z-index: 4;
 	background-color: #e1dfeb;
 	border-radius: 0 0 6px 6px;
-	margin-top: -6px;
-	max-height: 55vh;
+	height: 73vh;
 	overflow-y: scroll;
 }
 
 table, .adp, .adp-summary, .adp-directions, .adp-placemark, tbody, tr, td {
 	font-family: 'Muli', sans-serif;
+	font-size: 13px;
 	color: #160D31;
 	border: none;
 	box-shadow: none;
@@ -297,10 +319,18 @@ td.adp-listsel {
 /* 3. SEARCH FILTERS */
 
 #search-filters {
-	z-index: 5;
+	z-index: 3;
 	top: 0;
 	width: 100%;
-	padding-top: 24px;
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	background-color: #160D31;
+}
+
+#search-filters form {
+	margin-top: 8px;
 }
 
 .filter-section {
@@ -444,11 +474,8 @@ input[type=range]:focus::-ms-fill-upper {
 }
 
 #banner-settings {
-	border-radius: 0 0 6px 6px;
-	margin-top: 30px;
-	margin-bottom: -30px;
 	display: flex;
-	justify-content: center;
+	justify-content: flex-start;
 	align-items: center;
 	cursor: pointer;
 	transition-property: background-color;
@@ -472,13 +499,14 @@ input[type=range]:focus::-ms-fill-upper {
 	position: absolute;
 	top: 0;
 	left: 0;
-	z-index: -1;
+	z-index: -2;
 }
 
 #map-controls {
 	position: absolute;
 	top: 10px;
 	right: 10px;
+	z-index: 5;
 }
 
 #map-controls button {
@@ -489,6 +517,28 @@ input[type=range]:focus::-ms-fill-upper {
 #bodyContent{
 	color: black;
 }
+
 .info-date{
 	font-weight: bold;
+}
+
+#beacon-logo {
+	position: absolute;
+	top: 14px;
+	left: 10px;
+	width: 130px;
+}
+
+#bootstrap-overrides .btn-controls {
+	background-color: #160d31;
+	color: #5A5CAB;
+	font-weight: 600;
+	font-size: 11px;
+	padding: 8px 10px 8px 10px;
+}
+
+.control-icon {
+	width: 16px;
+	height: 16px;
+	margin-right: 5px;
 }
