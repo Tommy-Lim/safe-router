@@ -587,6 +587,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
             var marker = new google.maps.Marker({
 							position: latLng,
 							map: mapComp.mapid,
+							icon: './img/marker_crime.png'
 						})
 						marker.addListener('click', function(){
 							mapComp.closeInfoWindows();
