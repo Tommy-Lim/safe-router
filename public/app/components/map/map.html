@@ -125,20 +125,23 @@
   <img src="../../img/beacon_logo.svg" alt="enter directions" id="beacon-logo">
 	<div id="map-controls" ng-show="mapComp.countedCrimes.length !== undefined">
     <button class="btn btn-controls" ng-click="mapComp.toggleHeatmap()">
-      <img src="../../img/control-icon_heatmap-active.svg" alt="hide border" class="control-icon" ng-show="mapComp.controls.heatmap === true">
-      <img src="../../img/control-icon_heatmap-inactive.svg" alt="hide border" class="control-icon" ng-show="mapComp.controls.heatmap === false">
+      <img src="../../img/control-icon_heatmap-active.svg" alt="hide heatmap" class="control-icon" ng-show="mapComp.controls.heatmap === true">
+      <img src="../../img/control-icon_heatmap-inactive.svg" alt="show heatmap" class="control-icon" ng-show="mapComp.controls.heatmap === false">
       <span ng-class="{'txt-white': mapComp.controls.heatmap}">Heatmap</span>
     </button>
 		<button class="btn btn-controls" ng-click="mapComp.toggleBorder()">
-      <img src="../../img/control-icon_border-inactive.svg" alt="hide border" class="control-icon">
+      <img src="../../img/control-icon_border-active.svg" alt="hide border" class="control-icon" ng-show="mapComp.controls.border === true">
+      <img src="../../img/control-icon_border-inactive.svg" alt="show border" class="control-icon" ng-show="mapComp.controls.border === false">
       <span ng-class="{'txt-white': mapComp.controls.border}">Border</span>
     </button>
 		<button class="btn btn-controls" ng-click="mapComp.toggleTraffic()">
-      <img src="../../img/control-icon_traffic-inactive.svg" alt="hide border" class="control-icon">
+      <img src="../../img/control-icon_traffic-active.svg" alt="hide traffic" class="control-icon" ng-show="mapComp.controls.traffic === true">
+      <img src="../../img/control-icon_traffic-inactive.svg" alt="hide traffic" class="control-icon" ng-show="mapComp.controls.traffic === false">
       <span ng-class="{'txt-white': mapComp.controls.traffic}">Traffic</span>
     </button>
 		<button class="btn btn-controls" ng-click="mapComp.toggleCrimeMarkers()">
-      <img src="../../img/control-icon_crimes-inactive.svg" alt="hide border" class="control-icon">
+      <img src="../../img/control-icon_crimes-active.svg" alt="hide crimes" class="control-icon" ng-show="mapComp.controls.crimes === true">
+      <img src="../../img/control-icon_crimes-inactive.svg" alt="hide crimes" class="control-icon" ng-show="mapComp.controls.crimes === false">
       <span ng-class="{'txt-white': mapComp.controls.crimes}">Crimes</span>
     </button>
 	</div>
