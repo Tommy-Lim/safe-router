@@ -35,7 +35,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
         mapComp.directionsDisplay = new google.maps.DirectionsRenderer({
 					draggable: true,
 					polylineOptions: {
-						strokeColor: "red" TODO RYNE
+						strokeColor: "red"
 					}
 				});
         // SET DEFAULT LAT/LNG IN SEATTLE
