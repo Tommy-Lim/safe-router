@@ -1,68 +1,75 @@
-<div class="page-content" ng-hide="mapComp.showControls === false">
+<div class="main-container">
 
-  <div class="container">
+  <!-- Enter Directions -->
+  <div class="main-panel" id="enter-directions" ng-show="mapComp.showSettings === false">
+  	<div id="directions-container">
+	  	<img src="../../img/directions.svg" alt="enter directions" id="img-directions">
+	  	<form ng-submit="mapComp.calcRoute()">
+	  	  <div class="form-group">
+	  	    <input type="text" id="start-input" placeholder="Choose starting point&hellip;" ng-model="mapComp.start">
+	  	  </div>
+	  	  <div class="form-group">
+	  	    <input type="text" id="end-input" placeholder="Choose destination&hellip;" ng-model="mapComp.end">
+	  	  </div>
+	  	  <div class="align-center-space" id="directions-controls">
+          <div class="form-group">
+            <input type="submit" value="GO &rarr;">
+          </div>
+		  	  <span class="align-center" ng-click="mapComp.showSettings = !mapComp.showSettings">
+		  	  	<i class="fa fa-sliders" aria-hidden="true"></i> 
+		  	  	<h5 class="txt-uppercase">Filters</h5>
+		  	  </span>
+		  	</div>
+	  	</form>
+	  </div>
+  </div>
 
-    <div class="main-panel" id="enter-directions" ng-show="mapComp.showSettings === false">
-    	<div id="directions-container">
-  	  	<img src="../../img/directions.svg" alt="enter directions" id="img-directions">
-  	  	<form ng-submit="mapComp.calcRoute()">
-  	  	  <div class="form-group">
-  	  	    <input type="text" id="start-input" placeholder="Choose starting point" ng-model="mapComp.start">
-  	  	  </div>
-  	  	  <div class="form-group">
-  	  	    <input type="text" id="end-input" placeholder="Choose destination" ng-model="mapComp.end">
-  	  	  </div>
-  	  	  <div class="align-center-space" id="directions-controls">
-  		  	  <div class="form-group">
-  		  	    <input type="submit" value="Search">
-              <button class="btn btn-secondary" ng-click="mapComp.showControls = !mapComp.showControls">(X) HIDE THIS PANEL (PLACEHOLDER)</button>
-  		  	  </div>
-  		  	  <span class="align-center" ng-click="mapComp.showSettings = !mapComp.showSettings">
-  		  	  	<i class="fa fa-sliders" aria-hidden="true"></i> 
-  		  	  	<h5 class="txt-uppercase">Search Settings</h5>
-  		  	  </span>
-  		  	</div>
-  	  	</form>
-  	  </div>
+
+  <!-- Route(s) Information -->
+	<div class="main-panel" id="route-information" ng-show="mapComp.countedCrimes.length !== undefined">
+    <div class="route-score-box">
+      <div ng-if="mapComp.countedCrimes[0].length > 1">Route 1 <span class="badge">{{mapComp.countedCrimes[0].length}}</span></div>
+      <div ng-if="mapComp.countedCrimes[1].length > 1">Route 2 <span class="badge">{{mapComp.countedCrimes[1].length}}</span></div>
+      <div ng-if="mapComp.countedCrimes[2].length > 1">Route 3 <span class="badge">{{mapComp.countedCrimes[2].length}}</span></div>
+    </div>
+    <div id="directionsPanel">
     </div>
 
-  	<div class="main-panel" id="route-information" ng-show="mapComp.countedCrimes.length !== undefined">
-      <div class="route-score-box">
-        <div ng-if="mapComp.countedCrimes[0].length > 1">Route 1 <span class="badge">{{mapComp.countedCrimes[0].length}}</span></div>
-        <div ng-if="mapComp.countedCrimes[1].length > 1">Route 2 <span class="badge">{{mapComp.countedCrimes[1].length}}</span></div>
-        <div ng-if="mapComp.countedCrimes[2].length > 1">Route 3 <span class="badge">{{mapComp.countedCrimes[2].length}}</span></div>
-      </div>
-      <div id="directionsPanel">
-      </div>
-
-      <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" ng-if="route.length>0" ng-repeat="route in mapComp.countedCrimes track by $index">
-        <div class="panel panel-default">
-          <div class="panel-heading" role="tab" id="headingOne">
-            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{$index}}" aria-expanded="true" aria-controls="collapse{{$index}}">
-              <h4 class="panel-title">
-                  Route #{{$index+1}} Crime Data
-              </h4>
-            </a>
-          </div>
-          <div id="collapse{{$index}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{{$index}}" aria-expanded="false" style="height: 0px;">
-            <div class="panel-body">
-              <div ng-repeat="crime in route track by $index">
-                <p><strong>{{crime.event_clearance_date}}</strong></p>
-                <p>{{crime.event_clearance_description}} &mdash; {{crime.initial_type_description}}</p>
-                <p>{{crime.hundred_block_location}}</p>
-                <hr />
-              </div>
+    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" ng-if="route.length>0" ng-repeat="route in mapComp.countedCrimes track by $index">
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingOne">
+          <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{$index}}" aria-expanded="true" aria-controls="collapse{{$index}}">
+            <h4 class="panel-title">
+                Route #{{$index+1}} Crime Data
+            </h4>
+          </a>
+        </div>
+        <div id="collapse{{$index}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{{$index}}" aria-expanded="false" style="height: 0px;">
+          <div class="panel-body">
+            <div ng-repeat="crime in route track by $index">
+              <p><strong>{{crime.event_clearance_date}}</strong></p>
+              <p>{{crime.event_clearance_description}} &mdash; {{crime.initial_type_description}}</p>
+              <p>{{crime.hundred_block_location}}</p>
+              <hr />
             </div>
           </div>
         </div>
       </div>
-
     </div>
 
+  </div>
 
-    <!-- Search Filters -->
-    <form class="list main-panel" id="search-filters" ng-show="mapComp.showSettings">
-    	<h3>Search Settings</h3>
+
+  <!-- Search Filters -->
+  <div id="search-filters" ng-show="mapComp.showSettings">
+
+    <div class="tools-banner" id="banner-settings" ng-click="mapComp.showSettings = !mapComp.showSettings">
+      <i class="fa fa-arrow-left" aria-hidden="true"></i>
+      <h5 class="txt-uppercase">Save &amp; return</h5>
+    </div>
+
+    <form class="list main-panel">
+    	<h3>Search Filters</h3>
     	<hr>
     	<div class="filter-section">
     		<label class="txt-uppercase">Crimes</label>
@@ -99,31 +106,50 @@
   	  	  <label class="txt-uppercase" for="sensitivity">Sensitivity (1 - 5)</label>
   	  	  <input name="sensitivity" type="number" ng-model="mapComp.sensitivity"/>
   	  </div>
-
-  	  <div class="tools-banner" id="banner-settings" ng-click="mapComp.showSettings = !mapComp.showSettings">
-  	  	<i class="fa fa-arrow-left" aria-hidden="true"></i>
-  	  	<h5 class="txt-uppercase">Save and go back to search</h5>
-  	  </div>
-
-    <div id="filter-test"></div>
-
-
+    </form>
   </div>
+
+  <!--  Show/hide controls  -->
+  <button ng-click="mapComp.showControls = !mapComp.showControls; mapComp.toggleControls()" id="toggle-controls">
+    <i class="fa fa-arrow-left" aria-hidden="true" ng-show="mapComp.showControls === true"></i>
+    <i class="fa fa-arrow-right" aria-hidden="true" ng-show="mapComp.showControls === false"></i>
+    <i class="fa fa-bars" aria-hidden="true"></i>
+
+  </button>
+
 </div>
 
-  <div id="map">
-  	<div id="map-controls">
-  	<button class="btn btn-secondary" ng-click="mapComp.toggleHeatmap()">Toggle Heatmap</button>
-  		<button class="btn btn-secondary" ng-click="mapComp.toggleBorder()">Toggle Border</button>
-  		<button class="btn btn-secondary" ng-click="mapComp.toggleTraffic()">Toggle Traffic</button>
-  		<button class="btn btn-secondary" ng-click="mapComp.addCrimeMarkers()">add crimes</button>
-  		<button class="btn btn-secondary" ng-click="mapComp.removeCrimeMarkers()">remove crimes</button>
-  	</div>
-  	<div id="mapid">
-  		<div class="container-load">
-  			<div>
-  				Loading map. Please wait.
-  			</div>
-  		</div>
-  	</div>
-  </div>
+
+<!-- Map Area -->
+<div id="map">
+  <img src="../../img/beacon_logo.svg" alt="enter directions" id="beacon-logo">
+	<div id="map-controls" ng-show="mapComp.countedCrimes.length !== undefined">
+    <button class="btn btn-controls" ng-click="mapComp.toggleHeatmap()">
+      <img src="../../img/control-icon_heatmap-inactive.svg" alt="hide border" class="control-icon"> 
+      Heatmap
+    </button>
+		<button class="btn btn-controls" ng-click="mapComp.toggleBorder()">
+      <img src="../../img/control-icon_border-inactive.svg" alt="hide border" class="control-icon"> 
+      Border
+    </button>
+		<button class="btn btn-controls" ng-click="mapComp.toggleTraffic()">
+      <img src="../../img/control-icon_traffic-inactive.svg" alt="hide border" class="control-icon"> 
+      Traffic
+    </button>
+		<button class="btn btn-controls" ng-click="mapComp.addCrimeMarkers()">
+      <img src="../../img/control-icon_crimes-inactive.svg" alt="hide border" class="control-icon"> 
+      add crimes
+    </button>
+		<button class="btn btn-controls" ng-click="mapComp.removeCrimeMarkers()">
+      <img src="../../img/control-icon_crimes-inactive.svg" alt="hide border" class="control-icon"> 
+      remove crimes
+    </button>
+	</div>
+	<div id="mapid">
+		<div class="container-load">
+			<div>
+				Loading map. Please wait.
+			</div>
+		</div>
+	</div>
+</div>

@@ -975,19 +975,21 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
 
 		// TOGGLE CHECKBOXES
 		mapComp.checkBox = function() {
-			console.log(this);
 			if ($(event.currentTarget).attr("checked")) {
 				$(event.currentTarget).removeAttr("checked");
 			} else {
-				console.log(event.currentTarget)
 				$(event.currentTarget).attr("checked", true);
 			}
 		}
 
-		// HIDE DIRECTIONS FORM ON SUBMISSION
-		mapComp.hideForm = function() {
-			$('#enter-directions').css('display', 'none');
-		}
+    // SHOW/HIDE CONTROL PANEL
+    mapComp.toggleControls = function() {
+      if (mapComp.showControls === false) {
+        $(".main-container").css("left", "-450px");
+      } else {
+        $(".main-container").css("left", "0");
+      }
+    }
 
 		// MAKE SURE CRIME WINDOW IS VALID
 		var interval = 0;

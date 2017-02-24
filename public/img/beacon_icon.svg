@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!-- Generator: Adobe Illustrator 20.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 19.397 25.675" style="enable-background:new 0 0 19.397 25.675;" xml:space="preserve">
+<g>
+	<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="5.1114" y1="25.675" x2="5.1114" y2="10.2228">
+		<stop  offset="0.1452" style="stop-color:#FFA73E"/>
+		<stop  offset="1" style="stop-color:#E88C39"/>
+	</linearGradient>
+	<path style="fill:url(#SVGID_1_);" d="M10.223,15.096L10.223,15.096c-2.693,0-4.874-2.185-4.874-4.874H0
+		c0,8.496,10.223,15.452,10.223,15.452l0,0V15.096z"/>
+	<linearGradient id="SVGID_2_" gradientUnits="userSpaceOnUse" x1="19.397" y1="19.2191" x2="10.2228" y2="19.2191">
+		<stop  offset="0.1414" style="stop-color:#6BA7FE"/>
+		<stop  offset="1" style="stop-color:#548BF7"/>
+	</linearGradient>
+	<path style="fill:url(#SVGID_2_);" d="M14.364,12.763c-0.857,1.394-2.383,2.333-4.141,2.333v10.579
+		c0.001-0.001,6.57-4.802,9.174-10.822L14.364,12.763z"/>
+	<linearGradient id="SVGID_3_" gradientUnits="userSpaceOnUse" x1="19.34" y1="3.8411" x2="10.2228" y2="3.8411">
+		<stop  offset="0" style="stop-color:#FF6457"/>
+		<stop  offset="1" style="stop-color:#FF3074"/>
+	</linearGradient>
+	<path style="fill:url(#SVGID_3_);" d="M14.364,7.682l4.976-2.066C17.654,2.287,14.209,0,10.223,0v5.349
+		C11.981,5.349,13.507,6.288,14.364,7.682z"/>
+	<linearGradient id="SVGID_4_" gradientUnits="userSpaceOnUse" x1="5.1114" y1="10.2228" x2="5.1114" y2="0">
+		<stop  offset="0.0995" style="stop-color:#39EAD1"/>
+		<stop  offset="1" style="stop-color:#1AC2AB"/>
+	</linearGradient>
+	<path style="fill:url(#SVGID_4_);" d="M10.223,0L10.223,0C4.577,0,0,4.577,0,10.223h5.349c0-2.694,2.181-4.874,4.874-4.874h0V0z"/>
+	<path style="fill:#E1DFEB;" d="M7.108,10.223v0.01c1.717,0,3.108,1.389,3.114,3.105h0.002c0.006-1.715,1.397-3.105,3.114-3.105
+		v-0.01c-1.72,0-3.115-1.395-3.115-3.115C10.223,8.828,8.828,10.223,7.108,10.223z"/>
+</g>
+</svg>
