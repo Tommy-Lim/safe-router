@@ -32,7 +32,12 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
         mapScope = this;
         // INIT DIRECTIONS SERVICE AND RENDERER
         mapComp.directionsService = new google.maps.DirectionsService();
-        mapComp.directionsDisplay = new google.maps.DirectionsRenderer({draggable: true});
+        mapComp.directionsDisplay = new google.maps.DirectionsRenderer({
+					draggable: true,
+					polylineOptions: {
+						strokeColor: "red" TODO RYNE
+					}
+				});
         // SET DEFAULT LAT/LNG IN SEATTLE
         var latLng = {
             lat: 47.608013,
