@@ -18,7 +18,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
     mapComp.showControls = true;
     mapComp.start = '';
     mapComp.end = '';
-    mapComp.controlHeatmap = true;
+    mapComp.controls = {heatmap: true, border: false, traffic: false, crimes: false};
     mapComp.sensitivity = 3;
     mapComp.padding = 0.003;
     mapComp.crimeWindow = 12;
@@ -815,7 +815,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
         }
 
         mapComp.toggleHeatmap = function(){
-          mapComp.controlHeatmap = !mapComp.controlHeatmap;
+          mapComp.controls.heatmap = !mapComp.controls.heatmap;
           if(mapComp.heatMap){
             if(mapComp.heatMap.getMap()){
               mapComp.heatMap.setMap(null);
