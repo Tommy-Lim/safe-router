@@ -15,6 +15,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
     var mapComp = this;
     mapComp.CrimeService = CrimeService;
     mapComp.showSettings = false;
+    mapComp.showControls = true;
     mapComp.start = '503 1st Ave W, Seattle';
   	mapComp.end = '1218 3rd Ave, Seattle';
   	mapComp.sensitivity = 3;
@@ -22,7 +23,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
   	mapComp.crimeWindow = 12;
   	mapComp.markers = [];
   	mapComp.infoWindows = [];
-
+    
 
     // INITILAIZE MAP
     mapComp.initMap = function() {
