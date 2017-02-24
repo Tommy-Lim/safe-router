@@ -17,7 +17,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
     mapComp.showSettings = false;
     mapComp.showControls = true;
     mapComp.start = '503 1st Ave W, Seattle';
-  	mapComp.end = '1218 3rd Ave, Seattle';
+  	mapComp.end = 'General Assembly Seattle';
   	mapComp.sensitivity = 3;
   	mapComp.padding = 0.003;
   	mapComp.crimeWindow = 12;
@@ -700,10 +700,10 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
       // BUILD BOX POLYGON
       mapComp.mapBox = new google.maps.Polygon({
         paths: mapComp.boxCoordinates,
-        strokeColor: '#EE0000',
-        strokeOpacity: 0.3,
-        fillColor: '#EE0000',
-        fillOpacity: 0.00,
+        strokeColor: '#FF4D64',
+        strokeOpacity: 0.8,
+        fillColor: '#FF4D64',
+        fillOpacity: 0.2,
       })
 
       // SET POLYGON TO MAP
@@ -861,7 +861,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
 					data: heatMapData,
 					radius: 15,
 					gradient: gradient,
-					opacity: .8
+					opacity: .75
 				})
 				// SET HEATMAP TO MAP
 				mapComp.heatMap.setMap(mapComp.mapid);
@@ -871,7 +871,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
 					data: heatMapData,
 					radius: 15,
 					gradient: gradient,
-					opacity: .8
+					opacity: .75
 				})
 				// SET FIRST HEATMAP TO MAP
 				mapComp.heatMap.setMap(mapComp.mapid);
