@@ -1,6 +1,5 @@
 $(document).ready(function(){
   $("input[type='checkbox']").on("click", function() {
-  	console.log("holla");
   	if ($(this).checked === false) {
   		$(this).attr("checked", "checked");
   		$(this).checked === true;
@@ -9,4 +8,5 @@ $(document).ready(function(){
   		$(this).checked === false;
   	}
   });
+
 })
