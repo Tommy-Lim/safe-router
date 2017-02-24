@@ -74,6 +74,12 @@ input[type="submit"] {
 	outline: none;
 	padding: 8px 13px 9px 14px;
 	cursor: pointer;
+	transition-property: filter, color;
+	transition-duration: 200ms;
+}
+
+input[type="submit"]:hover, input[type="submit"]:active {
+	filter: brightness(115%);
 }
 
 ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
@@ -120,8 +126,12 @@ input[type="submit"] {
 	outline: none;
 	padding: 8px 13px 9px 14px;
 	cursor: pointer;
-	transition-property: color;
+	transition-property: color, filter;
 	transition-duration: 150ms;
+}
+
+#bootstrap-overrides .btn:hover, #bootstrap-overrides .btn:active {
+	filter: brightness(115%);
 }
 
 #bootstrap-overrides .btn-primary {
@@ -152,6 +162,10 @@ input[type="submit"] {
 
 .txt-gray {
 	color: #86829c;
+}
+
+.txt-white {
+	color: white;
 }
 
 
@@ -255,11 +269,17 @@ input[type="submit"] {
 	cursor: pointer;
 }
 
-#enter-directions i {
+#directions-controls span:hover > i {
+	color: #2FD9BD;
+}
+
+#directions-controls span i {
 	transform: scale(1.5);
 	margin-right: 14px;
 	color: #5A56A2;
 	cursor: pointer;
+	transition-property: color;
+	transition-duration: 200ms;
 }
 
 #toggle-controls {
@@ -541,7 +561,7 @@ input[type=range]:focus::-ms-fill-upper {
 #beacon-logo {
 	position: absolute;
 	top: 14px;
-	left: 10px;
+	left: 11px;
 	width: 138px;
 }
 

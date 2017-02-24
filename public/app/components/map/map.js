@@ -18,6 +18,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
     mapComp.showControls = true;
     mapComp.start = '';
     mapComp.end = '';
+    mapComp.controlHeatmap = true;
     mapComp.sensitivity = 3;
     mapComp.padding = 0.003;
     mapComp.crimeWindow = 12;
@@ -25,6 +26,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
     mapComp.infoWindows = [];
     mapComp.routeIndex;
     mapComp.showCrimes = false;
+
 
     // INITILAIZE MAP
     mapComp.initMap = function() {
@@ -34,7 +36,9 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
         mapComp.directionsDisplay = new google.maps.DirectionsRenderer({
             draggable: true,
             polylineOptions: {
-                strokeColor: "red"
+                strokeColor: "#4eb4fa",
+                strokeOpacity: .8,
+                strokeWeight: 8
             }
         });
         // SET DEFAULT LAT/LNG IN SEATTLE
@@ -66,17 +70,17 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
                 makeMap(latLng);
 
                 // var infoWindow = new google.maps.InfoWindow({
-                // 	map: mapComp.mapid,
-                // 	content: 'Current location.'
+                //  map: mapComp.mapid,
+                //  content: 'Current location.'
                 // });
                 // var marker = new google.maps.Marker({
-                // 	position: latLng,
-                // 	map: mapComp.mapid,
-                // 	icon: './img/marker_current.png'
+                //  position: latLng,
+                //  map: mapComp.mapid,
+                //  icon: './img/marker_current.png'
                 // })
                 // marker.addListener('click', function(){
-                // 	infoWindow.open(mapComp.mapid, marker);
-                // 	mapComp.infoWindows.push(infoWindow);
+                //  infoWindow.open(mapComp.mapid, marker);
+                //  mapComp.infoWindows.push(infoWindow);
                 // })
                 // mapComp.infoWindows.push(infoWindow);
                 // mapComp.mapid.setCenter(latLng);
@@ -106,17 +110,317 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
             var location = new google.maps.LatLng(latLng.lat, latLng.lng)
             var geocoder = new google.maps.Geocoder;
             geocoder.geocode({
-                location: location
-            }, function(results, status) {
-                if (status == "OK") {
-                    var address = results[0].formatted_address;
-                    mapComp.start = address;
-                    $($('#start-input')[0]).val(address)
-                } else {
-                    mapComp.start = '';
-                }
+              location: location
+            }, function(results, status){
+              if (status == "OK") {
+                  var address = results[0].formatted_address;
+                  mapComp.start = address;
+                  $($('#start-input')[0]).val(address)
+              } else{
+                mapComp.start = '';
+              }
             })
         }
+
+            // MAKE MAP FUNCTION TO BE USED ABOVE
+            function makeMap(latLng) {
+                // CREATE GOOGLE MAP WITH LAT/LNG
+                mapComp.mapid = new google.maps.Map(document.getElementById('mapid'), {
+                    center: latLng,
+                    zoom: 14,
+                    mapTypeControl: false,
+                    streetViewControl: false,
+                    styles: [
+                        {
+                            "featureType": "all",
+                            "elementType": "labels.text.fill",
+                            "stylers": [
+                                {
+                                    "color": "#6e6ece"
+                                }
+                            ]
+                        }, {
+                            "featureType": "all",
+                            "elementType": "labels.text.stroke",
+                            "stylers": [
+                                {
+                                    "visibility": "off"
+                                }
+                            ]
+                        }, {
+                            "featureType": "all",
+                            "elementType": "labels.icon",
+                            "stylers": [
+                                {
+                                    "visibility": "off"
+                                }
+                            ]
+                        }, {
+                            "featureType": "administrative",
+                            "elementType": "geometry.fill",
+                            "stylers": [
+                                {
+                                    "color": "#3e356e"
+                                }
+                            ]
+                        }, {
+                            "featureType": "administrative",
+                            "elementType": "geometry.stroke",
+                            "stylers": [
+                                {
+                                    "color": "#3e356e"
+                                }, {
+                                    "weight": 1.2
+                                }
+                            ]
+                        }, {
+                            "featureType": "administrative",
+                            "elementType": "labels",
+                            "stylers": [
+                                {
+                                    "visibility": "off"
+                                }
+                            ]
+                        }, {
+                            "featureType": "administrative.country",
+                            "elementType": "all",
+                            "stylers": [
+                                {
+                                    "visibility": "simplified"
+                                }
+                            ]
+                        }, {
+                            "featureType": "administrative.country",
+                            "elementType": "geometry",
+                            "stylers": [
+                                {
+                                    "visibility": "simplified"
+                                }
+                            ]
+                        }, {
+                            "featureType": "administrative.country",
+                            "elementType": "labels.text",
+                            "stylers": [
+                                {
+                                    "visibility": "simplified"
+                                }
+                            ]
+                        }, {
+                            "featureType": "administrative.province",
+                            "elementType": "all",
+                            "stylers": [
+                                {
+                                    "visibility": "off"
+                                }
+                            ]
+                        }, {
+                            "featureType": "administrative.locality",
+                            "elementType": "all",
+                            "stylers": [
+                                {
+                                    "visibility": "simplified"
+                                }
+                            ]
+                        }, {
+                            "featureType": "administrative.neighborhood",
+                            "elementType": "all",
+                            "stylers": [
+                                {
+                                    "visibility": "off"
+                                }
+                            ]
+                        }, {
+                            "featureType": "administrative.land_parcel",
+                            "elementType": "all",
+                            "stylers": [
+                                {
+                                    "visibility": "off"
+                                }
+                            ]
+                        }, {
+                            "featureType": "landscape",
+                            "elementType": "all",
+                            "stylers": [
+                                {
+                                    "visibility": "simplified"
+                                }
+                            ]
+                        }, {
+                            "featureType": "landscape",
+                            "elementType": "geometry",
+                            "stylers": [
+                                {
+                                    "color": "#3e356e"
+                                }
+                            ]
+                        }, {
+                            "featureType": "landscape.man_made",
+                            "elementType": "all",
+                            "stylers": [
+                                {
+                                    "visibility": "off"
+                                }
+                            ]
+                        }, {
+                            "featureType": "poi",
+                            "elementType": "all",
+                            "stylers": [
+                                {
+                                    "visibility": "off"
+                                }
+                            ]
+                        }, {
+                            "featureType": "poi",
+                            "elementType": "geometry",
+                            "stylers": [
+                                {
+                                    "color": "#2f2152"
+                                }
+                            ]
+                        }, {
+                            "featureType": "poi.business",
+                            "elementType": "geometry",
+                            "stylers": [
+                                {
+                                    "visibility": "off"
+                                }
+                            ]
+                        }, {
+                            "featureType": "road",
+                            "elementType": "geometry",
+                            "stylers": [
+                                {
+                                    "visibility": "simplified"
+                                }
+                            ]
+                        }, {
+                            "featureType": "road.highway",
+                            "elementType": "geometry.fill",
+                            "stylers": [
+                                {
+                                    "color": "#2f2152"
+                                }
+                            ]
+                        }, {
+                            "featureType": "road.highway",
+                            "elementType": "geometry.stroke",
+                            "stylers": [
+                                {
+                                    "color": "#2f2152"
+                                }, {
+                                    "weight": 0.2
+                                }
+                            ]
+                        }, {
+                            "featureType": "road.highway",
+                            "elementType": "labels.text.fill",
+                            "stylers": [
+                                {
+                                    "color": "#6e6ece"
+                                }
+                            ]
+                        }, {
+                            "featureType": "road.highway",
+                            "elementType": "labels.text.stroke",
+                            "stylers": [
+                                {
+                                    "visibility": "off"
+                                }
+                            ]
+                        }, {
+                            "featureType": "road.arterial",
+                            "elementType": "geometry",
+                            "stylers": [
+                                {
+                                    "color": "#2f2152"
+                                }
+                            ]
+                        }, {
+                            "featureType": "road.arterial",
+                            "elementType": "labels.text",
+                            "stylers": [
+                                {
+                                    "visibility": "on"
+                                }
+                            ]
+                        }, {
+                            "featureType": "road.arterial",
+                            "elementType": "labels.text.fill",
+                            "stylers": [
+                                {
+                                    "color": "#6e6ece"
+                                }
+                            ]
+                        }, {
+                            "featureType": "road.arterial",
+                            "elementType": "labels.text.stroke",
+                            "stylers": [
+                                {
+                                    "visibility": "off"
+                                }
+                            ]
+                        }, {
+                            "featureType": "road.local",
+                            "elementType": "geometry",
+                            "stylers": [
+                                {
+                                    "color": "#2f2152"
+                                }
+                            ]
+                        }, {
+                            "featureType": "road.local",
+                            "elementType": "labels.text",
+                            "stylers": [
+                                {
+                                    "visibility": "on"
+                                }, {
+                                    "hue": "#6e6ece"
+                                }
+                            ]
+                        }, {
+                            "featureType": "road.local",
+                            "elementType": "labels.text.fill",
+                            "stylers": [
+                                {
+                                    "color": "#6e6ece"
+                                }
+                            ]
+                        }, {
+                            "featureType": "road.local",
+                            "elementType": "labels.text.stroke",
+                            "stylers": [
+                                {
+                                    "visibility": "off"
+                                }
+                            ]
+                        }, {
+                            "featureType": "transit",
+                            "elementType": "geometry",
+                            "stylers": [
+                                {
+                                    "color": "#2f2152"
+                                }
+                            ]
+                        }, {
+                            "featureType": "water",
+                            "elementType": "geometry",
+                            "stylers": [
+                                {
+                                    "color": "#2f2152"
+                                }
+                            ]
+                        }, {
+                            "featureType": "water",
+                            "elementType": "labels.text.stroke",
+                            "stylers": [
+                                {
+                                    "visibility": "off"
+                                }
+                            ]
+                        }
+                    ]
+                });
+>>>>>>> f2c28ec69d9d5ca8fabe4ed2dd3ba1e0df199885
 
         // MAKE MAP FUNCTION TO BE USED ABOVE
         function makeMap(latLng) {
@@ -810,16 +1114,18 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
 
     }
 
-    mapComp.toggleHeatmap = function() {
-        if (mapComp.heatMap) {
-            if (mapComp.heatMap.getMap()) {
-                mapComp.heatMap.setMap(null);
-                // mapComp.heatMapCreated = false;
-            } else {
-                mapComp.heatMap.setMap(mapComp.mapid);
+        mapComp.toggleHeatmap = function(){
+          mapComp.controlHeatmap = !mapComp.controlHeatmap;
+          if(mapComp.heatMap){
+            if(mapComp.heatMap.getMap()){
+              mapComp.heatMap.setMap(null);
+              // mapComp.heatMapCreated = false;
+            } else{
+              mapComp.heatMap.setMap(mapComp.mapid);
             }
+          }
         }
-    }
+
 
     mapComp.toggleBorder = function() {
         if (mapComp.mapBox) {
