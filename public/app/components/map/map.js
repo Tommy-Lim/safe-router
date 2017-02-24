@@ -14,13 +14,14 @@ angular.module('App').component('mapComp', {
 function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
     var mapComp = this;
     mapComp.CrimeService = CrimeService;
+    mapComp.showSettings = false;
     mapComp.start = '503 1st Ave W, Seattle';
   	mapComp.end = '1218 3rd Ave, Seattle';
-		mapComp.sensitivity = 3;
-		mapComp.padding = 0.003;
+  	mapComp.sensitivity = 3;
+  	mapComp.padding = 0.003;
   	mapComp.crimeWindow = 12;
-		mapComp.markers = [];
-		mapComp.infoWindows = [];
+  	mapComp.markers = [];
+  	mapComp.infoWindows = [];
 
 
     // INITILAIZE MAP
@@ -106,7 +107,9 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
             mapComp.mapid = new google.maps.Map(document.getElementById('mapid'), {
                 center: latLng,
                 zoom: 14,
-                styles:
+                mapTypeControl: false,
+                streetViewControl: false,
+                styles: 
                 	[
                 			{
                 					"featureType": "all",
@@ -208,12 +211,6 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
                 							{
                 									"visibility": "simplified"
                 							},
-                							{
-                									"saturation": "-100"
-                							},
-                							{
-                									"lightness": "30"
-                							}
                 					]
                 			},
                 			{
@@ -240,12 +237,6 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
                 					"stylers": [
                 							{
                 									"visibility": "simplified"
-                							},
-                							{
-                									"gamma": "0.00"
-                							},
-                							{
-                									"lightness": "74"
                 							}
                 					]
                 			},
@@ -263,7 +254,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
                 					"elementType": "all",
                 					"stylers": [
                 							{
-                									"lightness": "3"
+                									"visibility": "off"
                 							}
                 					]
                 			},
@@ -282,6 +273,15 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
                 					"stylers": [
                 							{
                 									"color": "#2f2152"
+                							}
+                					]
+                			},
+                			{
+                					"featureType": "poi.business",
+                					"elementType": "geometry",
+                					"stylers": [
+                							{
+                									"visibility": "off"
                 							}
                 					]
                 			},
@@ -438,21 +438,21 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
                 	]
             });
 
-						// ADD LAYERS TO MAP
+			// ADD LAYERS TO MAP
             mapComp.trafficLayer = new google.maps.TrafficLayer();
             mapComp.trafficLayer.setMap(mapComp.mapid);
-						mapComp.toggleTraffic();
+			mapComp.toggleTraffic();
 
-						// ADD INPUTS TO MAP
-						var startInput = document.getElementById('start-input');
-						// mapComp.mapid.controls[google.maps.ControlPosition.TOP_LEFT].push(startInput);
-						var autocomplete = new google.maps.places.Autocomplete(startInput); // second param can be mapComp.options
-						var endInput = document.getElementById('end-input');
-						// mapComp.mapid.controls[google.maps.ControlPosition.TOP_LEFT].push(endInput);
-						var autocomplete = new google.maps.places.Autocomplete(endInput); // second param can be mapComp.options
-						// PUSH FORM TO MAP
-						// var formInput = document.getElementById('form-input');
-						// mapComp.mapid.controls[google.maps.ControlPosition.TOP_CENTER].push(formInput);
+			// ADD INPUTS TO MAP
+			var startInput = document.getElementById('start-input');
+			// mapComp.mapid.controls[google.maps.ControlPosition.TOP_LEFT].push(startInput);
+			var autocomplete = new google.maps.places.Autocomplete(startInput); // second param can be mapComp.options
+			var endInput = document.getElementById('end-input');
+			// mapComp.mapid.controls[google.maps.ControlPosition.TOP_LEFT].push(endInput);
+			var autocomplete = new google.maps.places.Autocomplete(endInput); // second param can be mapComp.options
+			// PUSH FORM TO MAP
+			// var formInput = document.getElementById('form-input');
+			// mapComp.mapid.controls[google.maps.ControlPosition.TOP_CENTER].push(formInput);
 
             // SET THE DIRECTIONS DISPLAY TO BE ON THE MAP AND ASSIGN THE DIRECTIONS TEXT TO DIRECTIONS PANEL
             mapComp.directionsDisplay.setMap(mapComp.mapid);
@@ -487,8 +487,8 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
 							mapComp.closeInfoWindows();
 						})
 
-						// ADD CURRENT LOCATION TO MAP
-						addCenter(latLng);
+			// ADD CURRENT LOCATION TO MAP
+			addCenter(latLng);
         }
 
 
@@ -807,19 +807,16 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
 
       // CREATE NEW HEAT MAP IF DOES NOT EXIST
       var gradient = [
-        'rgba(54, 153, 170, 0)',
-        'rgba(54, 153, 170, 0)',
-        'rgba(54, 201, 192, 1)',
-        'rgba(54, 236, 212, 1)',
-        'rgba(114, 207, 163, 1)',
-        'rgba(192, 153, 85, 1)',
-        'rgba(238, 154, 56, 1)',
-        'rgba(255, 158, 165, 1)',
-        'rgba(0, 0, 127, 1)',
-        'rgba(63, 0, 91, 1)',
-        'rgba(127, 0, 63, 1)',
-        'rgba(191, 0, 31, 1)',
-        'rgba(255, 0, 0, 1)'
+        'rgba(44, 255, 223, 0)',
+        'rgba(44, 255, 223, 1)',
+        'rgba(89, 248, 172, 1)',
+        'rgba(157, 236, 108, 1)',
+        'rgba(238, 228, 54, 1)',
+        'rgba(255, 170, 48, 1)',
+        'rgba(255, 148, 59, 1)',
+        'rgba(255, 94, 89, 1)',
+        'rgba(255, 71, 100, 1)',
+        'rgba(255, 47, 117, 1)'
       ]
 			if (true) {
 				// DISASSOCIATE CURRENT HEATMAP
@@ -830,7 +827,8 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
 				mapComp.heatMap = new google.maps.visualization.HeatmapLayer({
 					data: heatMapData,
 					radius: 15,
-					gradient: gradient
+					gradient: gradient,
+					opacity: .8
 				})
 				// SET HEATMAP TO MAP
 				mapComp.heatMap.setMap(mapComp.mapid);
@@ -839,7 +837,8 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
 				mapComp.heatMap = new google.maps.visualization.HeatmapLayer({
 					data: heatMapData,
 					radius: 15,
-					gradient: gradient
+					gradient: gradient,
+					opacity: .8
 				})
 				// SET FIRST HEATMAP TO MAP
 				mapComp.heatMap.setMap(mapComp.mapid);
