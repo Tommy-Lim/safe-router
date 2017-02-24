@@ -24,6 +24,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
   	mapComp.markers = [];
   	mapComp.infoWindows = [];
 		mapComp.routeIndex;
+		mapComp.showCrimes = false;
 
 
     // INITILAIZE MAP
@@ -580,8 +581,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
 
     //ADD LA/LNG MARKERS FOR THE CURRENT ROUTE
     mapComp.addCrimeMarkers = function() {
-			mapComp.removeCrimeMarkers();
-        var index = mapComp.directionsDisplay.getRouteIndex()
+        var index = mapComp.routeIndex;
         console.log("CURRENT ROUTES ARRAY TO ADD MARKERS TO: ", mapComp.countedCrimes[index]);
         mapComp.countedCrimes[index].forEach(function(coordinate) {
 						var contentString =
@@ -621,12 +621,18 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval) {
     }
 
     // REMOVE LAT/LNG MARKERS FOR CURRENT ROUTE
-    mapComp.removeCrimeMarkers = function() {
-        if (mapComp.markers && mapComp.markers.length > 0) {
+    mapComp.toggleCrimeMarkers = function() {
+			if(mapComp.showCrimes){
+				if (mapComp.markers && mapComp.markers.length > 0) {
             mapComp.markers.forEach(function(marker) {
                 marker.setMap(null);
             })
         }
+			} else{
+				mapComp.showCrimes = true;
+				mapComp.addCrimeMarkers();
+			}
+
     }
 
     // ADD BOX ZONE FOR CURRENT ROUTE
