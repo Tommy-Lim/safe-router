@@ -25,7 +25,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval, $scope)
     mapComp.markers = [];
     mapComp.infoWindows = [];
     mapComp.routeIndex;
-    mapComp.showCrimes = false;
+    mapComp.controls.crimes = false;
 		mapComp.mapLoading = false;
 		mapComp.crimesLoading = false;
 
@@ -473,6 +473,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval, $scope)
                 // console.log("DIRECTIONS AFTER CHANGE ROUTE", newDirections);
                 mapComp.latLngArray = mapScope.polylinesToLatLngArr(newDirections.routes)
                 // console.log("LAT/LNG AFTER CHANGING ROUTE: ", mapComp.latLngArray)
+
             });
 
             // WHEN ROUTE OPTION IS CHANGED, RETURN DIRECTIONS
@@ -489,6 +490,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval, $scope)
                 // mapScope.addMarkers();
                 mapScope.getRouteBox();
                 mapScope.getCrimes();
+
             });
 
             // CLOSE ALL INFOWINDOWS ON CLICK;
@@ -593,16 +595,15 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval, $scope)
 
     // REMOVE LAT/LNG MARKERS FOR CURRENT ROUTE
     mapComp.toggleCrimeMarkers = function() {
-      mapComp.controls.crimes = !mapComp.controls.crimes;
-        if (mapComp.showCrimes) {
-            mapComp.showCrimes = false;
+        if (mapComp.controls.crimes) {
+            mapComp.controls.crimes = false;
             if (mapComp.markers && mapComp.markers.length > 0) {
                 mapComp.markers.forEach(function(marker) {
                     marker.setMap(null);
                 })
             }
         } else {
-            mapComp.showCrimes = true;
+            mapComp.controls.crimes = true;
             mapComp.addCrimeMarkers();
         }
 
@@ -940,6 +941,11 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval, $scope)
         })
         console.log("COUNTED CRIMES: ", mapComp.countedCrimes);
 				mapComp.crimesLoading = false;
+
+				if(mapComp.controls.crimes){
+					mapComp.toggleCrimeMarkers();
+					mapComp.toggleCrimeMarkers();
+				}
 
     }
 
