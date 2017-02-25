@@ -37,7 +37,7 @@
 	<div class="main-panel" id="route-information" ng-show="mapComp.countedCrimes.length !== undefined">
     <div class="route-score-box">
       <div class="row-flex" ng-if="mapComp.countedCrimes[0].length > 1">
-        <h4 class="txt-dark">Route 1</h4> 
+        <h4 class="txt-dark">Route 1</h4>
         <span class="badge">{{mapComp.countedCrimes[0].length}}</span>
       </div>
       <div class="row-flex" ng-if="mapComp.countedCrimes[1].length > 1"><h4 class="txt-dark">Route 2</h4> <span class="badge">{{mapComp.countedCrimes[1].length}}</span></div>
@@ -112,12 +112,12 @@
 
     	<div class="filter-section">
   	  	  <label class="txt-uppercase" for="padding">Route Boundary Padding (0 - 0.01)</label>
-  	  	  <input name="padding" type="number" step=".001" ng-model="mapComp.padding"/>
+  	  	  <input name="padding" type="number" step=".001" ng-model="mapComp.padding" ng-change="mapComp.getCrimes()"/>
   	  </div>
 
   	  <div class="filter-section">
   	  	  <label class="txt-uppercase" for="sensitivity">Crime Detection Sensitivity (1 - 5)</label>
-  	  	  <input name="sensitivity" type="number" ng-model="mapComp.sensitivity"/>
+  	  	  <input name="sensitivity" type="number" ng-model="mapComp.sensitivity" ng-change="mapComp.getCrimes()"/>
   	  </div>
     </form>
   </div>
