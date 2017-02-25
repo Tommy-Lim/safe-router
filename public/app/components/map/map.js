@@ -471,6 +471,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval, $scope)
             mapComp.directionsDisplay.addListener('directions_changed', function() {
                 // TODO: show or get alternate routes on redraw
                 var newDirections = mapComp.directionsDisplay.getDirections()
+								mapComp.resetBounds();
                 // console.log("DIRECTIONS AFTER CHANGE ROUTE", newDirections);
                 mapComp.latLngArray = mapScope.polylinesToLatLngArr(newDirections.routes)
                 // console.log("LAT/LNG AFTER CHANGING ROUTE: ", mapComp.latLngArray)
@@ -512,6 +513,13 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval, $scope)
             infoWindow.close();
         })
     }
+
+		mapComp.resetBounds = function(){
+			var sw = new google.maps.LatLng(mapComp.box.lat.south, mapComp.box.lng.west);
+			var ne = new google.maps.LatLng(mapComp.box.lat.north, mapComp.box.lng.east);
+			var bounds = new google.maps.LatLngBounds(sw, ne);
+			mapComp.mapid.fitBounds(bounds);
+		}
 
     // CALCULATE ROUTE
     mapComp.calcRoute = function(start, end, delay) {
