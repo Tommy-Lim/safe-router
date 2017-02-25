@@ -112,7 +112,7 @@
 
     	<div class="filter-section">
   	  	  <label class="txt-uppercase" for="padding">Route Boundary Padding (0 - 0.01)</label>
-  	  	  <input name="padding" type="number" step=".001" ng-model="mapComp.padding" ng-change="mapComp.getCrimes()"/>
+  	  	  <input name="padding" type="number" step=".001" ng-model="mapComp.padding" ng-change="mapComp.getRouteBox(); mapComp.getCrimes()"/>
   	  </div>
 
   	  <div class="filter-section">

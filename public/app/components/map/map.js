@@ -25,7 +25,6 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval, $scope)
     mapComp.markers = [];
     mapComp.infoWindows = [];
     mapComp.routeIndex;
-    mapComp.controls.crimes = false;
 		mapComp.mapLoading = false;
 		mapComp.crimesLoading = false;
 
@@ -480,7 +479,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval, $scope)
             google.maps.event.addListener(mapComp.directionsDisplay, 'routeindex_changed', function() {
                 mapComp.routeIndex = this.getRouteIndex();
                 // mapScope.removeMarkers();
-                mapScope.removeBox();
+                // mapScope.removeBorder();
                 // CURRENT ROUTE INDEX
                 // console.log("SELECTED ROUTE INDEX: ", this.getRouteIndex());
                 //CURRENT ROUTE
@@ -675,18 +674,24 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval, $scope)
             }
         ]
 
-        // BUILD BOX POLYGON
-        mapComp.mapBox = new google.maps.Polygon({paths: mapComp.boxCoordinates, strokeColor: '#FF4D64', strokeOpacity: 0.8, fillColor: '#FF4D64', fillOpacity: 0.2})
-        mapComp.controls.border = true;
-
-        // SET POLYGON TO MAP
-        mapComp.mapBox.setMap(mapComp.mapid)
-        mapComp.toggleBorder();
-
     }
 
+		mapComp.addBorder = function(){
+			mapComp.controls.border = true;
+			// BUILD BOX POLYGON
+			mapComp.mapBox = new google.maps.Polygon({
+				paths: mapComp.boxCoordinates,
+				strokeColor: '#FF4D64',
+				strokeOpacity: 0.8,
+				fillColor: '#FF4D64',
+				fillOpacity: 0.2
+			})
+			// SET POLYGON TO MAP
+			mapComp.mapBox.setMap(mapComp.mapid)
+		}
+
     // REMOVE POLYGON FROM MAP
-    mapComp.removeBox = function() {
+    mapComp.removeBorder = function() {
       mapComp.controls.border = false;
         if (mapComp.mapBox) {
             mapComp.mapBox.setMap(null)
@@ -848,14 +853,11 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval, $scope)
 
     mapComp.toggleBorder = function() {
       mapComp.controls.border = !mapComp.controls.border;
-        if (mapComp.mapBox) {
-            if (mapComp.mapBox.getMap()) {
-                mapComp.mapBox.setMap(null);
-                // mapComp.heatMapCreated = false;
-            } else {
-                mapComp.mapBox.setMap(mapComp.mapid);
-            }
-        }
+        if (mapComp.controls.border) {
+          mapComp.addBorder();
+        } else{
+					mapComp.removeBorder();
+				}
     }
 
     mapComp.toggleTraffic = function() {
@@ -945,6 +947,18 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval, $scope)
 				if(mapComp.controls.crimes){
 					mapComp.toggleCrimeMarkers();
 					mapComp.toggleCrimeMarkers();
+				}
+				if(mapComp.controls.traffic){
+					mapComp.toggleTraffic();
+					mapComp.toggleTraffic();
+				}
+				if(mapComp.controls.heatmap){
+					mapComp.toggleHeatmap();
+					mapComp.toggleHeatmap();
+				}
+				if(mapComp.controls.border){
+					mapComp.toggleBorder();
+					mapComp.toggleBorder();
 				}
 
     }
