@@ -444,6 +444,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval, $scope)
                     // console.log("place not found");
                 } else {
                     mapComp.start = place.formatted_address;
+										mapComp.calcRoute();
                 }
             })
             // mapComp.mapid.controls[google.maps.ControlPosition.TOP_LEFT].push(endInput);
@@ -455,6 +456,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval, $scope)
                     // console.log("place not found");
                 } else {
                     mapComp.end = place.formatted_address;
+										mapComp.calcRoute();
                 }
             })
             // PUSH FORM TO MAP

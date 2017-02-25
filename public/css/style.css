@@ -29,6 +29,10 @@ i {
 	margin-right: 10px;
 }
 
+a:focus, a:hover{
+	text-decoration: none;
+}
+
 hr {
 	margin: 8px 0 15px 0;
 	border: 0;
@@ -100,11 +104,11 @@ input[type="submit"]:hover, input[type="submit"]:active {
     padding: 0 4px;
     background-color: white;
 }
- 
+
 ::-webkit-scrollbar-track {
     border-radius: 10px;
 }
- 
+
 ::-webkit-scrollbar-thumb {
     border-radius: 10px;
     background-color: #2F2152;
@@ -176,11 +180,13 @@ input[type="submit"]:hover, input[type="submit"]:active {
 	color: #160D31;
 }
 
+.txt-dark:hover{
+	text-decoration: none;
+}
+
 .txt-blue {
 	color: #3C93F8;
 }
-
-
 
 /* LAYOUT AND CONTAINERS */
 
@@ -327,7 +333,7 @@ input[type="submit"]:hover, input[type="submit"]:active {
 	color: #2FD9BD;
 }
 
-#directions-controls span i {
+#directions-controls span i, #accordion .fa-chevron-circle-down {
 	transform: scale(1.5);
 	margin-right: 14px;
 	color: #5A56A2;
@@ -652,3 +658,7 @@ input[type=range]:focus::-ms-fill-upper {
 	margin-right: 5px;
 }
 
+.panel-collapse{
+	max-height: 50vh;
+	overflow-y: scroll;
+}
