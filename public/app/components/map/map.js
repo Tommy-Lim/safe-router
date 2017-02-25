@@ -36,7 +36,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval, $scope)
 
     // INITILAIZE MAP
     mapComp.initMap = function() {
-			console.log("map loading to true")
+			// console.log("map loading to true")
 				setMapLoading(true);
         mapScope = this;
         // INIT DIRECTIONS SERVICE AND RENDERER
@@ -61,7 +61,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval, $scope)
         mapComp.options = {
             bounds: mapComp.defaultBounds
         }
-        console.log("boundary default: ", mapComp.defaultBounds)
+        // console.log("boundary default: ", mapComp.defaultBounds)
         // FIND CURRENT LAT/LNG IF NAVIGATOR ENABLED
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function(position) {
@@ -72,7 +72,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval, $scope)
                 // SET BOUNDS FOR
                 mapComp.defaultBounds = new google.maps.LatLngBounds(new google.maps.LatLng(latLng.lat + autocompleteBoundsPadding, latLng.lng - autocompleteBoundsPadding), new google.maps.LatLng(latLng.lat - autocompleteBoundsPadding, latLng.lng + autocompleteBoundsPadding))
                 mapComp.options.bounds = mapComp.defaultBounds
-                console.log("boundary new: ", mapComp.defaultBounds)
+                // console.log("boundary new: ", mapComp.defaultBounds)
                 // SET START TO LATLNG
                 addStart(latLng);
                 makeMap(latLng);
@@ -441,7 +441,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval, $scope)
             autocompleteStart.addListener('place_changed', function() {
                 var place = autocompleteStart.getPlace();
                 if (!place.geometry) {
-                    console.log("place not found");
+                    // console.log("place not found");
                 } else {
                     mapComp.start = place.formatted_address;
                 }
@@ -452,7 +452,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval, $scope)
             autocompleteEnd.addListener('place_changed', function() {
                 var place = autocompleteEnd.getPlace();
                 if (!place.geometry) {
-                    console.log("place not found");
+                    // console.log("place not found");
                 } else {
                     mapComp.end = place.formatted_address;
                 }
@@ -499,7 +499,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval, $scope)
 
             // ADD CURRENT LOCATION TO MAP
             addCenter(latLng);
-						console.log("map loading to false")
+						// console.log("map loading to false")
 						setMapLoading(false);
 
         }
@@ -537,12 +537,12 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval, $scope)
             // }
         }
 
-        console.log("REQUEST IS: ", request);
+        // console.log("REQUEST IS: ", request);
 
         // GET ROUTES USING DIRECTIONS SERVICE
         mapComp.directionsService.route(request, function(result, status) {
             if (status == 'OK') {
-                console.log("RESULT IS: ", result);
+                // console.log("RESULT IS: ", result);
                 mapComp.directionsResult = result;
                 mapComp.directionsDisplay.setDirections(result);
                 // console.log("DIRECTIONS RESULT: ", mapComp.directionsResult)
@@ -573,7 +573,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval, $scope)
     mapComp.addCrimeMarkers = function() {
       mapComp.crimesLoading = true;
         var index = mapComp.routeIndex;
-        console.log("CURRENT ROUTES ARRAY TO ADD MARKERS TO: ", mapComp.countedCrimes[index]);
+        // console.log("CURRENT ROUTES ARRAY TO ADD MARKERS TO: ", mapComp.countedCrimes[index]);
         mapComp.countedCrimes[index].forEach(function(coordinate) {
             var contentString = '<div id="content">' +
             '<div id="bodyContent">' +
@@ -700,10 +700,10 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval, $scope)
 
     mapComp.getCrimes = function() {
 			mapComp.crimesLoading = true;
-      console.log(mapComp.controls.border)
+      // console.log(mapComp.controls.border)
         mapScope = this;
         var crimes = mapComp.CrimeService.getCrimes(mapComp.box).then(function(data) {
-            console.log("CRIMES: ", data.result);
+            // console.log("CRIMES: ", data.result);
             mapComp.crimes = data.result;
 
             // FILTER RESULTS BASED ON USER SETTINGS
@@ -787,7 +787,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval, $scope)
 
             }
 
-            console.log("FILTERED CRIMES: ", mapComp.crimes);
+            // console.log("FILTERED CRIMES: ", mapComp.crimes);
 
             mapScope.plotCrimes();
             mapScope.findMatches();
@@ -941,7 +941,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval, $scope)
                 })
             })
         })
-        console.log("COUNTED CRIMES: ", mapComp.countedCrimes);
+        // console.log("COUNTED CRIMES: ", mapComp.countedCrimes);
 				mapComp.crimesLoading = false;
 
 				if(mapComp.controls.crimes){
