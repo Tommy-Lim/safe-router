@@ -27,6 +27,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval, $scope)
     mapComp.routeIndex;
 		mapComp.mapLoading = false;
 		mapComp.crimesLoading = false;
+		mapComp.mapCenter;
 
 
 		function setMapLoading(val) {
@@ -50,14 +51,14 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval, $scope)
             }
         });
         // SET DEFAULT LAT/LNG IN SEATTLE
-        var latLng = {
+        mapComp.mapCenter = {
             lat: 47.608013,
             lng: -122.335167
         };
         // PADDING DEGREES FROM CENTER OF MAP
         var autocompleteBoundsPadding = 0.05; // degrees from center
         // SET AUTOCOMPLETE BOUNDS
-        mapComp.defaultBounds = new google.maps.LatLngBounds(new google.maps.LatLng(latLng.lat + autocompleteBoundsPadding, latLng.lng - autocompleteBoundsPadding), new google.maps.LatLng(latLng.lat - autocompleteBoundsPadding, latLng.lng + autocompleteBoundsPadding))
+        mapComp.defaultBounds = new google.maps.LatLngBounds(new google.maps.LatLng(mapComp.mapCenter.lat + autocompleteBoundsPadding, mapComp.mapCenter.lng - autocompleteBoundsPadding), new google.maps.LatLng(mapComp.mapCenter.lat - autocompleteBoundsPadding, mapComp.mapCenter.lng + autocompleteBoundsPadding))
         mapComp.options = {
             bounds: mapComp.defaultBounds
         }
@@ -65,17 +66,17 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval, $scope)
         // FIND CURRENT LAT/LNG IF NAVIGATOR ENABLED
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function(position) {
-                latLng = {
+                mapComp.mapCenter = {
                     lat: position.coords.latitude,
                     lng: position.coords.longitude
                 };
                 // SET BOUNDS FOR
-                mapComp.defaultBounds = new google.maps.LatLngBounds(new google.maps.LatLng(latLng.lat + autocompleteBoundsPadding, latLng.lng - autocompleteBoundsPadding), new google.maps.LatLng(latLng.lat - autocompleteBoundsPadding, latLng.lng + autocompleteBoundsPadding))
+                mapComp.defaultBounds = new google.maps.LatLngBounds(new google.maps.LatLng(mapComp.mapCenter.lat + autocompleteBoundsPadding, mapComp.mapCenter.lng - autocompleteBoundsPadding), new google.maps.LatLng(mapComp.mapCenter.lat - autocompleteBoundsPadding, mapComp.mapCenter.lng + autocompleteBoundsPadding))
                 mapComp.options.bounds = mapComp.defaultBounds
                 // console.log("boundary new: ", mapComp.defaultBounds)
                 // SET START TO LATLNG
-                addStart(latLng);
-                makeMap(latLng);
+                addStart(mapComp.mapCenter);
+                makeMap(mapComp.mapCenter);
 
                 // var infoWindow = new google.maps.InfoWindow({
                 //  map: mapComp.mapid,
@@ -95,11 +96,11 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval, $scope)
 
             }, function() {
                 // USE DEFAULT LAT/LNG BECAUSE ERROR OCCURRED GETTING LAT/LNG
-                makeMap(latLng);
+                makeMap(mapComp.mapCenter);
             });
         } else {
             // NO BROSWER SUPPORT FOR LAT/LNG, USE DEFAULT LAT/LNG
-            makeMap(latLng);
+            makeMap(mapComp.mapCenter);
         }
 
         // ADD CENTER ICON TO MAP
@@ -985,11 +986,32 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval, $scope)
     // SHOW/HIDE CONTROL PANEL
     mapComp.toggleControls = function() {
         if (mapComp.showControls === false) {
-            $(".main-container").css("left", "-450px");
+          $(".main-container").css("left", "-450px");
+					$("#mapid").css("width", "100%");
+					$("#mapid").css("left", "0");
+					google.maps.event.trigger(mapComp.mapid, 'resize')
+					if(mapComp.box){
+						mapComp.resetBounds();
+					} else{
+						mapComp.setCenter();
+					}
         } else {
-            $(".main-container").css("left", "0");
+          $(".main-container").css("left", "0");
+					$("#mapid").css("width", "calc(100% - 450px)");
+					$("#mapid").css("left", "450px");
+					google.maps.event.trigger(mapComp.mapid, 'resize')
+					if(mapComp.box){
+						mapComp.resetBounds();
+					} else{
+						mapComp.setCenter();
+					}	
         }
     }
+
+		mapComp.setCenter = function(){
+			var center = new google.maps.LatLng(mapComp.mapCenter.lat, mapComp.mapCenter.lng)
+			mapComp.mapid.setCenter(center);
+		}
 
     // MAKE SURE CRIME WINDOW IS VALID
     var interval = 0;

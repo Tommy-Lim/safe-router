@@ -611,10 +611,10 @@ input[type=range]:focus::-ms-fill-upper {
 
 #mapid {
 	height: 100%;
-	width: 100%;
+	width: calc(100% - 450px);
 	position: absolute;
+	left: 450px;
 	top: 0;
-	left: 0;
 	z-index: -2;
 }
 
