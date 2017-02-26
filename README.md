@@ -19,17 +19,16 @@ To provide an easy interface for individuals to discover safer paths and avoid p
 * APIs
   * [Google Maps API](https://developers.google.com/maps/documentation/javascript/)
   * [Seattle.gov Crime Data](https://data.seattle.gov/)
-  * [Geolocation Marker](https://chadkillingsworth.github.io/geolocation-marker/)
 
 ## In Progress
 
 * Acquiring additional datasets to expand beyond the Greater Seattle area.
-* Automatic route optimization based on safest route
+* Automatic route optimization based on safest route.
 
 ## Contact
 
 Built by [Ryne Schillinger](https://www.linkedin.com/in/ryneschillinger/) and [Tommy Lim](https://www.linkedin.com/in/tommy-lim)
 
-## Beacon in Action
+# Beacon in Action
 
 ![Demo](./public/img/beacon-demo.png)
