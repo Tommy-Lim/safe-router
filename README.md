@@ -29,6 +29,6 @@ To provide an easy interface for individuals to discover safer paths and avoid p
 
 Built by [Ryne Schillinger](https://www.linkedin.com/in/ryneschillinger/) and [Tommy Lim](https://www.linkedin.com/in/tommy-lim)
 
-# Beacon in Action
+## Beacon in Action
 
 ![Demo](./public/img/beacon-demo.png)
