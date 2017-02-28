@@ -25,7 +25,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval, $scope)
     mapComp.markers = [];
     mapComp.infoWindows = [];
     mapComp.routeIndex;
-		mapComp.mapLoading = false;
+		mapComp.mapLoading = true;
 		mapComp.crimesLoading = false;
 		mapComp.mapCenter;
 
