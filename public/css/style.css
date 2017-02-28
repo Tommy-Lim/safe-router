@@ -253,7 +253,7 @@ input[type="submit"]:hover, input[type="submit"]:active {
 
 .tools-banner {
 	background-color: #0a0223;
-	padding: 10px 30px;
+	padding: 20px 30px;
 	text-align: center;
 }
 
@@ -349,6 +349,10 @@ input[type="submit"]:hover, input[type="submit"]:active {
 	transition-duration: 200ms;
 }
 
+#accordion .panel-heading:hover .fa-chevron-circle-down{
+	color: #2FD9BD;
+}
+
 #toggle-controls {
 	width: 64px;
 	height: 50px;
@@ -417,7 +421,6 @@ td.adp-listsel {
 	border: none;
 }
 
-
 /* 3. SEARCH FILTERS */
 
 #search-filters {
@@ -431,7 +434,12 @@ td.adp-listsel {
 	flex-direction: column;
 	justify-content: flex-start;
 	background-color: #160D31;
-	overflow: scroll;
+}
+
+@media (max-width: 525px){
+	#search-filters{
+		overflow-y: scroll;
+	}
 }
 
 #search-filters form {
@@ -576,7 +584,15 @@ input[type=range]:focus::-ms-fill-upper {
 	display: flex;
 	justify-content: space-around;
 	padding: 10px;
+	padding-bottom: 20px;
 	color: #160D31;
+}
+
+.route-score-box div{
+	opacity: 0.5;
+}
+.route-score-box .selected-route{
+	opacity: 1.0;
 }
 @media (max-width: 525px){
 	.route-score-box h4{
