@@ -668,6 +668,9 @@ input[type=range]:focus::-ms-fill-upper {
 		width: calc(100% - 275px);
 		left: 275px;
 	}
+}
+
+@media (max-width: 900px){
 	#map-controls{
 		display: flex;
 		flex-direction: column;

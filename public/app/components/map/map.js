@@ -29,7 +29,6 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval, $scope)
 		mapComp.crimesLoading = false;
 		mapComp.mapCenter;
 
-
 		function setMapLoading(val) {
 			mapComp.mapLoading = val;
 			$scope.$apply();
@@ -125,6 +124,13 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval, $scope)
                 streetViewControl: false,
                 fullscreenControl: false,
                 styles: [
+                    // {
+                    //     "stylers":[
+                    //       {
+                    //         "visibility": "off"
+                    //       }
+                    //     ]
+                    // },
                     {
                         "featureType": "all",
                         "elementType": "labels.text.fill",
@@ -938,7 +944,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval, $scope)
 
     // SHOW/HIDE CONTROL PANEL
     mapComp.toggleControls = function() {
-      console.log($(window).width());
+        mapComp.showControls = !mapComp.showControls;
         if (mapComp.showControls === false) {
           $("#mapid").css("width", "100%");
           $("#mapid").css("left", "0");
@@ -993,15 +999,23 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval, $scope)
     }
 
     mapComp.changeRoute = function(route){
-      console.log(route, "Clicked");
       mapComp.directionsDisplay.setOptions({
         routeIndex: route
       })
+    }
 
+    mapComp.isMapLarge = function(){
+      if($(window).width() > 625){
+        return true;
+      } else{
+        return false;
+      }
     }
 
     // ADD MAP TO SITE
     google.maps.event.addDomListener(window, 'load', mapComp.initMap);
+
+
 
 }
 

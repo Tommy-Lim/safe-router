@@ -123,7 +123,7 @@
   </div>
 
   <!--  Show/hide controls  -->
-  <button ng-click="mapComp.showControls = !mapComp.showControls; mapComp.toggleControls()" id="toggle-controls">
+  <button ng-click="mapComp.toggleControls()" id="toggle-controls">
     <i class="fa fa-arrow-left" aria-hidden="true" ng-show="mapComp.showControls === true"></i>
     <i class="fa fa-arrow-right" aria-hidden="true" ng-show="mapComp.showControls === false"></i>
     <i class="fa fa-bars" aria-hidden="true"></i>
@@ -136,7 +136,7 @@
 <!-- Map Area -->
 <div id="map">
   <img src="../../img/beacon_logo.svg" alt="enter directions" id="beacon-logo">
-	<div id="map-controls" ng-show="mapComp.countedCrimes.length !== undefined && !mapComp.showControls">
+	<div id="map-controls" ng-show="mapComp.countedCrimes.length !== undefined && (!mapComp.showControls || mapComp.isMapLarge())">
     <button class="btn btn-controls" ng-click="mapComp.toggleHeatmap()">
       <img src="../../img/control-icon_heatmap-active.svg" alt="hide heatmap" class="control-icon" ng-show="mapComp.controls.heatmap === true">
       <img src="../../img/control-icon_heatmap-inactive.svg" alt="show heatmap" class="control-icon" ng-show="mapComp.controls.heatmap === false">
