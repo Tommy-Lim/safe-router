@@ -1,16 +1,273 @@
-(function(){/*
- geolocation-marker version 2.0.4
- @copyright 2012, 2015 Chad Killingsworth
- @see https://github.com/ChadKillingsworth/geolocation-marker/blob/master/LICENSE.txt
-*/
-'use strict';var b,d=this;
-function g(a,c,e){google.maps.MVCObject.call(this);this.a=this.b=null;this.g=-1;var f={clickable:!1,cursor:"pointer",draggable:!1,flat:!0,icon:{url:"https://chadkillingsworth.github.io/geolocation-marker/images/gpsloc.png",size:new google.maps.Size(34,34),scaledSize:new google.maps.Size(17,17),origin:new google.maps.Point(0,0),anchor:new google.maps.Point(8,8)},optimized:!1,position:new google.maps.LatLng(0,0),title:"Current location",zIndex:2};c&&(f=h(f,c));c={clickable:!1,radius:0,strokeColor:"1bb6ff",
-strokeOpacity:.4,fillColor:"61a0bf",fillOpacity:.4,strokeWeight:1,zIndex:1};e&&(c=h(c,e));this.b=new google.maps.Marker(f);this.a=new google.maps.Circle(c);google.maps.MVCObject.prototype.set.call(this,"accuracy",null);google.maps.MVCObject.prototype.set.call(this,"position",null);google.maps.MVCObject.prototype.set.call(this,"map",null);this.set("minimum_accuracy",null);this.set("position_options",{enableHighAccuracy:!0,maximumAge:1E3});this.a.bindTo("map",this.b);a&&this.f(a)}
-(function(){var a=google.maps.MVCObject;function c(){}c.prototype=a.prototype;g.prototype=new c;g.prototype.constructor=g;for(var e in a)if(d.Object.defineProperties){var f=d.Object.getOwnPropertyDescriptor(a,e);void 0!==f&&d.Object.defineProperty(g,e,f)}else g[e]=a[e]})();b=g.prototype;b.set=function(a,c){if(k.test(a))throw"'"+a+"' is a read-only property.";"map"===a?this.f(c):google.maps.MVCObject.prototype.set.call(this,a,c)};b.i=function(){return this.get("map")};b.l=function(){return this.get("position_options")};
-b.w=function(a){this.set("position_options",a)};b.c=function(){return this.get("position")};b.m=function(){return this.get("position")?this.a.getBounds():null};b.j=function(){return this.get("accuracy")};b.h=function(){return this.get("minimum_accuracy")};b.v=function(a){this.set("minimum_accuracy",a)};
-b.f=function(a){google.maps.MVCObject.prototype.set.call(this,"map",a);a?navigator.geolocation&&(this.g=navigator.geolocation.watchPosition(this.A.bind(this),this.o.bind(this),this.l())):(this.b.unbind("position"),this.a.unbind("center"),this.a.unbind("radius"),google.maps.MVCObject.prototype.set.call(this,"accuracy",null),google.maps.MVCObject.prototype.set.call(this,"position",null),navigator.geolocation.clearWatch(this.g),this.g=-1,this.b.setMap(a))};b.u=function(a){this.b.setOptions(h({},a))};
-b.s=function(a){this.a.setOptions(h({},a))};
-b.A=function(a){var c=new google.maps.LatLng(a.coords.latitude,a.coords.longitude),e=null==this.b.getMap();if(e){if(null!=this.h()&&a.coords.accuracy>this.h())return;this.b.setMap(this.i());this.b.bindTo("position",this);this.a.bindTo("center",this,"position");this.a.bindTo("radius",this,"accuracy")}this.j()!=a.coords.accuracy&&google.maps.MVCObject.prototype.set.call(this,"accuracy",a.coords.accuracy);!e&&null!=this.c()&&this.c().equals(c)||google.maps.MVCObject.prototype.set.call(this,"position",
-c)};b.o=function(a){google.maps.event.trigger(this,"geolocation_error",a)};function h(a,c){for(var e in c)!0!==l[e]&&(a[e]=c[e]);return a}var l={map:!0,position:!0,radius:!0},k=/^(?:position|accuracy)$/i;function m(){g.prototype.getAccuracy=g.prototype.j;g.prototype.getBounds=g.prototype.m;g.prototype.getMap=g.prototype.i;g.prototype.getMinimumAccuracy=g.prototype.h;g.prototype.getPosition=g.prototype.c;g.prototype.getPositionOptions=g.prototype.l;g.prototype.setCircleOptions=g.prototype.s;g.prototype.setMap=g.prototype.f;g.prototype.setMarkerOptions=g.prototype.u;g.prototype.setMinimumAccuracy=g.prototype.v;g.prototype.setPositionOptions=g.prototype.w;return g}
-"function"===typeof this.define&&this.define.amd?this.define([],m):"object"===typeof this.exports?this.module.exports=m():this.GeolocationMarker=m();}).call(this)
-//# sourceMappingURL=geolocation-marker.js.map
+/**
+ * @license geolocation-marker
+ * @copyright 2012, 2015 Chad Killingsworth
+ * @see https://github.com/ChadKillingsworth/geolocation-marker/blob/master/LICENSE.txt
+ */
+
+/**
+ * @name GeolocationMarker for Google Maps v3
+ * @version version 1.1
+ * @author Chad Killingsworth [chadkillingsworth at gmail.com]
+ * Copyright 2012
+ * @fileoverview
+ * This library uses geolocation to add a marker and accuracy circle to a map.
+ * The marker position is automatically updated as the user position changes.
+ */
+
+'use strict';
+
+class GeolocationMarker extends google.maps.MVCObject {
+  /**
+  * @param {google.maps.Map=} opt_map
+  * @param {(google.maps.MarkerOptions|Object.<string>)=} opt_markerOpts
+  * @param {(google.maps.CircleOptions|Object.<string>)=} opt_circleOpts
+  */
+  constructor(opt_map, opt_markerOpts, opt_circleOpts) {
+     super();
+
+     /**
+      * @private
+      * @type {google.maps.Marker}
+      */
+     this.marker_ = null;
+
+     /**
+      * @private
+      * @type {google.maps.Circle}
+      */
+     this.circle_ = null;
+
+     /**
+      * @private
+      * @type {number}
+      */
+     this.watchId_ = -1;
+
+     var markerOpts = {
+       'clickable': false,
+       'cursor': 'pointer',
+       'draggable': false,
+       'flat': true,
+       'icon': {
+           'url': 'https://chadkillingsworth.github.io/geolocation-marker/images/gpsloc.png',
+           'size': new google.maps.Size(34, 34),
+           'scaledSize': new google.maps.Size(17, 17),
+           'origin': new google.maps.Point(0, 0),
+           'anchor': new google.maps.Point(8, 8)
+       },
+       // This marker may move frequently - don't force canvas tile redraw
+       'optimized': false,
+       'position': new google.maps.LatLng(0, 0),
+       'title': 'Current location',
+       'zIndex': 2
+     };
+
+     if(opt_markerOpts) {
+       markerOpts = this.copyOptions_(markerOpts, opt_markerOpts);
+     }
+
+     var circleOpts = {
+       'clickable': false,
+       'radius': 0,
+       'strokeColor': '1bb6ff',
+       'strokeOpacity': .4,
+       'fillColor': '61a0bf',
+       'fillOpacity': .4,
+       'strokeWeight': 1,
+       'zIndex': 1
+     };
+
+     if(opt_circleOpts) {
+       circleOpts = this.copyOptions_(circleOpts, opt_circleOpts);
+     }
+
+     this.marker_ = new google.maps.Marker(markerOpts);
+     this.circle_ = new google.maps.Circle(circleOpts);
+
+     google.maps.MVCObject.prototype.set.call(this, 'accuracy', null);
+     google.maps.MVCObject.prototype.set.call(this, 'position', null);
+     google.maps.MVCObject.prototype.set.call(this, 'map', null);
+
+     this.set('minimum_accuracy', null);
+
+     this.set('position_options', /** GeolocationPositionOptions */
+         ({enableHighAccuracy: true, maximumAge: 1000}));
+
+     this.circle_.bindTo('map', this.marker_);
+
+     if(opt_map) {
+       this.setMap(opt_map);
+     }
+  }
+
+  /**
+   * @override
+   * @param {string} key
+   * @param {*} value
+   */
+  set(key, value) {
+     if (GeolocationMarker.invalidPropertiesExpr_.test(key)) {
+       throw '\'' + key + '\' is a read-only property.';
+     } else if (key === 'map') {
+       this.setMap(/** @type {google.maps.Map} */ (value));
+     } else {
+       google.maps.MVCObject.prototype.set.call(this, key, value);
+     }
+  }
+
+  /** @return {google.maps.Map} */
+  getMap() {
+     return /** @type {google.maps.Map|null} */ (this.get('map'));
+  }
+
+  /** @return {GeolocationPositionOptions} */
+  getPositionOptions() {
+     return /** @type {GeolocationPositionOptions} */(this.get('position_options'));
+  }
+
+  /** @param {!GeolocationPositionOptions|!Object.<string, *>} positionOpts */
+  setPositionOptions(positionOpts) {
+     this.set('position_options', positionOpts);
+  }
+
+  /** @return {google.maps.LatLng|null} */
+  getPosition() {
+     return /** @type {google.maps.LatLng|null} */ (this.get('position'));
+  }
+
+  /** @return {google.maps.LatLngBounds?} */
+  getBounds() {
+     if (this.get('position')) {
+       return this.circle_.getBounds();
+     } else {
+       return null;
+     }
+  }
+
+  /** @return {number|null} */
+  getAccuracy() {
+     return /** @type {number|null} */ (this.get('accuracy'));
+  }
+
+  /** @return {number|null} */
+  getMinimumAccuracy() {
+     return /** @type {number|null} */ (this.get('minimum_accuracy'));
+  }
+
+  /** @param {number|null} accuracy */
+  setMinimumAccuracy(accuracy) {
+     this.set('minimum_accuracy', accuracy);
+  }
+
+  /** @param {google.maps.Map|null} map */
+  setMap(map) {
+     google.maps.MVCObject.prototype.set.call(this, 'map', map);
+     if (map) {
+       this.watchPosition_();
+     } else {
+       this.marker_.unbind('position');
+       this.circle_.unbind('center');
+       this.circle_.unbind('radius');
+       google.maps.MVCObject.prototype.set.call(this, 'accuracy', null);
+       google.maps.MVCObject.prototype.set.call(this, 'position', null);
+       navigator.geolocation.clearWatch(this.watchId_);
+       this.watchId_ = -1;
+       this.marker_.setMap(map);
+     }
+  }
+
+  /** @param {google.maps.MarkerOptions|Object.<string>} markerOpts */
+  setMarkerOptions(markerOpts) {
+     this.marker_.setOptions(this.copyOptions_({}, markerOpts));
+  }
+
+  /** @param {google.maps.CircleOptions|Object.<string>} circleOpts */
+  setCircleOptions(circleOpts) {
+     this.circle_.setOptions(this.copyOptions_({}, circleOpts));
+  }
+
+  /**
+   * @private
+   * @param {GeolocationPosition} position
+   */
+  updatePosition_(position) {
+     var newPosition = new google.maps.LatLng(position.coords.latitude,
+         position.coords.longitude), mapNotSet = this.marker_.getMap() == null;
+
+     if (mapNotSet) {
+       if (this.getMinimumAccuracy() != null &&
+           position.coords.accuracy > this.getMinimumAccuracy()) {
+         return;
+       }
+       this.marker_.setMap(this.getMap());
+       this.marker_.bindTo('position', this);
+       this.circle_.bindTo('center', this, 'position');
+       this.circle_.bindTo('radius', this, 'accuracy');
+     }
+
+     if (this.getAccuracy() != position.coords.accuracy) {
+       // The local set method does not allow accuracy to be updated
+       google.maps.MVCObject.prototype.set.call(this, 'accuracy',
+           position.coords.accuracy);
+     }
+
+     if (mapNotSet || this.getPosition() == null ||
+         !this.getPosition().equals(newPosition)) {
+       // The local set method does not allow position to be updated
+       google.maps.MVCObject.prototype.set.call(this, 'position', newPosition);
+     }
+  }
+
+  /**
+   * @private
+   */
+  watchPosition_() {
+     if (navigator.geolocation) {
+       this.watchId_ = navigator.geolocation.watchPosition(
+           this.updatePosition_.bind(this),
+           this.geolocationError_.bind(this),
+           this.getPositionOptions());
+     }
+  }
+
+  /**
+   * @private
+   * @param {GeolocationPositionError} data
+   */
+  geolocationError_(data) {
+     google.maps.event.trigger(this, 'geolocation_error', data);
+  }
+
+  /**
+   * @private
+   * @param {Object.<string,*>} target
+   * @param {Object.<string,*>} source
+   * @return {Object.<string,*>}
+   */
+  copyOptions_(target, source) {
+     for (var opt in source) {
+       if (GeolocationMarker.DISALLOWED_OPTIONS[opt] !== true) {
+         target[opt] = source[opt];
+       }
+     }
+     return target;
+  }
+}
+
+/**
+ * @const
+ * @type {Object.<string, boolean>}
+ */
+GeolocationMarker.DISALLOWED_OPTIONS = {
+    'map': true,
+    'position': true,
+    'radius': true
+};
+
+/**
+ * @private
+ * @const
+ */
+GeolocationMarker.invalidPropertiesExpr_ = /^(?:position|accuracy)$/i;
+
+export default GeolocationMarker;
