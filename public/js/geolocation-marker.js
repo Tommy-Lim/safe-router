@@ -269,5 +269,5 @@ GeolocationMarker.DISALLOWED_OPTIONS = {
  * @const
  */
 GeolocationMarker.invalidPropertiesExpr_ = /^(?:position|accuracy)$/i;
-
-export default GeolocationMarker;
+//
+// export default GeolocationMarker;
