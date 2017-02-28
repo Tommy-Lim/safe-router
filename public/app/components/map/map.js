@@ -78,22 +78,6 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval, $scope)
                 addStart(mapComp.mapCenter);
                 makeMap(mapComp.mapCenter);
 
-                // var infoWindow = new google.maps.InfoWindow({
-                //  map: mapComp.mapid,
-                //  content: 'Current location.'
-                // });
-                // var marker = new google.maps.Marker({
-                //  position: latLng,
-                //  map: mapComp.mapid,
-                //  icon: './img/marker_current.png'
-                // })
-                // marker.addListener('click', function(){
-                //  infoWindow.open(mapComp.mapid, marker);
-                //  mapComp.infoWindows.push(infoWindow);
-                // })
-                // mapComp.infoWindows.push(infoWindow);
-                // mapComp.mapid.setCenter(latLng);
-
             }, function() {
                 // USE DEFAULT LAT/LNG BECAUSE ERROR OCCURRED GETTING LAT/LNG
                 makeMap(mapComp.mapCenter);
@@ -494,7 +478,6 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval, $scope)
                 // mapScope.addMarkers();
                 mapScope.getRouteBox();
                 mapScope.getCrimes();
-
             });
 
             // CLOSE ALL INFOWINDOWS ON CLICK;
@@ -884,37 +867,6 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval, $scope)
         }
     }
 
-    mapComp.findMatchesGMaps = function() {
-        var path = new google.maps.Polyline({
-            path: mapComp.latLngArray[mapComp.directionsDisplay.getRouteIndex()],
-            strokeColor: '#00FF00',
-            geodesic: true
-        })
-        path.setMap(mapComp.mapid);
-        google.maps.event.addListener(mapComp.mapid, 'click', function(e) {
-            var resultColor;
-            if (google.maps.geometry.poly.isLocationOnEdge(e.latLng, path, 10e-3)) {
-                resultColor = 'green';
-            } else {
-                resultColor = 'red';
-            }
-
-            new google.maps.Marker({
-                position: e.latLng,
-                map: mapComp.mapid,
-                icon: {
-                    path: google.maps.SymbolPath.CIRCLE,
-                    fillColor: resultColor,
-                    fillOpacity: .2,
-                    strokeColor: 'white',
-                    strokeWeight: .5,
-                    scale: 10
-                }
-            });
-        });
-
-    }
-
     mapComp.findMatches = function() {
 				mapComp.crimesLoading = true;
         var sensitivity;
@@ -1038,6 +990,14 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval, $scope)
         } else if (mapComp.crimeWindow < 1) {
             mapComp.crimeWindow = 1;
         }
+    }
+
+    mapComp.changeRoute = function(route){
+      console.log(route, "Clicked");
+      mapComp.directionsDisplay.setOptions({
+        routeIndex: route
+      })
+
     }
 
     // ADD MAP TO SITE

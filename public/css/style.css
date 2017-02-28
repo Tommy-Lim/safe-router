@@ -591,6 +591,12 @@ input[type=range]:focus::-ms-fill-upper {
 .route-score-box div{
 	opacity: 0.5;
 }
+
+.route-score-box div:hover{
+	cursor: pointer;
+	opacity: 1.0;
+}
+
 .route-score-box .selected-route{
 	opacity: 1.0;
 }
