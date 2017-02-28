@@ -136,7 +136,7 @@
 <!-- Map Area -->
 <div id="map">
   <img src="../../img/beacon_logo.svg" alt="enter directions" id="beacon-logo">
-	<div id="map-controls" ng-show="mapComp.countedCrimes.length !== undefined">
+	<div id="map-controls" ng-show="mapComp.countedCrimes.length !== undefined && !mapComp.showControls">
     <button class="btn btn-controls" ng-click="mapComp.toggleHeatmap()">
       <img src="../../img/control-icon_heatmap-active.svg" alt="hide heatmap" class="control-icon" ng-show="mapComp.controls.heatmap === true">
       <img src="../../img/control-icon_heatmap-inactive.svg" alt="show heatmap" class="control-icon" ng-show="mapComp.controls.heatmap === false">

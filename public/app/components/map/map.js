@@ -139,6 +139,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval, $scope)
                 zoom: 14,
                 mapTypeControl: false,
                 streetViewControl: false,
+                fullscreenControl: false,
                 styles: [
                     {
                         "featureType": "all",
@@ -985,27 +986,36 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval, $scope)
 
     // SHOW/HIDE CONTROL PANEL
     mapComp.toggleControls = function() {
+      console.log($(window).width());
         if (mapComp.showControls === false) {
-          $(".main-container").css("left", "-450px");
-					$("#mapid").css("width", "100%");
-					$("#mapid").css("left", "0");
-					google.maps.event.trigger(mapComp.mapid, 'resize')
-					if(mapComp.box){
-						mapComp.resetBounds();
-					} else{
-						mapComp.setCenter();
-					}
+          $("#mapid").css("width", "100%");
+          $("#mapid").css("left", "0");
+          if($(window).width() > 525){
+            $(".main-container").css("left", "-450px");
+          } else{
+            $(".main-container").css("left", "-275px");
+          }
+					mapComp.resizeMap();
         } else {
           $(".main-container").css("left", "0");
-					$("#mapid").css("width", "calc(100% - 450px)");
-					$("#mapid").css("left", "450px");
-					google.maps.event.trigger(mapComp.mapid, 'resize')
-					if(mapComp.box){
-						mapComp.resetBounds();
-					} else{
-						mapComp.setCenter();
-					}	
+          if($(window).width() > 525){
+            $("#mapid").css("width", "calc(100% - 450px)");
+            $("#mapid").css("left", "450px");
+          } else{
+            $("#mapid").css("width", "calc(100% - 275px)");
+            $("#mapid").css("left", "275px");
+          }
+					mapComp.resizeMap();
         }
+    }
+
+    mapComp.resizeMap = function(){
+      google.maps.event.trigger(mapComp.mapid, 'resize')
+      if(mapComp.box){
+        mapComp.resetBounds();
+      } else{
+        mapComp.setCenter();
+      }
     }
 
 		mapComp.setCenter = function(){
