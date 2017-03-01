@@ -308,6 +308,9 @@ input[type="submit"]:hover, input[type="submit"]:active {
 #enter-directions input[type="text"] {
 	width: 100%;
 	font-size: 16px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 #directions-container {
