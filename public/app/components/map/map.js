@@ -429,7 +429,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval, $scope)
             // ADD INPUTS TO MAP
             // mapComp.mapid.controls[google.maps.ControlPosition.TOP_LEFT].push(startInput);
             var startInput = document.getElementById('start-input');
-            var autocompleteStart = new google.maps.places.Autocomplete(startInput); // second param can be mapComp.options
+            var autocompleteStart = new google.maps.places.Autocomplete(startInput, mapComp.mapid.getBounds()); // second param can be mapComp.options
             autocompleteStart.addListener('place_changed', function() {
                 var place = autocompleteStart.getPlace();
                 if (!place.geometry) {
@@ -441,7 +441,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval, $scope)
             })
             // mapComp.mapid.controls[google.maps.ControlPosition.TOP_LEFT].push(endInput);
             var endInput = document.getElementById('end-input');
-            var autocompleteEnd = new google.maps.places.Autocomplete(endInput); // second param can be mapComp.options
+            var autocompleteEnd = new google.maps.places.Autocomplete(endInput, mapComp.mapid.getBounds()); // second param can be mapComp.options
             autocompleteEnd.addListener('place_changed', function() {
                 var place = autocompleteEnd.getPlace();
                 if (!place.geometry) {
