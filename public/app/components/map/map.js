@@ -124,13 +124,13 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval, $scope)
                 streetViewControl: false,
                 fullscreenControl: false,
                 styles: [
-                    // {
-                    //     "stylers":[
-                    //       {
-                    //         "visibility": "off"
-                    //       }
-                    //     ]
-                    // },
+                    {
+                        "stylers":[
+                          {
+                            "visibility": "off"
+                          }
+                        ]
+                    },
                     {
                         "featureType": "all",
                         "elementType": "labels.text.fill",
@@ -406,15 +406,23 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval, $scope)
                         "elementType": "geometry",
                         "stylers": [
                             {
-                                "color": "#2f2152"
+                              visibility: "on",
                             }
                         ]
                     }, {
                         "featureType": "water",
-                        "elementType": "labels.text.stroke",
+                        "elementType": "geometry.fill",
                         "stylers": [
                             {
-                                "visibility": "off"
+                                "color": "#321F55"
+                            }
+                        ]
+                    },{
+                        "featureType": "water",
+                        "elementType": "labels.text",
+                        "stylers": [
+                            {
+                                "visibility": "on"
                             }
                         ]
                     }
