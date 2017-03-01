@@ -823,13 +823,17 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval, $scope)
             }
             // REWRITE HEATMAP LAYER
             mapComp.heatMap = new google.maps.visualization.HeatmapLayer({data: heatMapData, radius: 15, gradient: gradient, opacity: .75})
-            // SET HEATMAP TO MAP
-            mapComp.heatMap.setMap(mapComp.mapid);
+            if(mapComp.controls.heatmap){
+              // SET HEATMAP TO MAP
+              mapComp.heatMap.setMap(mapComp.mapid);
+              mapComp.controls.heatmap = true;
+            }
         } else if (!mapComp.heatMapCreated) {
             // CREATE FIRST HEATMAP
             mapComp.heatMap = new google.maps.visualization.HeatmapLayer({data: heatMapData, radius: 15, gradient: gradient, opacity: .75})
             // SET FIRST HEATMAP TO MAP
             mapComp.heatMap.setMap(mapComp.mapid);
+            mapComp.controls.heatmap = true;
             // FLIP BOOLEAN OF HEATMAP EVER CREATED
             mapComp.heatMapCreated = true;
         } else {
