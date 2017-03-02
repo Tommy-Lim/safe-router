@@ -1032,6 +1032,10 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval, $scope)
     // ADD MAP TO SITE
     google.maps.event.addDomListener(window, 'load', mapComp.initMap);
 
+    $(window).resize(function(){
+      mapComp.toggleControls();
+      mapComp.toggleControls();
+    });
 
 
 }
