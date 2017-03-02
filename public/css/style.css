@@ -390,6 +390,7 @@ input[type="submit"]:hover, input[type="submit"]:active {
 	border-radius: 0 0 6px 6px;
 	height: calc(100% - 185px);
 	overflow-y: auto;
+	-webkit-overflow-scrolling: touch;
 }
 
 table, .adp, .adp-summary, .adp-directions, .adp-placemark, tbody, tr, td {
@@ -437,12 +438,19 @@ td.adp-listsel {
 	flex-direction: column;
 	justify-content: flex-start;
 	background-color: #160D31;
+}
+
+#search-filters form{
+	height: calc(100% - 40px);
 	overflow-y: auto;
+	-webkit-overflow-scrolling: touch;
+
 }
 
 @media (max-width: 525px){
-	#search-filters{
-		overflow-y: auto;
+	#search-filters form{
+		overflow-y: scroll;
+		-webkit-overflow-scrolling: touch;
 	}
 }
 
@@ -720,4 +728,5 @@ input[type=range]:focus::-ms-fill-upper {
 .panel-collapse{
 	max-height: 50vh;
 	overflow-y: auto;
+	-webkit-overflow-scrolling: touch;
 }
