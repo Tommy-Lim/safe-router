@@ -313,6 +313,12 @@ input[type="submit"]:hover, input[type="submit"]:active {
 	text-overflow: ellipsis;
 }
 
+@media (max-width: 525px){
+	#enter-directions input[type="text"] {
+		font-size: 12px;
+	}
+}
+
 #directions-container {
 	display: flex;
 	justify-content: flex-start;
