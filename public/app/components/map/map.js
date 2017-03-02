@@ -645,19 +645,21 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval, $scope)
         }
 
         // FIND MIN/MAX FOR LAT/LNG
-        mapComp.latLngArray[index].forEach(function(coordinate) {
+        mapComp.latLngArray.forEach(function(route) {
+          route.forEach(function(coordinate){
             if (coordinate.lat > mapComp.box.lat.north) {
-                mapComp.box.lat.north = coordinate.lat;
+              mapComp.box.lat.north = coordinate.lat;
             }
             if (coordinate.lat < mapComp.box.lat.south) {
-                mapComp.box.lat.south = coordinate.lat;
+              mapComp.box.lat.south = coordinate.lat;
             }
             if (coordinate.lng > mapComp.box.lng.east) {
-                mapComp.box.lng.east = coordinate.lng;
+              mapComp.box.lng.east = coordinate.lng;
             }
             if (coordinate.lng < mapComp.box.lng.west) {
-                mapComp.box.lng.west = coordinate.lng;
+              mapComp.box.lng.west = coordinate.lng;
             }
+          })
         })
 
         // ADD PADDING TO ZONE
@@ -711,6 +713,7 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval, $scope)
 			mapComp.crimesLoading = true;
       // console.log(mapComp.controls.border)
         mapScope = this;
+        // console.log("MAPBOX", mapComp.box);
         var crimes = mapComp.CrimeService.getCrimes(mapComp.box).then(function(data) {
             // console.log("CRIMES: ", data.result);
             mapComp.crimes = data.result;
@@ -893,7 +896,6 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval, $scope)
         } else {
             sensitivity = mapComp.sensitivity;
         }
-
         routes = mapComp.latLngArray;
         crimes = mapComp.crimes;
 
@@ -1000,8 +1002,11 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval, $scope)
         interval = $interval(function() {
             mapComp.checkCrimeWindow();
             $interval.cancel(interval);
-        }, 0);
+            mapComp.getRouteBox();
+            mapComp.getCrimes();
+        }, 1000);
     };
+
     mapComp.checkCrimeWindow = function() {
         if (mapComp.crimeWindow > 12) {
             mapComp.crimeWindow = 12;

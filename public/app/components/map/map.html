@@ -36,12 +36,12 @@
   <!-- Route(s) Information -->
 	<div class="main-panel" id="route-information" ng-show="mapComp.countedCrimes.length !== undefined">
     <div class="route-score-box">
-      <div class="row-flex" ng-click="mapComp.changeRoute(0)" ng-class="{'selected-route': mapComp.routeIndex == 0}" ng-if="mapComp.countedCrimes[0].length > 1">
+      <div class="row-flex" ng-click="mapComp.changeRoute(0)" ng-class="{'selected-route': mapComp.routeIndex == 0}" ng-if="mapComp.latLngArray[0].length > 0">
         <h4 class="txt-dark">Route 1</h4>
         <span class="badge">{{mapComp.countedCrimes[0].length}}</span>
       </div>
-      <div class="row-flex" ng-click="mapComp.changeRoute(1)" ng-class="{'selected-route': mapComp.routeIndex == 1}" ng-if="mapComp.countedCrimes[1].length > 1"><h4 class="txt-dark">Route 2</h4> <span class="badge">{{mapComp.countedCrimes[1].length}}</span></div>
-      <div class="row-flex" ng-click="mapComp.changeRoute(2)" ng-class="{'selected-route': mapComp.routeIndex == 2}" ng-if="mapComp.countedCrimes[2].length > 1"><h4 class="txt-dark">Route 3</h4> <span class="badge">{{mapComp.countedCrimes[2].length}}</span></div>
+      <div class="row-flex" ng-click="mapComp.changeRoute(1)" ng-class="{'selected-route': mapComp.routeIndex == 1}" ng-if="mapComp.latLngArray[1].length > 0"><h4 class="txt-dark">Route 2</h4> <span class="badge">{{mapComp.countedCrimes[1].length}}</span></div>
+      <div class="row-flex" ng-click="mapComp.changeRoute(2)" ng-class="{'selected-route': mapComp.routeIndex == 2}" ng-if="mapComp.latLngArray[2].length > 0"><h4 class="txt-dark">Route 3</h4> <span class="badge">{{mapComp.countedCrimes[2].length}}</span></div>
     </div>
 
     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" ng-if="mapComp.countedCrimes[mapComp.routeIndex].length>0">
@@ -86,21 +86,21 @@
     	<hr>
     	<div class="filter-section">
     		<label class="txt-uppercase">Crimes</label>
-    		<input type="checkbox" name="Physical" value="Physical" id="filter-crime-physical" ng-click="mapComp.checkBox(); mapComp.getCrimes(mapComp.box)" checked>
+    		<input type="checkbox" name="Physical" value="Physical" id="filter-crime-physical" ng-click="mapComp.checkBox(); mapComp.delayBeforeSearch()" checked>
     			Physical Harm <span class="txt-gray">(Homicide / Assault / Mugging)</span><br>
-    		<input type="checkbox" name="Weapons" value="Weapons" id="filter-crime-weapon" ng-click="mapComp.checkBox(); mapComp.getCrimes(mapComp.box)" checked>
+    		<input type="checkbox" name="Weapons" value="Weapons" id="filter-crime-weapon" ng-click="mapComp.checkBox(); mapComp.delayBeforeSearch()" checked>
     			Weapons <span class="txt-gray">(Armed Robbery / Person With a Gun / Carrying Weapon)</span><br>
-    		<input type="checkbox" name="Vehicle" value="Vehicle" id="filter-crime-vehicle" ng-click="mapComp.checkBox(); mapComp.getCrimes(mapComp.box)">
+    		<input type="checkbox" name="Vehicle" value="Vehicle" id="filter-crime-vehicle" ng-click="mapComp.checkBox(); mapComp.delayBeforeSearch()">
     			Vehicle <span class="txt-gray">(Auto Theft / Car Prowl)</span><br>
-    		<input type="checkbox" name="Jerk" value="Jerk" id="filter-crime-jerk" ng-click="mapComp.checkBox(); mapComp.getCrimes(mapComp.box)">
+    		<input type="checkbox" name="Jerk" value="Jerk" id="filter-crime-jerk" ng-click="mapComp.checkBox(); mapComp.delayBeforeSearch()">
     			Just Being a Jerk <span class="txt-gray">(Harassment / Threats)</span><br>
     	</div>
 
     	<div class="filter-section">
     		<label class="txt-uppercase">Crime Window</label><br>
-    		<input type="text" ng-model="mapComp.crimeWindow" id="crime-window-text" ng-keydown="mapComp.delayBeforeSearch()"> hours before/after now
+    		<input type="text" ng-model="mapComp.crimeWindow" id="crime-window-text" ng-change="mapComp.delayBeforeSearch()"> hours before/after now
     		<div id="crime-window">
-    			<input type="range" min="1" max="12" step="1" ng-model="mapComp.crimeWindow" id="crime-window-range">
+    			<input type="range" min="1" max="12" step="1" ng-model="mapComp.crimeWindow" ng-change="mapComp.delayBeforeSearch()" id="crime-window-range">
     			<div style="display: flex; justify-content: space-between;" id="ticks">
     				<div ng-repeat="i in [1,2,3,4,5,6,7,8,9,10,11,12] track by $index" class="tick">
     					<p class="tick-mark">|</p>
@@ -112,12 +112,12 @@
 
     	<div class="filter-section">
   	  	  <label class="txt-uppercase" for="padding">Route Boundary Padding (0 - 0.01)</label>
-  	  	  <input name="padding" type="number" step=".001" ng-model="mapComp.padding" ng-change="mapComp.getRouteBox(); mapComp.getCrimes()"/>
+  	  	  <input name="padding" type="number" step=".001" min="0" max="0.01" ng-model="mapComp.padding" ng-change="mapComp.delayBeforeSearch()"/>
   	  </div>
 
   	  <div class="filter-section">
   	  	  <label class="txt-uppercase" for="sensitivity">Crime Detection Sensitivity (1 - 5)</label>
-  	  	  <input name="sensitivity" type="number" ng-model="mapComp.sensitivity" ng-change="mapComp.getCrimes()"/>
+  	  	  <input name="sensitivity" type="number" step="1" min="1" max="5" ng-model="mapComp.sensitivity" ng-change="mapComp.delayBeforeSearch()"/>
   	  </div>
     </form>
   </div>
