@@ -11,14 +11,14 @@ angular.module('App').component('mapComp', {
     // }
 });
 
-function MapCompCtrl($http, DirectionsServices, CrimeService, $interval, $scope) {
+function MapCompCtrl($http, CrimeService, $interval, $scope) {
     var mapComp = this;
     mapComp.CrimeService = CrimeService;
     mapComp.showSettings = false;
     mapComp.showControls = true;
     mapComp.start = '';
     mapComp.end = '';
-    mapComp.controls = {heatmap: true, border: false, traffic: true, crimes: false};
+    mapComp.controls = {heatmap: true, border: false, traffic: false, crimes: false};
     mapComp.sensitivity = 3;
     mapComp.padding = 0.003;
     mapComp.crimeWindow = 12;
@@ -428,11 +428,6 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval, $scope)
                     }
                 ]
 						})
-
-            // ADD LAYERS TO MAP
-            mapComp.trafficLayer = new google.maps.TrafficLayer();
-            mapComp.trafficLayer.setMap(mapComp.mapid);
-            mapComp.toggleTraffic();
 
             // ADD INPUTS TO MAP
             // mapComp.mapid.controls[google.maps.ControlPosition.TOP_LEFT].push(startInput);
@@ -881,10 +876,12 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval, $scope)
         if (mapComp.trafficLayer) {
             if (mapComp.trafficLayer.getMap()) {
                 mapComp.trafficLayer.setMap(null);
-                // mapComp.heatMapCreated = false;
             } else {
                 mapComp.trafficLayer.setMap(mapComp.mapid);
             }
+        } else{
+          mapComp.trafficLayer = new google.maps.TrafficLayer();
+          mapComp.trafficLayer.setMap(mapComp.mapid);
         }
     }
 
@@ -1040,4 +1037,4 @@ function MapCompCtrl($http, DirectionsServices, CrimeService, $interval, $scope)
 
 }
 
-MapCompCtrl.$inject = ['$http', 'DirectionsServices', 'CrimeService', '$interval', '$scope']
+MapCompCtrl.$inject = ['$http', 'CrimeService', '$interval', '$scope']
