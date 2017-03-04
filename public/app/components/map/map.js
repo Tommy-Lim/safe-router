@@ -36,7 +36,6 @@ function MapCompCtrl($http, CrimeService, $interval, $scope) {
 
     // INITILAIZE MAP
     mapComp.initMap = function() {
-			// console.log("map loading to true")
 				setMapLoading(true);
         mapScope = this;
         // INIT DIRECTIONS SERVICE AND RENDERER
@@ -430,7 +429,6 @@ function MapCompCtrl($http, CrimeService, $interval, $scope) {
 						})
 
             // ADD INPUTS TO MAP
-            // mapComp.mapid.controls[google.maps.ControlPosition.TOP_LEFT].push(startInput);
             var startInput = document.getElementById('start-input');
             var autocompleteStart = new google.maps.places.Autocomplete(startInput, mapComp.mapid.getBounds()); // second param can be mapComp.options
             autocompleteStart.addListener('place_changed', function() {
@@ -454,9 +452,6 @@ function MapCompCtrl($http, CrimeService, $interval, $scope) {
 										mapComp.calcRoute();
                 }
             })
-            // PUSH FORM TO MAP
-            // var formInput = document.getElementById('form-input');
-            // mapComp.mapid.controls[google.maps.ControlPosition.TOP_CENTER].push(formInput);
 
             // SET THE DIRECTIONS DISPLAY TO BE ON THE MAP AND ASSIGN THE DIRECTIONS TEXT TO DIRECTIONS PANEL
             mapComp.directionsDisplay.setMap(mapComp.mapid);
@@ -464,22 +459,16 @@ function MapCompCtrl($http, CrimeService, $interval, $scope) {
 
             // WHEN ROUTE IS DRAGGED OR CHANGED, RETURN DIRECTIONS
             mapComp.directionsDisplay.addListener('directions_changed', function() {
-                // TODO: show or get alternate routes on redraw
+                console.log("directions changed");
                 var newDirections = mapComp.directionsDisplay.getDirections()
 								mapComp.resetBounds();
-                // console.log("DIRECTIONS AFTER CHANGE ROUTE", newDirections);
                 mapComp.latLngArray = mapScope.polylinesToLatLngArr(newDirections.routes)
-                // console.log("LAT/LNG AFTER CHANGING ROUTE: ", mapComp.latLngArray)
-
             });
 
             // WHEN ROUTE OPTION IS CHANGED, RETURN DIRECTIONS
             google.maps.event.addListener(mapComp.directionsDisplay, 'routeindex_changed', function() {
+                console.log("index changed");
                 mapComp.routeIndex = this.getRouteIndex();
-                // mapScope.removeMarkers();
-                // mapScope.removeBorder();
-                // CURRENT ROUTE INDEX
-                // console.log("SELECTED ROUTE INDEX: ", this.getRouteIndex());
                 //CURRENT ROUTE
                 newRoutes = this.getDirections().routes
                 // console.log("SELECTED ROUTE: ", newRoutes);
@@ -496,7 +485,6 @@ function MapCompCtrl($http, CrimeService, $interval, $scope) {
 
             // ADD CURRENT LOCATION TO MAP
             addCenter(latLng);
-						// console.log("map loading to false")
 						setMapLoading(false);
 
         }
@@ -541,18 +529,13 @@ function MapCompCtrl($http, CrimeService, $interval, $scope) {
             // }
         }
 
-        // console.log("REQUEST IS: ", request);
 
         // GET ROUTES USING DIRECTIONS SERVICE
         mapComp.directionsService.route(request, function(result, status) {
             if (status == 'OK') {
-                // console.log("RESULT IS: ", result);
                 mapComp.directionsResult = result;
                 mapComp.directionsDisplay.setDirections(result);
-                // console.log("DIRECTIONS RESULT: ", mapComp.directionsResult)
-                mapComp.overviewPath = mapComp.directionsResult.routes[0].overview_path
                 mapComp.latLngArray = mapScope.polylinesToLatLngArr(mapComp.directionsResult.routes);
-                // console.log("LAT/LNG DIRECTIONS RESULT: ", mapComp.latLngArray)
             }
         });
     }
