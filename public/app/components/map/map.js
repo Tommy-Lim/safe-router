@@ -459,23 +459,17 @@ function MapCompCtrl($http, CrimeService, $interval, $scope) {
 
             // WHEN ROUTE IS DRAGGED OR CHANGED, RETURN DIRECTIONS
             mapComp.directionsDisplay.addListener('directions_changed', function() {
-                console.log("directions changed");
                 var newDirections = mapComp.directionsDisplay.getDirections()
-								mapComp.resetBounds();
                 mapComp.latLngArray = mapScope.polylinesToLatLngArr(newDirections.routes)
+                mapScope.getRouteBox();
+								mapComp.resetBounds();
+                mapScope.getCrimes();
             });
 
             // WHEN ROUTE OPTION IS CHANGED, RETURN DIRECTIONS
             google.maps.event.addListener(mapComp.directionsDisplay, 'routeindex_changed', function() {
-                console.log("index changed");
                 mapComp.routeIndex = this.getRouteIndex();
-                //CURRENT ROUTE
-                newRoutes = this.getDirections().routes
-                // console.log("SELECTED ROUTE: ", newRoutes);
-                mapComp.latLngArray = mapScope.polylinesToLatLngArr(newRoutes)
-                // mapScope.addMarkers();
-                mapScope.getRouteBox();
-                mapScope.getCrimes();
+                mapScope.resetVisuals();
             });
 
             // CLOSE ALL INFOWINDOWS ON CLICK;
@@ -565,7 +559,6 @@ function MapCompCtrl($http, CrimeService, $interval, $scope) {
             var contentString = '<div id="content">' +
             '<div id="bodyContent">' +
             '<div class="info-date">' + coordinate.event_clearance_date + '</div>' + '<div class="info-location">' + coordinate.hundred_block_location + '</div>' + '<div class="clearance-desc">' + coordinate.event_clearance_description + '</div>' + '<div class="initial-desc">' + coordinate.initial_type_description + '</div>' + '</div>' + '</div>';
-            // '< div class="info-subgroup">' + coordinate.initial_type_description + '</div>';
             var infoWindow = new google.maps.InfoWindow({content: contentString})
             var latLng = new google.maps.LatLng(coordinate.latitude, coordinate.longitude);
             var marker = new google.maps.Marker({position: latLng, map: mapComp.mapid, icon: './img/marker_crime.png'})
@@ -777,8 +770,6 @@ function MapCompCtrl($http, CrimeService, $interval, $scope) {
 
             }
 
-            // console.log("FILTERED CRIMES: ", mapComp.crimes);
-
             mapScope.plotCrimes();
             mapScope.findMatches();
         });
@@ -905,26 +896,28 @@ function MapCompCtrl($http, CrimeService, $interval, $scope) {
                 })
             })
         })
-        // console.log("COUNTED CRIMES: ", mapComp.countedCrimes);
 				mapComp.crimesLoading = false;
+        mapComp.resetVisuals();
 
-				if(mapComp.controls.crimes){
-					mapComp.toggleCrimeMarkers();
-					mapComp.toggleCrimeMarkers();
-				}
-				if(mapComp.controls.traffic){
-					mapComp.toggleTraffic();
-					mapComp.toggleTraffic();
-				}
-				if(mapComp.controls.heatmap){
-					mapComp.toggleHeatmap();
-					mapComp.toggleHeatmap();
-				}
-				if(mapComp.controls.border){
-					mapComp.toggleBorder();
-					mapComp.toggleBorder();
-				}
+    }
 
+    mapComp.resetVisuals = function(){
+      if(mapComp.controls.crimes){
+        mapComp.toggleCrimeMarkers();
+        mapComp.toggleCrimeMarkers();
+      }
+      if(mapComp.controls.traffic){
+        mapComp.toggleTraffic();
+        mapComp.toggleTraffic();
+      }
+      if(mapComp.controls.heatmap){
+        mapComp.toggleHeatmap();
+        mapComp.toggleHeatmap();
+      }
+      if(mapComp.controls.border){
+        mapComp.toggleBorder();
+        mapComp.toggleBorder();
+      }
     }
 
     // TOGGLE CHECKBOXES
