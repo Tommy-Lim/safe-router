@@ -2,10 +2,11 @@ angular.module('App')
 .service('CrimeService', CrimeService);
 
 function CrimeService($http) {
-	this.getCrimes = function(routeBoundaries) {
-
-		var query = encodeURIComponent(JSON.stringify(routeBoundaries));
-		// console.log("query:", query)
+	this.getCrimes = function(routeBoundaries, codes) {
+		data = {};
+		data.boundaries = routeBoundaries;
+		data.codes = codes;
+		var query = encodeURIComponent(JSON.stringify(data));
 
 		var req = {
 			url: '/api/data/' + query,

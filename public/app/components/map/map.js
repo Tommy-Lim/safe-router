@@ -681,11 +681,11 @@ function MapCompCtrl($http, CrimeService, $interval, $scope) {
     }
 
     mapComp.getCrimes = function() {
-			mapComp.crimesLoading = true;
-      // console.log(mapComp.controls.border)
+			  mapComp.crimesLoading = true;
+         // console.log(mapComp.controls.border)
         mapScope = this;
         // console.log("MAPBOX", mapComp.box);
-        var crimes = mapComp.CrimeService.getCrimes(mapComp.box).then(function(data) {
+        var crimes = mapComp.CrimeService.getCrimes(mapComp.box, mapComp.getCrimeCodes()).then(function(data) {
             // console.log("CRIMES: ", data.result);
             mapComp.crimes = data.result;
 
@@ -773,6 +773,25 @@ function MapCompCtrl($http, CrimeService, $interval, $scope) {
             mapScope.plotCrimes();
             mapScope.findMatches();
         });
+    }
+
+    mapComp.getCrimeCodes = function(){
+      crimesArray = [];
+      if (document.getElementById('filter-crime-physical').checked == true) {
+        console.log(true);
+        crimesArray = crimesArray.concat([10, 31, 40, 43, 49]);
+      }
+      if (document.getElementById('filter-crime-vehicle').checked == true) {
+          crimesArray = crimesArray.concat([30, 63, 71]);
+      }
+      if (document.getElementById('filter-crime-weapon').checked == true) {
+          crimesArray = crimesArray.concat([291, 292]);
+      }
+      if (document.getElementById('filter-crime-jerk').checked == true) {
+          crimesArray = crimesArray.concat([41]);
+      }
+      console.log(crimesArray);
+      return crimesArray;
     }
 
     mapComp.plotCrimes = function() {

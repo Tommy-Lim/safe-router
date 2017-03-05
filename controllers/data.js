@@ -7,19 +7,16 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/seattlecrimerep
 
 router.route('/:query')
 .get(function(req, res){
-	console.log(req.params.query)
 	queryObject = JSON.parse(decodeURIComponent(req.params.query))
 	console.log(queryObject)
   models.Crime.find({
-    'latitude': {$gte: queryObject.lat.south, $lte: queryObject.lat.north},
-    'longitude': {$gte: queryObject.lng.west, $lte: queryObject.lng.east},
+    'latitude': {$gte: queryObject.boundaries.lat.south, $lte: queryObject.boundaries.lat.north},
+    'longitude': {$gte: queryObject.boundaries.lng.west, $lte: queryObject.boundaries.lng.east},
     // 'event_clearance_code': 10
 
-
-
   }, function(err, crimes){
-    console.log("err:", err);
-    console.log("crimes:", crimes);
+    // console.log("err:", err);
+    // console.log("crimes:", crimes);
     result = {result: crimes}
     return res.send(result)
   })
