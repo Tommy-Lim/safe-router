@@ -16,6 +16,7 @@ function MapCompCtrl($http, CrimeService, $interval, $scope) {
     mapComp.CrimeService = CrimeService;
     mapComp.showSettings = false;
     mapComp.showControls = true;
+    mapComp.showCrimeList = false;
     mapComp.start = '';
     mapComp.end = '';
     mapComp.controls = {heatmap: true, border: false, traffic: false, crimes: false};
