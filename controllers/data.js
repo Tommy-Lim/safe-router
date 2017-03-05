@@ -12,7 +12,8 @@ router.route('/:query')
   models.Crime.find({
     'latitude': {$gte: queryObject.boundaries.lat.south, $lte: queryObject.boundaries.lat.north},
     'longitude': {$gte: queryObject.boundaries.lng.west, $lte: queryObject.boundaries.lng.east},
-		'event_clearance_code': {$in: queryObject.codes}
+		'event_clearance_code': {$in: queryObject.codes},
+		// 'event_clearance_date':
   }, function(err, crimes){
     // console.log("err:", err);
     // console.log("crimes:", crimes);

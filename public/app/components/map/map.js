@@ -558,7 +558,7 @@ function MapCompCtrl($http, CrimeService, $interval, $scope) {
         mapComp.countedCrimes[index].forEach(function(coordinate) {
             var contentString = '<div id="content">' +
             '<div id="bodyContent">' +
-            '<div class="info-date">' + coordinate.event_clearance_date + '</div>' + '<div class="info-location">' + coordinate.hundred_block_location + '</div>' + '<div class="clearance-desc">' + coordinate.event_clearance_description + '</div>' + '<div class="initial-desc">' + coordinate.initial_type_description + '</div>' + '</div>' + '</div>';
+            '<div class="info-date">' + coordinate.event_clearance_date.toLocaleString() + '</div>' + '<div class="info-location">' + coordinate.hundred_block_location + '</div>' + '<div class="clearance-desc">' + coordinate.event_clearance_description + '</div>' + '<div class="initial-desc">' + coordinate.initial_type_description + '</div>' + '</div>' + '</div>';
             var infoWindow = new google.maps.InfoWindow({content: contentString})
             var latLng = new google.maps.LatLng(coordinate.latitude, coordinate.longitude);
             var marker = new google.maps.Marker({position: latLng, map: mapComp.mapid, icon: './img/marker_crime.png'})
@@ -698,7 +698,7 @@ function MapCompCtrl($http, CrimeService, $interval, $scope) {
                 // By Crime Window
                 var crimeTime = mapComp.crimes[i].event_clearance_date;
 
-                if (crimeTime === undefined) {
+                if (!crimeTime) {
                     mapComp.crimes.splice(i, 1);
                 } else if (crimeTime) {
                     var crimeHour = parseInt(crimeTime.split(' ')[1].split(':')[0], 10);
@@ -707,7 +707,8 @@ function MapCompCtrl($http, CrimeService, $interval, $scope) {
                     if (checkedTime === false) {
                         mapComp.crimes.splice(i, 1);
                     } else {
-                        // checkCrimeFilter(i);
+                        // mapComp.crimes[i].event_clearance_date = new Date(crimeTime);
+                        mapComp.crimes[i].event_clearance_date = new Date(crimeTime);
                     }
 
                     function checkTime(hour, spread, query) {

@@ -55,8 +55,8 @@
         </div>
         <div id="collapseRoute" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingRoute" aria-expanded="false" style="height: 0px;">
           <div class="panel-body">
-            <div ng-repeat="crime in mapComp.countedCrimes[mapComp.routeIndex] track by $index">
-              <p><strong>{{crime.event_clearance_date}}</strong></p>
+            <div ng-repeat="crime in mapComp.countedCrimes[mapComp.routeIndex] | orderBy:'-event_clearance_date' track by $index">
+              <p><strong>{{crime.event_clearance_date.toLocaleString()}}</strong></p>
               <p>{{crime.event_clearance_description}} &mdash; {{crime.initial_type_description}}</p>
               <p>{{crime.hundred_block_location}}</p>
               <hr />
