@@ -358,6 +358,10 @@ input[type="submit"]:hover, input[type="submit"]:active {
 	transition-duration: 200ms;
 }
 
+#accordion p{
+	font-size: 13px;
+}
+
 #accordion .panel-heading:hover .fa-chevron-circle-down{
 	color: #2FD9BD;
 }
