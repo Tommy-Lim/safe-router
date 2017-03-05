@@ -707,7 +707,7 @@ function MapCompCtrl($http, CrimeService, $interval, $scope) {
                     if (checkedTime === false) {
                         mapComp.crimes.splice(i, 1);
                     } else {
-                        checkCrimeFilter(i);
+                        // checkCrimeFilter(i);
                     }
 
                     function checkTime(hour, spread, query) {
@@ -754,18 +754,6 @@ function MapCompCtrl($http, CrimeService, $interval, $scope) {
                         }
                     }
 
-                    function checkCrimeFilter(i) {
-                        if (document.getElementById('filter-crime-physical').checked === false && mapComp.crimes[i].event_clearance_code === 10 || mapComp.crimes[i].event_clearance_code === 31 || mapComp.crimes[i].event_clearance_code === 40 || mapComp.crimes[i].event_clearance_code === 43 || mapComp.crimes[i].event_clearance_code === 49) {
-                            mapComp.crimes.splice(i, 1);
-                        } else if (document.getElementById('filter-crime-vehicle').checked === false && mapComp.crimes[i].event_clearance_code === 30 || mapComp.crimes[i].event_clearance_code === 63 || mapComp.crimes[i].event_clearance_code === 71) {
-                            mapComp.crimes.splice(i, 1);
-                        } else if (document.getElementById('filter-crime-weapon').checked === false && mapComp.crimes[i].event_clearance_code === 291 || mapComp.crimes[i].event_clearance_code === 292) {
-                            mapComp.crimes.splice(i, 1);
-                        } else if (document.getElementById('filter-crime-jerk').checked === false && mapComp.crimes[i].event_clearance_code === 41) {
-                            mapComp.crimes.splice(i, 1);
-                        }
-                    }
-
                 }
 
             }
@@ -778,8 +766,7 @@ function MapCompCtrl($http, CrimeService, $interval, $scope) {
     mapComp.getCrimeCodes = function(){
       crimesArray = [];
       if (document.getElementById('filter-crime-physical').checked == true) {
-        console.log(true);
-        crimesArray = crimesArray.concat([10, 31, 40, 43, 49]);
+          crimesArray = crimesArray.concat([10, 31, 40, 43, 49]);
       }
       if (document.getElementById('filter-crime-vehicle').checked == true) {
           crimesArray = crimesArray.concat([30, 63, 71]);
@@ -790,7 +777,6 @@ function MapCompCtrl($http, CrimeService, $interval, $scope) {
       if (document.getElementById('filter-crime-jerk').checked == true) {
           crimesArray = crimesArray.concat([41]);
       }
-      console.log(crimesArray);
       return crimesArray;
     }
 
