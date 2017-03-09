@@ -470,6 +470,8 @@ function MapCompCtrl($http, CrimeService, $interval, $scope) {
             // WHEN ROUTE OPTION IS CHANGED, RETURN DIRECTIONS
             google.maps.event.addListener(mapComp.directionsDisplay, 'routeindex_changed', function() {
                 mapComp.routeIndex = this.getRouteIndex();
+                // mapComp.changeRoute(mapComp.routeIndex);
+                $scope.$apply();
                 mapScope.resetVisuals();
             });
 
