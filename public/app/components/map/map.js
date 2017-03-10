@@ -433,6 +433,7 @@ function MapCompCtrl($http, CrimeService, $interval, $scope) {
             var startInput = document.getElementById('start-input');
             var autocompleteStart = new google.maps.places.Autocomplete(startInput, mapComp.mapid.getBounds()); // second param can be mapComp.options
             autocompleteStart.addListener('place_changed', function() {
+              console.log("hit");
                 var place = autocompleteStart.getPlace();
                 if (!place.geometry) {
                     // console.log("place not found");
