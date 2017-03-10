@@ -433,7 +433,6 @@ function MapCompCtrl($http, CrimeService, $interval, $scope) {
             var startInput = document.getElementById('start-input');
             var autocompleteStart = new google.maps.places.Autocomplete(startInput, mapComp.mapid.getBounds()); // second param can be mapComp.options
             autocompleteStart.addListener('place_changed', function() {
-              console.log("hit");
                 var place = autocompleteStart.getPlace();
                 if (!place.geometry) {
                     // console.log("place not found");
@@ -471,9 +470,8 @@ function MapCompCtrl($http, CrimeService, $interval, $scope) {
             // WHEN ROUTE OPTION IS CHANGED, RETURN DIRECTIONS
             google.maps.event.addListener(mapComp.directionsDisplay, 'routeindex_changed', function() {
                 mapComp.routeIndex = this.getRouteIndex();
-                // mapComp.changeRoute(mapComp.routeIndex);
-                $scope.$apply();
                 mapScope.resetVisuals();
+                $scope.$apply();
             });
 
             // CLOSE ALL INFOWINDOWS ON CLICK;

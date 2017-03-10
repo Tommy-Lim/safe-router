@@ -349,7 +349,7 @@ input[type="submit"]:hover, input[type="submit"]:active {
 	color: #2FD9BD;
 }
 
-#directions-controls span i, #accordion .fa-chevron-circle-down, #directions-controls span i, #accordion .fa-chevron-circle-up {
+#directions-controls span i, #accordion .fa-bars {
 	transform: scale(1.5);
 	margin-right: 14px;
 	color: #5A56A2;
@@ -362,7 +362,7 @@ input[type="submit"]:hover, input[type="submit"]:active {
 	font-size: 13px;
 }
 
-#accordion .panel-heading:hover .fa-chevron-circle-down{
+#accordion .panel-heading:hover .fa-bars{
 	color: #2FD9BD;
 }
 
