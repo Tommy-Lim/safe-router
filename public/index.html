@@ -47,20 +47,15 @@
 
     <script>
       function mapCallback() {
-        $(document).ready(function() {
-          var map = new google.maps.Map(document.getElementById('mapid'), {
-            center: {lat: -34.397, lng: 150.644},
-            zoom: 8
-          });
-        });
+
       }
     </script>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js" async defer></script>
 
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" async defer></script>
 
     <!-- Google Maps -->
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAURAdU2xHBrPZSLx4bNMLK0soFcTeHIlk&libraries=visualization,places&callback=mapCallback" async defer></script>
