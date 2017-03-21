@@ -27,7 +27,7 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/seattlecrimerep
 models.Crime.find({
   'latitude': {$gte: 47.6, $lte: 47.7},
   'event_clearance_code': 10
-  '$where': 'function(){return this.latitude.toFixed(2) == 47.55}'
+  '$where': 'function(){return this.event_clearance_date == 47.55}'
 }, function(err, crime){
   console.log("err:", err)
   console.log("crime:", crime)

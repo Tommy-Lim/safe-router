@@ -13,10 +13,11 @@ router.route('/:query')
     'latitude': {$gte: queryObject.boundaries.lat.south, $lte: queryObject.boundaries.lat.north},
     'longitude': {$gte: queryObject.boundaries.lng.west, $lte: queryObject.boundaries.lng.east},
 		'event_clearance_code': {$in: queryObject.codes},
+		// '$where': 'function(){return this.event_clearance_date.split("/")[2] > 15}'
 		// 'event_clearance_date':
   }, function(err, crimes){
     // console.log("err:", err);
-    // console.log("crimes:", crimes);
+    console.log("crimes:", crimes);
     result = {result: crimes}
     return res.send(result)
   })

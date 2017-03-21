@@ -483,6 +483,7 @@ function MapCompCtrl($http, CrimeService, $interval, $scope) {
             addCenter(latLng);
 						setMapLoading(false);
 
+
         }
     }
 
