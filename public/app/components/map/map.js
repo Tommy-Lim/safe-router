@@ -517,7 +517,7 @@ function MapCompCtrl($http, CrimeService, $interval, $scope) {
         var request = {
             origin: start,
             destination: end,
-            travelMode: 'DRIVING',
+            travelMode: 'WALKING',
             avoidTolls: false,
             provideRouteAlternatives: true,
             // drivingOptions: {
