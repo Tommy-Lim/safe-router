@@ -29,6 +29,10 @@ function MapCompCtrl($http, CrimeService, $interval, $scope) {
 		mapComp.mapLoading = true;
 		mapComp.crimesLoading = false;
 		mapComp.mapCenter;
+    mapComp.physical = true;
+    mapComp.weapon = true;
+    mapComp.vehicle = false;
+    mapComp.jerk = false;
 
 		function setMapLoading(val) {
 			mapComp.mapLoading = val;
@@ -1012,7 +1016,9 @@ function MapCompCtrl($http, CrimeService, $interval, $scope) {
     }
 
     // ADD MAP TO SITE
-    google.maps.event.addDomListener(window, 'load', mapComp.initMap);
+    angular.element(document).ready(function(){
+      google.maps.event.addDomListener(window, 'load', mapComp.initMap);
+    });
 
     $(window).resize(function(){
       mapComp.toggleControls();

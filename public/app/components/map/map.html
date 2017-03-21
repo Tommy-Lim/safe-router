@@ -92,13 +92,13 @@
     	<hr>
     	<div class="filter-section">
     		<label class="txt-uppercase">Crimes</label>
-    		<input type="checkbox" name="Physical" value="Physical" id="filter-crime-physical" ng-click="mapComp.checkBox(); mapComp.delayBeforeSearch()" checked>
+    		<input type="checkbox" name="Physical" value="Physical" id="filter-crime-physical" ng-click="mapComp.delayBeforeSearch()" ng-model="mapComp.physical" checked>
     			Physical Harm <span class="txt-gray">(Homicide / Assault / Mugging)</span><br>
-    		<input type="checkbox" name="Weapons" value="Weapons" id="filter-crime-weapon" ng-click="mapComp.checkBox(); mapComp.delayBeforeSearch()" checked>
+    		<input type="checkbox" name="Weapons" value="Weapons" id="filter-crime-weapon" ng-click="mapComp.delayBeforeSearch()" ng-model="mapComp.weapon" checked>
     			Weapons <span class="txt-gray">(Armed Robbery / Person With a Gun / Carrying Weapon)</span><br>
-    		<input type="checkbox" name="Vehicle" value="Vehicle" id="filter-crime-vehicle" ng-click="mapComp.checkBox(); mapComp.delayBeforeSearch()">
+    		<input type="checkbox" name="Vehicle" value="Vehicle" id="filter-crime-vehicle" ng-click="mapComp.delayBeforeSearch()" ng-model="mapComp.vehicle">
     			Vehicle <span class="txt-gray">(Auto Theft / Car Prowl)</span><br>
-    		<input type="checkbox" name="Jerk" value="Jerk" id="filter-crime-jerk" ng-click="mapComp.checkBox(); mapComp.delayBeforeSearch()">
+    		<input type="checkbox" name="Jerk" value="Jerk" id="filter-crime-jerk" ng-click="mapComp.delayBeforeSearch()" ng-model="mapComp.jerk">
     			Just Being a Jerk <span class="txt-gray">(Harassment / Threats)</span><br>
     	</div>
 
