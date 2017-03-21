@@ -5,15 +5,9 @@ angular.module('App')
 	controllerAs: 'homeComp'
 });
 
-function HomeCompCtrl($http, CrimeService) {
+function HomeCompCtrl() {
 	var homeComp = this;
-	homeComp.CrimeService = CrimeService;
-
-	homeComp.findCrimes = function() {
-		console.log(homeComp.CrimeService.getCrimes());
-
-	};
 
 }
 
-HomeCompCtrl.$inject = ['$http', 'CrimeService'];
+HomeCompCtrl.$inject = [];

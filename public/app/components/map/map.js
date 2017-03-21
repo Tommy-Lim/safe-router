@@ -42,7 +42,6 @@ function MapCompCtrl($http, $element, $interval, $scope, CrimeService) {
     // INITILAIZE MAP
     function initMap() {
 				setMapLoading(true);
-        mapScope = this;
         // INIT DIRECTIONS SERVICE AND RENDERER
         mapComp.directionsService = new google.maps.DirectionsService();
         mapComp.directionsDisplay = new google.maps.DirectionsRenderer({
@@ -465,16 +464,16 @@ function MapCompCtrl($http, $element, $interval, $scope, CrimeService) {
             // WHEN ROUTE IS DRAGGED OR CHANGED, RETURN DIRECTIONS
             mapComp.directionsDisplay.addListener('directions_changed', function() {
                 var newDirections = mapComp.directionsDisplay.getDirections()
-                mapComp.latLngArray = mapScope.polylinesToLatLngArr(newDirections.routes)
-                mapScope.getRouteBox();
+                mapComp.latLngArray = mapComp.polylinesToLatLngArr(newDirections.routes)
+                mapComp.getRouteBox();
 								mapComp.resetBounds();
-                mapScope.getCrimes();
+                mapComp.getCrimes();
             });
 
             // WHEN ROUTE OPTION IS CHANGED, RETURN DIRECTIONS
             google.maps.event.addListener(mapComp.directionsDisplay, 'routeindex_changed', function() {
                 mapComp.routeIndex = this.getRouteIndex();
-                mapScope.resetVisuals();
+                mapComp.resetVisuals();
                 $scope.$apply();
             });
 
@@ -507,7 +506,6 @@ function MapCompCtrl($http, $element, $interval, $scope, CrimeService) {
     // CALCULATE ROUTE
     mapComp.calcRoute = function(start, end, delay) {
         // SET DEFAULTS
-        mapScope = this;
         if (!start) {
             start = mapComp.start
         }
@@ -536,7 +534,7 @@ function MapCompCtrl($http, $element, $interval, $scope, CrimeService) {
             if (status == 'OK') {
                 mapComp.directionsResult = result;
                 mapComp.directionsDisplay.setDirections(result);
-                mapComp.latLngArray = mapScope.polylinesToLatLngArr(mapComp.directionsResult.routes);
+                mapComp.latLngArray = mapComp.polylinesToLatLngArr(mapComp.directionsResult.routes);
             }
         });
     }
@@ -690,10 +688,9 @@ function MapCompCtrl($http, $element, $interval, $scope, CrimeService) {
     mapComp.getCrimes = function() {
 			  mapComp.crimesLoading = true;
          // console.log(mapComp.controls.border)
-        mapScope = this;
         // console.log("MAPBOX", mapComp.box);
         var crimes = mapComp.CrimeService.getCrimes(mapComp.box, mapComp.getCrimeCodes()).then(function(data) {
-            // console.log("CRIMES: ", data.result);
+            console.log("CRIMES FROM REQ", data.result);
             mapComp.crimes = data.result;
 
             // FILTER RESULTS BASED ON USER SETTINGS
@@ -765,9 +762,9 @@ function MapCompCtrl($http, $element, $interval, $scope, CrimeService) {
                 }
 
             }
-
-            mapScope.plotCrimes();
-            mapScope.findMatches();
+            console.log("CRIMES AFTER TIME FILTER", data.result);
+            mapComp.plotCrimes();
+            mapComp.findMatches();
         });
     }
 
@@ -789,6 +786,7 @@ function MapCompCtrl($http, $element, $interval, $scope, CrimeService) {
     }
 
     mapComp.plotCrimes = function() {
+        console.log("CRIMES TO HEATMAP", mapComp.crimes)
         var heatMapData = [];
 
         // ADD HEAT MAP DATA
@@ -880,8 +878,9 @@ function MapCompCtrl($http, $element, $interval, $scope, CrimeService) {
         } else {
             sensitivity = mapComp.sensitivity;
         }
-        routes = mapComp.latLngArray;
-        crimes = mapComp.crimes;
+        var routes = mapComp.latLngArray;
+        var crimes = mapComp.crimes;
+        console.log("CRIMES PRE MATCH", crimes);
 
         // ROUND CRIMES TO THOUSANDTHS < 500FT
         crimes.forEach(function(crime) {
@@ -895,20 +894,27 @@ function MapCompCtrl($http, $element, $interval, $scope, CrimeService) {
         ];
 
         // ITERATE THROUGH EACH ROUTE AND COORDINATE
-        routes.forEach(function(route, index) {
-            route.forEach(function(coordinate) {
-                // ROUND COORDINATES TO THOUSANDTHS < 500 FT
-                coordinate.lat = parseFloat(coordinate.lat.toFixed(sensitivity));
-                coordinate.lng = parseFloat(coordinate.lng.toFixed(sensitivity));
-                // CHECK IF MATCHING CRIMES
-                crimes.forEach(function(crime) {
+        // CHECK IF MATCHING CRIMES
+        crimes.forEach(function(crime) {
+          for(var index = 0; index<routes.length; index++){
+              var crimeAdded = false;
+              routes[index].forEach(function(coordinate) {
+                  if(!crimeAdded){
+                    // ROUND COORDINATES TO THOUSANDTHS < 500 FT
+                    coordinate.lat = parseFloat(coordinate.lat.toFixed(sensitivity));
+                    coordinate.lng = parseFloat(coordinate.lng.toFixed(sensitivity));
                     // ADD TO COUNTED CRIMES IF MATCHING
                     if (crime.lat == coordinate.lat && crime.lng == coordinate.lng) {
-                        mapComp.countedCrimes[index].push(crime);
+                      mapComp.countedCrimes[index].push(crime);
+                      crimeAdded = true;
                     }
-                })
-            })
+                  } else{
+                    // crime already added to route
+                  }
+              })
+          }
         })
+        console.log("CRIMES POST MATCH", mapComp.countedCrimes);
 				mapComp.crimesLoading = false;
         mapComp.resetVisuals();
 
