@@ -11,7 +11,7 @@ angular.module('App').component('mapComp', {
     // }
 });
 
-function MapCompCtrl($http, CrimeService, $interval, $scope) {
+function MapCompCtrl($http, $element, $interval, $scope, CrimeService) {
     var mapComp = this;
     mapComp.CrimeService = CrimeService;
     mapComp.showSettings = false;
@@ -1008,15 +1008,18 @@ function MapCompCtrl($http, CrimeService, $interval, $scope) {
 
     // ADD MAP TO SITE
     angular.element(document).ready(function(){
+      console.log("angular document ready")
       google.maps.event.addDomListener(window, 'load', mapComp.initMap);
+      $(window).resize(function(){
+        mapComp.toggleControls();
+        mapComp.toggleControls();
+      });
     });
 
-    $(window).resize(function(){
-      mapComp.toggleControls();
-      mapComp.toggleControls();
-    });
+
+    console.log("end of mapComp")
 
 
 }
 
-MapCompCtrl.$inject = ['$http', 'CrimeService', '$interval', '$scope']
+MapCompCtrl.$inject = ['$http', '$element', '$interval', '$scope', 'CrimeService']
