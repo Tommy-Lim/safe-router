@@ -773,16 +773,16 @@ function MapCompCtrl($http, CrimeService, $interval, $scope) {
 
     mapComp.getCrimeCodes = function(){
       crimesArray = [];
-      if (document.getElementById('filter-crime-physical').checked == true) {
+      if (mapComp.physical) {
           crimesArray = crimesArray.concat([10, 31, 40, 43, 49]);
       }
-      if (document.getElementById('filter-crime-vehicle').checked == true) {
+      if (mapComp.vehicle) {
           crimesArray = crimesArray.concat([30, 63, 71]);
       }
-      if (document.getElementById('filter-crime-weapon').checked == true) {
+      if (mapComp.weapon) {
           crimesArray = crimesArray.concat([291, 292]);
       }
-      if (document.getElementById('filter-crime-jerk').checked == true) {
+      if (mapComp.jerk) {
           crimesArray = crimesArray.concat([41]);
       }
       return crimesArray;
@@ -931,15 +931,6 @@ function MapCompCtrl($http, CrimeService, $interval, $scope) {
         mapComp.toggleBorder();
         mapComp.toggleBorder();
       }
-    }
-
-    // TOGGLE CHECKBOXES
-    mapComp.checkBox = function() {
-        if ($(event.currentTarget).attr("checked")) {
-            $(event.currentTarget).removeAttr("checked");
-        } else {
-            $(event.currentTarget).attr("checked", true);
-        }
     }
 
     // SHOW/HIDE CONTROL PANEL
