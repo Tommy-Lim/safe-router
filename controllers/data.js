@@ -14,7 +14,7 @@ router.route('/:query')
     'longitude': {$gte: queryObject.boundaries.lng.west, $lte: queryObject.boundaries.lng.east},
 		'event_clearance_code': {$in: queryObject.codes},
 		'$where': 'function(){return parseInt(this.event_clearance_date.split("/")[2]) > 14}'
-		// 'event_clearance_date':
+		// from 2015 to current
   }, function(err, crimes){
     // console.log("err:", err);
     // console.log("crimes:", crimes);

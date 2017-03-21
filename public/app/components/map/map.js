@@ -40,7 +40,7 @@ function MapCompCtrl($http, $element, $interval, $scope, CrimeService) {
 		}
 
     // INITILAIZE MAP
-    mapComp.initMap = function() {
+    function initMap() {
 				setMapLoading(true);
         mapScope = this;
         // INIT DIRECTIONS SERVICE AND RENDERER
@@ -993,6 +993,7 @@ function MapCompCtrl($http, $element, $interval, $scope, CrimeService) {
     }
 
     mapComp.changeRoute = function(route){
+      mapComp.routeIndex = route;
       mapComp.directionsDisplay.setOptions({
         routeIndex: route
       })
@@ -1007,18 +1008,12 @@ function MapCompCtrl($http, $element, $interval, $scope, CrimeService) {
     }
 
     // ADD MAP TO SITE
-    angular.element(document).ready(function(){
-      console.log("angular document ready")
-      google.maps.event.addDomListener(window, 'load', mapComp.initMap);
-      $(window).resize(function(){
-        mapComp.toggleControls();
-        mapComp.toggleControls();
-      });
+    google.maps.event.addDomListener(window, 'load', initMap);
+
+    $(window).resize(function(){
+      mapComp.toggleControls();
+      mapComp.toggleControls();
     });
-
-
-    console.log("end of mapComp")
-
 
 }
 
