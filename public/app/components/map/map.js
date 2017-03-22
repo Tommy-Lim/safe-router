@@ -597,16 +597,19 @@ function MapCompCtrl($http, $element, $interval, $scope, $timeout, CrimeService)
             var icon ='';
             switch(coordinate.event_clearance_code){
               case 10: case 31: case 40: case 43: case 49:
-                icon = '';
+                icon = './img/body.png';
                 break;
               case 30: case 63: case 71:
-                icon = '';
+                icon = './img/vehicle.png';
+                break;
+              case 291: case 292:
+                icon = './img/gun.png';
                 break;
               case 41:
-                icon = '';
+                icon = './img/harass.png';
                 break;
               default:
-                icon = '';
+                icon = './img/handcuff.png';
             }
             var marker = new google.maps.Marker({position: latLng, map: mapComp.mapid, icon: icon});
             marker.addListener('click', function() {
