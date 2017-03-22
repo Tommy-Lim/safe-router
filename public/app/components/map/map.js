@@ -11,7 +11,7 @@ angular.module('App').component('mapComp', {
     // }
 });
 
-function MapCompCtrl($http, $element, $interval, $scope, CrimeService) {
+function MapCompCtrl($http, $element, $interval, $scope, $timeout, CrimeService) {
     var mapComp = this;
     mapComp.CrimeService = CrimeService;
     mapComp.showSettings = false;
@@ -36,7 +36,8 @@ function MapCompCtrl($http, $element, $interval, $scope, CrimeService) {
 
 		function setMapLoading(val) {
 			mapComp.mapLoading = val;
-			$scope.$apply();
+      $scope.$apply();
+
 		}
 
     // INITILAIZE MAP
@@ -64,7 +65,6 @@ function MapCompCtrl($http, $element, $interval, $scope, CrimeService) {
         mapComp.options = {
             bounds: mapComp.defaultBounds
         }
-        // console.log("boundary default: ", mapComp.defaultBounds)
         // FIND CURRENT LAT/LNG IF NAVIGATOR ENABLED
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function(position) {
@@ -75,7 +75,6 @@ function MapCompCtrl($http, $element, $interval, $scope, CrimeService) {
                 // SET BOUNDS FOR
                 mapComp.defaultBounds = new google.maps.LatLngBounds(new google.maps.LatLng(mapComp.mapCenter.lat + autocompleteBoundsPadding, mapComp.mapCenter.lng - autocompleteBoundsPadding), new google.maps.LatLng(mapComp.mapCenter.lat - autocompleteBoundsPadding, mapComp.mapCenter.lng + autocompleteBoundsPadding))
                 mapComp.options.bounds = mapComp.defaultBounds
-                // console.log("boundary new: ", mapComp.defaultBounds)
                 // SET START TO LATLNG
                 addStart(mapComp.mapCenter);
                 makeMap(mapComp.mapCenter);
@@ -474,7 +473,9 @@ function MapCompCtrl($http, $element, $interval, $scope, CrimeService) {
             google.maps.event.addListener(mapComp.directionsDisplay, 'routeindex_changed', function() {
                 mapComp.routeIndex = this.getRouteIndex();
                 mapComp.resetVisuals();
-                $scope.$apply();
+                $timeout(function(){
+                  $scope.$apply();
+                })
             });
 
             // CLOSE ALL INFOWINDOWS ON CLICK;
@@ -559,14 +560,13 @@ function MapCompCtrl($http, $element, $interval, $scope, CrimeService) {
     mapComp.addCrimeMarkers = function() {
       mapComp.crimesLoading = true;
         var index = mapComp.routeIndex;
-        // console.log("CURRENT ROUTES ARRAY TO ADD MARKERS TO: ", mapComp.countedCrimes[index]);
         mapComp.countedCrimes[index].forEach(function(coordinate) {
             var contentString = '<div id="content">' +
             '<div id="bodyContent">' +
             '<div class="info-date">' + coordinate.event_clearance_date.toLocaleString() + '</div>' + '<div class="info-location">' + coordinate.hundred_block_location + '</div>' + '<div class="clearance-desc">' + coordinate.event_clearance_description + '</div>' + '<div class="initial-desc">' + coordinate.initial_type_description + '</div>' + '</div>' + '</div>';
             var infoWindow = new google.maps.InfoWindow({content: contentString})
             var latLng = new google.maps.LatLng(coordinate.latitude, coordinate.longitude);
-            var marker = new google.maps.Marker({position: latLng, map: mapComp.mapid, icon: './img/marker_crime.png'})
+            var marker = new google.maps.Marker({position: latLng, map: mapComp.mapid, icon: './img/marker_crime.png'});
             marker.addListener('click', function() {
                 mapComp.closeInfoWindows();
                 infoWindow.open(mapComp.mapid, marker);
@@ -687,10 +687,7 @@ function MapCompCtrl($http, $element, $interval, $scope, CrimeService) {
 
     mapComp.getCrimes = function() {
 			  mapComp.crimesLoading = true;
-         // console.log(mapComp.controls.border)
-        // console.log("MAPBOX", mapComp.box);
         var crimes = mapComp.CrimeService.getCrimes(mapComp.box, mapComp.getCrimeCodes()).then(function(data) {
-            console.log("CRIMES FROM REQ", data.result);
             mapComp.crimes = data.result;
 
             // FILTER RESULTS BASED ON USER SETTINGS
@@ -721,7 +718,6 @@ function MapCompCtrl($http, $element, $interval, $scope, CrimeService) {
                             max1 = 24;
                             min2 = 0;
                             max2 = hour + spread - 24;
-                            // console.log("range is", min2, "to", max2, "and", min1, "to", max1)
                             if (checkHour(query, min1, max1) || checkHour(query, min2, max2)) {
                                 return true
                             } else {
@@ -733,7 +729,6 @@ function MapCompCtrl($http, $element, $interval, $scope, CrimeService) {
                             max1 = hour + spread;
                             min2 = 24 - (spread - hour);
                             max2 = 24;
-                            // console.log("range is", min2, "to", max2, "and", min1, "to", max1)
                             if (checkHour(query, min1, max1) || checkHour(query, min2, max2)) {
                                 return true
                             } else {
@@ -742,7 +737,6 @@ function MapCompCtrl($http, $element, $interval, $scope, CrimeService) {
                         } else {
                             min = hour - spread;
                             max = hour + spread;
-                            // console.log("spread is", min, "to", max)
                             if (checkHour(query, min, max)) {
                                 return true
                             } else {
@@ -762,7 +756,6 @@ function MapCompCtrl($http, $element, $interval, $scope, CrimeService) {
                 }
 
             }
-            console.log("CRIMES AFTER TIME FILTER", data.result);
             mapComp.plotCrimes();
             mapComp.findMatches();
         });
@@ -786,7 +779,6 @@ function MapCompCtrl($http, $element, $interval, $scope, CrimeService) {
     }
 
     mapComp.plotCrimes = function() {
-        console.log("CRIMES TO HEATMAP", mapComp.crimes)
         var heatMapData = [];
 
         // ADD HEAT MAP DATA
@@ -828,7 +820,6 @@ function MapCompCtrl($http, $element, $interval, $scope, CrimeService) {
             // FLIP BOOLEAN OF HEATMAP EVER CREATED
             mapComp.heatMapCreated = true;
         } else {
-            // console.log("RESET MAP DATA with: ", heatMapData)
             // mapComp.heatMap.set('data', heatMapData);
         }
 
@@ -880,13 +871,6 @@ function MapCompCtrl($http, $element, $interval, $scope, CrimeService) {
         }
         var routes = mapComp.latLngArray;
         var crimes = mapComp.crimes;
-        console.log("CRIMES PRE MATCH", crimes);
-
-        // ROUND CRIMES TO THOUSANDTHS < 500FT
-        crimes.forEach(function(crime) {
-            crime.lat = parseFloat(crime.latitude.toFixed(sensitivity));
-            crime.lng = parseFloat(crime.longitude.toFixed(sensitivity));
-        })
 
         // DECLARE COUNTED CRIMES
         mapComp.countedCrimes = [
@@ -896,6 +880,10 @@ function MapCompCtrl($http, $element, $interval, $scope, CrimeService) {
         // ITERATE THROUGH EACH ROUTE AND COORDINATE
         // CHECK IF MATCHING CRIMES
         crimes.forEach(function(crime) {
+          // ROUND CRIMES TO THOUSANDTHS < 500FT
+          crime.lat = parseFloat(crime.latitude.toFixed(sensitivity));
+          crime.lng = parseFloat(crime.longitude.toFixed(sensitivity));
+
           for(var index = 0; index<routes.length; index++){
               var crimeAdded = false;
               routes[index].forEach(function(coordinate) {
@@ -914,7 +902,7 @@ function MapCompCtrl($http, $element, $interval, $scope, CrimeService) {
               })
           }
         })
-        console.log("CRIMES POST MATCH", mapComp.countedCrimes);
+
 				mapComp.crimesLoading = false;
         mapComp.resetVisuals();
 
@@ -1023,4 +1011,4 @@ function MapCompCtrl($http, $element, $interval, $scope, CrimeService) {
 
 }
 
-MapCompCtrl.$inject = ['$http', '$element', '$interval', '$scope', 'CrimeService']
+MapCompCtrl.$inject = ['$http', '$element', '$interval', '$scope', '$timeout', 'CrimeService']
