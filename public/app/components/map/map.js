@@ -557,10 +557,11 @@ function MapCompCtrl($http, $element, $interval, $scope, $timeout, CrimeService)
     }
 
     //ADD LA/LNG MARKERS FOR THE CURRENT ROUTE
-    mapComp.addCrimeMarkers = function() {
-      mapComp.crimesLoading = true;
+    mapComp.addCrimeMarkers = function(crimes) {
+        mapComp.crimesLoading = true;
         var index = mapComp.routeIndex;
-        mapComp.countedCrimes[index].forEach(function(coordinate) {
+        console.log("CRIMES TO PLOT", crimes);
+        crimes.forEach(function(coordinate) {
             var contentString = '<div id="content">' +
             '<div id="bodyContent">' +
             '<div class="info-date">' + coordinate.event_clearance_date.toLocaleString() + '</div>' + '<div class="info-location">' + coordinate.hundred_block_location + '</div>' + '<div class="clearance-desc">' + coordinate.event_clearance_description + '</div>' + '<div class="initial-desc">' + coordinate.initial_type_description + '</div>' + '</div>' + '</div>';
@@ -588,7 +589,7 @@ function MapCompCtrl($http, $element, $interval, $scope, $timeout, CrimeService)
             }
         } else {
             mapComp.controls.crimes = true;
-            mapComp.addCrimeMarkers();
+            mapComp.addCrimeMarkers(mapComp.countedCrimes[mapComp.routeIndex]);
         }
 
     }
@@ -756,6 +757,7 @@ function MapCompCtrl($http, $element, $interval, $scope, $timeout, CrimeService)
                 }
 
             }
+            console.log("CRIMES POST TIME FILTER", mapComp.crimes);
             mapComp.plotCrimes();
             mapComp.findMatches();
         });
@@ -862,6 +864,7 @@ function MapCompCtrl($http, $element, $interval, $scope, $timeout, CrimeService)
     }
 
     mapComp.findMatches = function() {
+        console.log("CRIMES PRE MATCH", mapComp.crimes);
 				mapComp.crimesLoading = true;
         var sensitivity;
         if (!mapComp.sensitivity) {
@@ -869,8 +872,8 @@ function MapCompCtrl($http, $element, $interval, $scope, $timeout, CrimeService)
         } else {
             sensitivity = mapComp.sensitivity;
         }
-        var routes = mapComp.latLngArray;
-        var crimes = mapComp.crimes;
+        var routes = angular.copy(mapComp.latLngArray);
+        var crimes = angular.copy(mapComp.crimes);
 
         // DECLARE COUNTED CRIMES
         mapComp.countedCrimes = [
@@ -902,6 +905,8 @@ function MapCompCtrl($http, $element, $interval, $scope, $timeout, CrimeService)
               })
           }
         })
+
+        console.log("CRIMES POST MATCH", mapComp.countedCrimes);
 
 				mapComp.crimesLoading = false;
         mapComp.resetVisuals();
