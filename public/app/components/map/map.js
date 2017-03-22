@@ -464,7 +464,7 @@ function MapCompCtrl($http, $element, $interval, $scope, $timeout, CrimeService)
             mapComp.directionsDisplay.addListener('directions_changed', function() {
                 var newDirections = mapComp.directionsDisplay.getDirections()
                 mapComp.latLngArray = mapComp.polylinesToLatLngArr(newDirections.routes)
-                console.log("LATLNG", mapComp.latLngArray);
+                console.log("LATLNG directions_change", mapComp.latLngArray);
                 mapComp.getRouteBox();
 								mapComp.resetBounds();
                 mapComp.getCrimes();
@@ -537,6 +537,7 @@ function MapCompCtrl($http, $element, $interval, $scope, $timeout, CrimeService)
                 mapComp.directionsResult = result;
                 mapComp.directionsDisplay.setDirections(result);
                 mapComp.latLngArray = mapComp.polylinesToLatLngArr(mapComp.directionsResult.routes);
+                console.log("LATLNG directionsservice", mapComp.latLngArray)
             }
         });
     }
@@ -554,7 +555,37 @@ function MapCompCtrl($http, $element, $interval, $scope, $timeout, CrimeService)
             })
             coordinateArrs.push(routeCoordinates);
         })
+        console.log("PRE INTERP", coordinateArrs)
+        coordinateArrs = mapComp.interpolateGaps(coordinateArrs);
+        console.log("POST INTERP", coordinateArrs)
         return coordinateArrs;
+    }
+
+    mapComp.interpolateGaps = function(arrayOfCoordsArrays){
+      // mapComp.latLngArray
+      var newArrays = arrayOfCoordsArrays.map(function(route){
+        for(var i=route.length-1; i>0; i--){
+          var dx = route[i].lat - route[i-1].lat;
+          var dy = route[i].lng - route[i-1].lng;
+          var distance = Math.sqrt(Math.pow(dx,2) + Math.pow(dx,2));
+          if( distance > 0.0001){
+            var inner = [];
+            var steps = 10;
+            for(var j=1; j<steps; j++){
+              var obj = {
+                lat: route[i-1].lat + j*dx/steps,
+                lng: route[i-1].lng + j*dy/steps
+              }
+              inner.push(obj);
+            }
+            var start = route.slice(0,i);
+            var end = route.slice(i);
+            route = start.concat(inner).concat(end);
+          }
+        }
+        return route;
+      })
+      return newArrays;
     }
 
     //ADD LA/LNG MARKERS FOR THE CURRENT ROUTE
@@ -768,7 +799,6 @@ function MapCompCtrl($http, $element, $interval, $scope, $timeout, CrimeService)
                 }
 
             }
-            console.log("CRIMES POST TIME FILTER", mapComp.crimes);
             mapComp.plotCrimes();
             mapComp.findMatches();
         });
@@ -874,16 +904,6 @@ function MapCompCtrl($http, $element, $interval, $scope, $timeout, CrimeService)
         }
     }
 
-    mapComp.interpolateGaps = function(arrayOfCoordsArrays){
-      arrayOfCoordsArrays.forEach(function(route){
-        for(var i=route.length-1; i>0; i--){
-          var dx = Math.abs(route(i).lat - route(i-1).lat);
-          var dy = Math.abs(route(i).lng - route(i-1).lng);
-
-        }
-      })
-    }
-
     mapComp.findMatches = function() {
 
 				mapComp.crimesLoading = true;
@@ -893,6 +913,7 @@ function MapCompCtrl($http, $element, $interval, $scope, $timeout, CrimeService)
         } else {
             sensitivity = mapComp.sensitivity;
         }
+        console.log("ROUTES PRE COPY", mapComp.latLngArray);
         var routes = angular.copy(mapComp.latLngArray);
         var crimes = angular.copy(mapComp.crimes);
         console.log("CRIMES PRE MATCH", crimes);
@@ -915,10 +936,10 @@ function MapCompCtrl($http, $element, $interval, $scope, $timeout, CrimeService)
               routes[index].forEach(function(coordinate) {
                   if(!crimeAdded){
                     // ROUND COORDINATES TO THOUSANDTHS < 500 FT
-                    coordinate.lat = parseFloat(coordinate.lat.toFixed(sensitivity));
-                    coordinate.lng = parseFloat(coordinate.lng.toFixed(sensitivity));
+                    coordinate.latShort = parseFloat(coordinate.lat.toFixed(sensitivity));
+                    coordinate.lngShort = parseFloat(coordinate.lng.toFixed(sensitivity));
                     // ADD TO COUNTED CRIMES IF MATCHING
-                    if (crime.lat == coordinate.lat && crime.lng == coordinate.lng) {
+                    if (crime.lat == coordinate.latShort && crime.lng == coordinate.lngShort) {
                       mapComp.countedCrimes[index].push(crime);
                       crimeAdded = true;
                     }
