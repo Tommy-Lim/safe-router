@@ -594,7 +594,21 @@ function MapCompCtrl($http, $element, $interval, $scope, $timeout, CrimeService)
             '<div class="info-date">' + coordinate.event_clearance_date.toLocaleString() + '</div>' + '<div class="info-location">' + coordinate.hundred_block_location + '</div>' + '<div class="clearance-desc">' + coordinate.event_clearance_description + '</div>' + '<div class="initial-desc">' + coordinate.initial_type_description + '</div>' + '</div>' + '</div>';
             var infoWindow = new google.maps.InfoWindow({content: contentString})
             var latLng = new google.maps.LatLng(coordinate.latitude, coordinate.longitude);
-            var marker = new google.maps.Marker({position: latLng, map: mapComp.mapid, icon: './img/marker_crime.png'});
+            var icon ='';
+            switch(coordinate.event_clearance_code){
+              case 10: case 31: case 40: case 43: case 49:
+                icon = '';
+                break;
+              case 30: case 63: case 71:
+                icon = '';
+                break;
+              case 41:
+                icon = '';
+                break;
+              default:
+                icon = '';
+            }
+            var marker = new google.maps.Marker({position: latLng, map: mapComp.mapid, icon: icon});
             marker.addListener('click', function() {
                 mapComp.closeInfoWindows();
                 infoWindow.open(mapComp.mapid, marker);
@@ -602,7 +616,7 @@ function MapCompCtrl($http, $element, $interval, $scope, $timeout, CrimeService)
             })
             mapComp.markers.push(marker);
         })
-        // add path markers, too
+        // ADD MARKERS FOR PATH
         // mapComp.latLngArray[index].forEach(function(coordinate){
         //   var marker = new google.maps.Marker({position: new google.maps.LatLng(coordinate.lat, coordinate.lng), map: mapComp.mapid});
         //   mapComp.markers.push(marker);
