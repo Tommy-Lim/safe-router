@@ -464,7 +464,6 @@ function MapCompCtrl($http, $element, $interval, $scope, $timeout, CrimeService)
             mapComp.directionsDisplay.addListener('directions_changed', function() {
                 var newDirections = mapComp.directionsDisplay.getDirections()
                 mapComp.latLngArray = mapComp.polylinesToLatLngArr(newDirections.routes)
-                console.log("LATLNG directions_change", mapComp.latLngArray);
                 mapComp.getRouteBox();
 								mapComp.resetBounds();
                 mapComp.getCrimes();
@@ -537,7 +536,6 @@ function MapCompCtrl($http, $element, $interval, $scope, $timeout, CrimeService)
                 mapComp.directionsResult = result;
                 mapComp.directionsDisplay.setDirections(result);
                 mapComp.latLngArray = mapComp.polylinesToLatLngArr(mapComp.directionsResult.routes);
-                console.log("LATLNG directionsservice", mapComp.latLngArray)
             }
         });
     }
@@ -555,9 +553,7 @@ function MapCompCtrl($http, $element, $interval, $scope, $timeout, CrimeService)
             })
             coordinateArrs.push(routeCoordinates);
         })
-        console.log("PRE INTERP", coordinateArrs)
         coordinateArrs = mapComp.interpolateGaps(coordinateArrs);
-        console.log("POST INTERP", coordinateArrs)
         return coordinateArrs;
     }
 
@@ -565,16 +561,16 @@ function MapCompCtrl($http, $element, $interval, $scope, $timeout, CrimeService)
       // mapComp.latLngArray
       var newArrays = arrayOfCoordsArrays.map(function(route){
         for(var i=route.length-1; i>0; i--){
-          var dx = route[i].lat - route[i-1].lat;
-          var dy = route[i].lng - route[i-1].lng;
-          var distance = Math.sqrt(Math.pow(dx,2) + Math.pow(dx,2));
+          var dy = route[i].lat - route[i-1].lat;
+          var dx = route[i].lng - route[i-1].lng;
+          var distance = Math.sqrt(Math.pow(dx,2) + Math.pow(dy,2));
           if( distance > 0.0001){
             var inner = [];
             var steps = 10;
             for(var j=1; j<steps; j++){
               var obj = {
-                lat: route[i-1].lat + j*dx/steps,
-                lng: route[i-1].lng + j*dy/steps
+                lat: route[i-1].lat + j*dy/steps,
+                lng: route[i-1].lng + j*dx/steps
               }
               inner.push(obj);
             }
@@ -592,8 +588,6 @@ function MapCompCtrl($http, $element, $interval, $scope, $timeout, CrimeService)
     mapComp.addCrimeMarkers = function(crimes) {
         mapComp.crimesLoading = true;
         var index = mapComp.routeIndex;
-        console.log("ROUTE", mapComp.latLngArray[index]);
-        console.log("CRIMES TO PLOT", crimes);
         crimes.forEach(function(coordinate) {
             var contentString = '<div id="content">' +
             '<div id="bodyContent">' +
@@ -608,14 +602,11 @@ function MapCompCtrl($http, $element, $interval, $scope, $timeout, CrimeService)
             })
             mapComp.markers.push(marker);
         })
-
-        mapComp.latLngArray[index].forEach(function(coordinate){
-          var marker = new google.maps.Marker({position: new google.maps.LatLng(coordinate.lat, coordinate.lng), map: mapComp.mapid});
-          mapComp.markers.push(marker);
-        })
-
-
-
+        // add path markers, too
+        // mapComp.latLngArray[index].forEach(function(coordinate){
+        //   var marker = new google.maps.Marker({position: new google.maps.LatLng(coordinate.lat, coordinate.lng), map: mapComp.mapid});
+        //   mapComp.markers.push(marker);
+        // })
         mapComp.crimesLoading = false;
     }
 
@@ -913,11 +904,8 @@ function MapCompCtrl($http, $element, $interval, $scope, $timeout, CrimeService)
         } else {
             sensitivity = mapComp.sensitivity;
         }
-        console.log("ROUTES PRE COPY", mapComp.latLngArray);
         var routes = angular.copy(mapComp.latLngArray);
         var crimes = angular.copy(mapComp.crimes);
-        console.log("CRIMES PRE MATCH", crimes);
-        console.log("ROUTES", routes);
 
         // DECLARE COUNTED CRIMES
         mapComp.countedCrimes = [
@@ -949,8 +937,6 @@ function MapCompCtrl($http, $element, $interval, $scope, $timeout, CrimeService)
               })
           }
         })
-
-        console.log("CRIMES POST MATCH", mapComp.countedCrimes);
 
 				mapComp.crimesLoading = false;
         mapComp.resetVisuals();
