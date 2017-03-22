@@ -464,6 +464,7 @@ function MapCompCtrl($http, $element, $interval, $scope, $timeout, CrimeService)
             mapComp.directionsDisplay.addListener('directions_changed', function() {
                 var newDirections = mapComp.directionsDisplay.getDirections()
                 mapComp.latLngArray = mapComp.polylinesToLatLngArr(newDirections.routes)
+                console.log("LATLNG", mapComp.latLngArray);
                 mapComp.getRouteBox();
 								mapComp.resetBounds();
                 mapComp.getCrimes();
@@ -560,6 +561,7 @@ function MapCompCtrl($http, $element, $interval, $scope, $timeout, CrimeService)
     mapComp.addCrimeMarkers = function(crimes) {
         mapComp.crimesLoading = true;
         var index = mapComp.routeIndex;
+        console.log("ROUTE", mapComp.latLngArray[index]);
         console.log("CRIMES TO PLOT", crimes);
         crimes.forEach(function(coordinate) {
             var contentString = '<div id="content">' +
@@ -575,7 +577,15 @@ function MapCompCtrl($http, $element, $interval, $scope, $timeout, CrimeService)
             })
             mapComp.markers.push(marker);
         })
-      mapComp.crimesLoading = false;
+
+        mapComp.latLngArray[index].forEach(function(coordinate){
+          var marker = new google.maps.Marker({position: new google.maps.LatLng(coordinate.lat, coordinate.lng), map: mapComp.mapid});
+          mapComp.markers.push(marker);
+        })
+
+
+
+        mapComp.crimesLoading = false;
     }
 
     // REMOVE LAT/LNG MARKERS FOR CURRENT ROUTE
@@ -590,6 +600,7 @@ function MapCompCtrl($http, $element, $interval, $scope, $timeout, CrimeService)
         } else {
             mapComp.controls.crimes = true;
             mapComp.addCrimeMarkers(mapComp.countedCrimes[mapComp.routeIndex]);
+            // mapComp.addCrimeMarkers(mapComp.crimes);
         }
 
     }
@@ -863,8 +874,18 @@ function MapCompCtrl($http, $element, $interval, $scope, $timeout, CrimeService)
         }
     }
 
+    mapComp.interpolateGaps = function(arrayOfCoordsArrays){
+      arrayOfCoordsArrays.forEach(function(route){
+        for(var i=route.length-1; i>0; i--){
+          var dx = Math.abs(route(i).lat - route(i-1).lat);
+          var dy = Math.abs(route(i).lng - route(i-1).lng);
+
+        }
+      })
+    }
+
     mapComp.findMatches = function() {
-        console.log("CRIMES PRE MATCH", mapComp.crimes);
+
 				mapComp.crimesLoading = true;
         var sensitivity;
         if (!mapComp.sensitivity) {
@@ -874,6 +895,8 @@ function MapCompCtrl($http, $element, $interval, $scope, $timeout, CrimeService)
         }
         var routes = angular.copy(mapComp.latLngArray);
         var crimes = angular.copy(mapComp.crimes);
+        console.log("CRIMES PRE MATCH", crimes);
+        console.log("ROUTES", routes);
 
         // DECLARE COUNTED CRIMES
         mapComp.countedCrimes = [
