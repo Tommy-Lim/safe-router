@@ -42,6 +42,7 @@ function MapCompCtrl($http, $element, $interval, $scope, $timeout, CrimeService)
 
     // INITILAIZE MAP
     function initMap() {
+
 				setMapLoading(true);
         // INIT DIRECTIONS SERVICE AND RENDERER
         mapComp.directionsService = new google.maps.DirectionsService();
@@ -75,17 +76,16 @@ function MapCompCtrl($http, $element, $interval, $scope, $timeout, CrimeService)
                 // SET BOUNDS FOR
                 mapComp.defaultBounds = new google.maps.LatLngBounds(new google.maps.LatLng(mapComp.mapCenter.lat + autocompleteBoundsPadding, mapComp.mapCenter.lng - autocompleteBoundsPadding), new google.maps.LatLng(mapComp.mapCenter.lat - autocompleteBoundsPadding, mapComp.mapCenter.lng + autocompleteBoundsPadding))
                 mapComp.options.bounds = mapComp.defaultBounds
-                // SET START TO LATLNG
-                addStart(mapComp.mapCenter);
-                makeMap(mapComp.mapCenter);
+                // USE NEW LAT/LNG
+                makeMap(mapComp.mapCenter, true);
 
             }, function() {
                 // USE DEFAULT LAT/LNG BECAUSE ERROR OCCURRED GETTING LAT/LNG
-                makeMap(mapComp.mapCenter);
+                makeMap(mapComp.mapCenter, false);
             });
         } else {
             // NO BROSWER SUPPORT FOR LAT/LNG, USE DEFAULT LAT/LNG
-            makeMap(mapComp.mapCenter);
+            makeMap(mapComp.mapCenter, false);
         }
 
         // ADD CENTER ICON TO MAP
@@ -117,7 +117,7 @@ function MapCompCtrl($http, $element, $interval, $scope, $timeout, CrimeService)
         }
 
         // MAKE MAP FUNCTION TO BE USED ABOVE
-        function makeMap(latLng) {
+        function makeMap(latLng, hasLocation) {
             // CREATE GOOGLE MAP WITH LAT/LNG
             mapComp.mapid = new google.maps.Map(document.getElementById('mapid'), {
                 center: latLng,
@@ -465,7 +465,7 @@ function MapCompCtrl($http, $element, $interval, $scope, $timeout, CrimeService)
                 var newDirections = mapComp.directionsDisplay.getDirections()
                 mapComp.latLngArray = mapComp.polylinesToLatLngArr(newDirections.routes)
                 mapComp.getRouteBox();
-								mapComp.resetBounds();
+                mapComp.resetBounds();
                 mapComp.getCrimes();
             });
 
@@ -484,9 +484,12 @@ function MapCompCtrl($http, $element, $interval, $scope, $timeout, CrimeService)
             })
 
             // ADD CURRENT LOCATION TO MAP
-            addCenter(latLng);
-						setMapLoading(false);
-
+            if(hasLocation){
+              console.log("has location, so set center");
+              addCenter(latLng);
+              addStart(latLng);
+            }
+            setMapLoading(false);
 
         }
     }
@@ -1005,6 +1008,7 @@ function MapCompCtrl($http, $element, $interval, $scope, $timeout, CrimeService)
     }
 
     mapComp.resizeMap = function(){
+      //test text
       google.maps.event.trigger(mapComp.mapid, 'resize')
       if(mapComp.box){
         mapComp.resetBounds();
@@ -1053,13 +1057,15 @@ function MapCompCtrl($http, $element, $interval, $scope, $timeout, CrimeService)
       }
     }
 
-    // ADD MAP TO SITE
-    google.maps.event.addDomListener(window, 'load', initMap);
-
     $(window).resize(function(){
       mapComp.toggleControls();
       mapComp.toggleControls();
     });
+
+    // ADD MAP TO SITE
+    angular.element(document).ready(function(){
+      initMap();
+    })
 
 }
 
