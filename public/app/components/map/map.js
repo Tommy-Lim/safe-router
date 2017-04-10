@@ -485,7 +485,6 @@ function MapCompCtrl($http, $element, $interval, $scope, $timeout, CrimeService)
 
             // ADD CURRENT LOCATION TO MAP
             if(hasLocation){
-              console.log("has location, so set center");
               addCenter(latLng);
               addStart(latLng);
             }
